@@ -21,9 +21,9 @@ const title = defineProps({
     <div class="bg-gradient-to-tl from-lavender-vlight via-skyblue-vlight to-white min-h-screen min-w-screen">
         <Header :authUser="authUser" />
         <Navigator />
-        <main class="mx-4 shadow-sm rounded-lg bg-gradient-to-b from-skyblue-vlight to-lightyellow">
+        <main class="sm:mx-4 shadow-sm sm:rounded-lg bg-gradient-to-b from-skyblue-vlight to-lightyellow">
             <div class="w-full h-full textura_fondo rounded-lg">
-                <div class="p-8">
+                <div class="p-2 sm:p-8">
                     <slot />
                 </div>
             </div>

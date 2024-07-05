@@ -1,5 +1,5 @@
 <script setup>
-import NavigatorLink from "@/Components/my_components/NavigatorLink.vue";
+import NavigatorLink from "@/Components/public_components/NavigatorLink.vue";
 import Dropdown from "@/Components/breeze_components/Dropdown.vue";
 import DropdownLink from "@/Components/breeze_components/DropdownLink.vue";
 </script>

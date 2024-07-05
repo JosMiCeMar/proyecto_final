@@ -16,8 +16,8 @@ class AdministradoreController extends Controller
         $admin = new Administradore();
 
         $codigo=$admin->generarCodigo();
-        $hash=password_hash($codigo, PASSWORD_DEFAULT);
+
         
-        return Inertia::render('Pruebas', ['datos'=>$codigo,'hash'=>$hash,'verificar'=>password_verify('gilipollas',$hash)]);
+        return Inertia::render('Pruebas', ['datos'=>$codigo]);
     }
 }

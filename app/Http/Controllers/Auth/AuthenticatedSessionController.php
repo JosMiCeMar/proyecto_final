@@ -35,7 +35,7 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerate();
 
       
-            session()->forget(['cod','client']);
+        session()->forget(['cod','client']);
         
             
 

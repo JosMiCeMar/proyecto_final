@@ -15,7 +15,9 @@ const props = defineProps({
 <template>
     <header class="px-10 flex flex-col sm:flex-row gap-2 py-3">
         <div class="flex justify-center align-middle">
+            <Link :href="route('home')">
             <img class="h-auto w-80" src="img/logo_head.png" alt="logo" />
+            </Link>
         </div>
         <nav class="flex flex-1 sm:justify-end justify-around">
             <template v-if="authUser">

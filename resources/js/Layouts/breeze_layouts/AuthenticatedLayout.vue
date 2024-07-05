@@ -1,18 +1,25 @@
 <script setup>
-import { ref } from 'vue';
-import IconMarca from '@/Components/IconMarca.vue';
-import Dropdown from '@/Components/breeze_components/Dropdown.vue';
-import DropdownLink from '@/Components/breeze_components/DropdownLink.vue';
-import NavLink from '@/Components/breeze_components/NavLink.vue';
-import ResponsiveNavLink from '@/Components/breeze_components/ResponsiveNavLink.vue';
-import { Link } from '@inertiajs/vue3';
+import { ref } from "vue";
+import IconMarca from "@/Components/IconMarca.vue";
+import Dropdown from "@/Components/breeze_components/Dropdown.vue";
+import DropdownLink from "@/Components/breeze_components/DropdownLink.vue";
+
+import NavigationAdmin from "@/Components/dashboard_components/NavigationAdmin.vue";
+import NavigationResp from "@/Components/dashboard_components/NavigationResp.vue";
+import NavigationClient from "@/Components/dashboard_components/NavigationClient.vue";
+import NavigationAdminResponsive from "@/Components/dashboard_components/NavigationAdminResponsive.vue";
+import NavigationRespResponsive from "@/Components/dashboard_components/NavigationRespResponsive.vue";
+import NavigationClientResponsive from "@/Components/dashboard_components/NavigationClientResponsive.vue";
+import { Link } from "@inertiajs/vue3";
 
 const showingNavigationDropdown = ref(false);
 </script>
 
 <template>
     <div>
-        <div class="min-h-screen bg-dun">
+        <div
+            class="min-h-screen bg-gradient-to-tl from-lavender-vlight via-skyblue-vlight to-white"
+        >
             <nav class="bg-lavender-dark border-b border-lavender-logo">
                 <!-- Primary Navigation Menu -->
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -26,16 +33,20 @@ const showingNavigationDropdown = ref(false);
                                     />
                                 </Link>
                             </div>
-
-                            <!-- Navigation Links -->
-                            <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                                <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                                    Tu Perfil
-                                </NavLink>
-                                <NavLink :href="route('dashboard')" :active="route().current('home')">
-                                    Citas Pendientes
-                                </NavLink>
-                            </div>
+                            <!-- Links de navegadores -->
+                            <template v-if="$page.props.auth.tipo == 'admin'">
+                                <NavigationAdmin />
+                            </template>
+                            <template
+                                v-else-if="
+                                    $page.props.auth.tipo == 'responsable'
+                                "
+                            >
+                                <NavigationResp />
+                            </template>
+                            <template v-else>
+                                <NavigationClient />
+                            </template>
                         </div>
 
                         <div class="hidden sm:flex sm:items-center sm:ms-6">
@@ -48,7 +59,13 @@ const showingNavigationDropdown = ref(false);
                                                 type="button"
                                                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-400 bg-gray-800 hover:text-gray-300 focus:outline-none transition ease-in-out duration-150"
                                             >
-                                                {{ $page.props.auth.user.nombre }} {{  $page.props.auth.user.apellidos }}
+                                                {{
+                                                    $page.props.auth.user.nombre
+                                                }}
+                                                {{
+                                                    $page.props.auth.user
+                                                        .apellidos
+                                                }}
 
                                                 <svg
                                                     class="ms-2 -me-0.5 h-4 w-4"
@@ -67,9 +84,17 @@ const showingNavigationDropdown = ref(false);
                                     </template>
 
                                     <template #content>
-                                        <DropdownLink :href="route('profile.edit')"> Profile </DropdownLink>
-                                        <DropdownLink :href="route('logout')" method="post" as="button">
-                                            Log Out
+                                        <DropdownLink
+                                            :href="route('profile.edit')"
+                                        >
+                                            Editar Perfil
+                                        </DropdownLink>
+                                        <DropdownLink
+                                            :href="route('logout')"
+                                            method="post"
+                                            as="button"
+                                        >
+                                            Desconectar
                                         </DropdownLink>
                                     </template>
                                 </Dropdown>
@@ -79,14 +104,23 @@ const showingNavigationDropdown = ref(false);
                         <!-- Hamburger -->
                         <div class="-me-2 flex items-center sm:hidden">
                             <button
-                                @click="showingNavigationDropdown = !showingNavigationDropdown"
+                                @click="
+                                    showingNavigationDropdown =
+                                        !showingNavigationDropdown
+                                "
                                 class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 dark:text-gray-500 hover:text-gray-500 dark:hover:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-900 focus:outline-none focus:bg-gray-100 dark:focus:bg-gray-900 focus:text-gray-500 dark:focus:text-gray-400 transition duration-150 ease-in-out"
                             >
-                                <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                                <svg
+                                    class="h-6 w-6"
+                                    stroke="currentColor"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                >
                                     <path
                                         :class="{
                                             hidden: showingNavigationDropdown,
-                                            'inline-flex': !showingNavigationDropdown,
+                                            'inline-flex':
+                                                !showingNavigationDropdown,
                                         }"
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
@@ -96,7 +130,8 @@ const showingNavigationDropdown = ref(false);
                                     <path
                                         :class="{
                                             hidden: !showingNavigationDropdown,
-                                            'inline-flex': showingNavigationDropdown,
+                                            'inline-flex':
+                                                showingNavigationDropdown,
                                         }"
                                         stroke-linecap="round"
                                         stroke-linejoin="round"
@@ -111,31 +146,23 @@ const showingNavigationDropdown = ref(false);
 
                 <!-- Responsive Navigation Menu -->
                 <div
-                    :class="{ block: showingNavigationDropdown, hidden: !showingNavigationDropdown }"
+                    :class="{
+                        block: showingNavigationDropdown,
+                        hidden: !showingNavigationDropdown,
+                    }"
                     class="sm:hidden"
                 >
-                    <div class="pt-2 pb-3 space-y-1">
-                        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-                            Dashboard
-                        </ResponsiveNavLink>
-                    </div>
-
-                    <!-- Responsive Settings Options -->
-                    <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
-                        <div class="px-4">
-                            <div class="font-medium text-base text-gray-800 dark:text-gray-200">
-                                {{ $page.props.auth.user.name }}
-                            </div>
-                            <div class="font-medium text-sm text-gray-500">{{ $page.props.auth.user.email }}</div>
-                        </div>
-
-                        <div class="mt-3 space-y-1">
-                            <ResponsiveNavLink :href="route('profile.edit')"> Profile </ResponsiveNavLink>
-                            <ResponsiveNavLink :href="route('logout')" method="post" as="button">
-                                Log Out
-                            </ResponsiveNavLink>
-                        </div>
-                    </div>
+                    <template v-if="$page.props.auth.tipo == 'admin'">
+                        <NavigationAdminResponsive />
+                    </template>
+                    <template
+                        v-else-if="$page.props.auth.tipo == 'responsable'"
+                    >
+                        <NavigationRespResponsive />
+                    </template>
+                    <template v-else>
+                        <NavigationClientResponsive />
+                    </template>
                 </div>
             </nav>
 

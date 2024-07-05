@@ -5,7 +5,7 @@ import InputError from '@/Components/breeze_components/InputError.vue';
 import InputLabel from '@/Components/breeze_components/InputLabel.vue';
 import PrimaryButton from '@/Components/breeze_components/PrimaryButton.vue';
 import TextInput from '@/Components/breeze_components/TextInput.vue';
-import CenterSelect from '@/Components/my_components/CenterSelect.vue'
+import CenterSelect from '@/Components/breeze_components/CenterSelect.vue'
 import { Head, useForm } from '@inertiajs/vue3';
 
 const props = defineProps({

@@ -11,7 +11,6 @@ class CodRegistroController extends Controller
 
     public function insertCode()
     {
-        //session()->flush();
         if (session()->has('cod') && session()->has('client')) {
             if (session()->get('client')) {
                 return redirect(route('cliente.create'));
@@ -42,8 +41,6 @@ class CodRegistroController extends Controller
                 return redirect(route('responsable.create'));
             }
         }
-
-
 
         return redirect(route('cod_registro.check'))->withErrors($mensajeError, 'error');
     }

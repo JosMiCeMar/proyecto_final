@@ -30,7 +30,7 @@ class Administradore extends Model
 
         $inst_cod->codigo=$codigo;
         $inst_cod->id_creador=Auth::id();
-        $inst_cod->para_cliente=0;
+        $inst_cod->para_cliente=1;
 
         $inst_cod->save();
 

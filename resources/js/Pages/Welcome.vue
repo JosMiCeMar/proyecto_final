@@ -1,6 +1,6 @@
 <script setup>
 import Base from '@/Layouts/Base.vue';
-import Carrusel from '@/Components/Carrusel.vue';
+import Carrusel from '@/Components/public_components/Carrusel.vue';
 
 const titulo='Bienvenid@';
 </script>
@@ -9,5 +9,6 @@ const titulo='Bienvenid@';
 
   <Base :titulo="titulo">
     <Carrusel />
+    {{ $page.props.auth.tipo }}
   </Base>
 </template>
