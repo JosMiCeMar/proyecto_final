@@ -28,14 +28,14 @@ class Responsable extends Model
         return $this->belongsTo(Centro::class);
     }
 
-    public function generarCodigo(){
+    public function genCode(){
         $codigo= $this->crearCodigo();
 
         $inst_cod=new CodRegistro();
 
         $inst_cod->codigo=$codigo;
         $inst_cod->id_creador=Auth::id();
-        $inst_cod->para_cliente=1;
+        $inst_cod->para_cliente=true;
 
         $inst_cod->save();
 

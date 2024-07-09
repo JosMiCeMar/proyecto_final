@@ -26,7 +26,7 @@ class ClienteController extends Controller
     $request->validate([
             'name' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
-            'tel' => ['required', 'regex:/^\d{9}$/'],
+            'tel' => ['required', 'regex:^[76]{1}[0-9]{8}$'],
             'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
             'fecha' => 'required|date|before_or_equal:'.$fechaMaxima,
             'condicion'=> 'boolean',

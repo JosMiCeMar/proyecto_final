@@ -21,14 +21,8 @@ const classes = computed(() =>
 
 <template>
     <Link :href="href" :class="classes">
-        <div class="textura_fondo w-full h-full px-10 py-2 rounded-t-lg">
+        <div class="textura_fondo w-full h-full px-10 py-2 rounded-t-lg flex items-center text-center">
             <slot />
         </div>
     </Link>
 </template>
-<style scope>
-.textura_fondo {
-    background-image: url("/img/bg.png");
-    background-repeat: repeat;
-}
-</style>

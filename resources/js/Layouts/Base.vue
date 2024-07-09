@@ -7,12 +7,15 @@ import Navigator from "@/Components/Navigator.vue";
 
 const { props } = usePage();
 const authUser = ref(props.auth.user);
+
 const title = defineProps({
     titulo: {
         type: String,
         required: true,
     },
 });
+
+
 </script>
 
 <template>
@@ -28,15 +31,8 @@ const title = defineProps({
                 </div>
             </div>
         </main>
-
         <footer class="py-8 text-center text-sm text-black dark:text-white/70">
             <Footer />
         </footer>
     </div>
 </template>
-<style scoped>
-.textura_fondo {
-    background-image: url('/img/bg.png');
-    background-repeat: repeat;
-}
-</style>

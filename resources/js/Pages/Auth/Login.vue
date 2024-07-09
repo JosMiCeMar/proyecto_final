@@ -31,7 +31,8 @@ const submit = () => {
 
 <template>
     <GuestLayout>
-        <Head title="Log in" />
+
+        <Head title="Acceso" />
 
         <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
             {{ status }}
@@ -41,15 +42,8 @@ const submit = () => {
             <div>
                 <InputLabel for="email" value="Email" />
 
-                <TextInput
-                    id="email"
-                    type="email"
-                    class="mt-1 block w-full"
-                    v-model="form.email"
-                    required
-                    autofocus
-                    autocomplete="email"
-                />
+                <TextInput id="email" type="email" class="mt-1 block w-full" v-model="form.email" required autofocus
+                    autocomplete="email" />
 
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
@@ -57,14 +51,8 @@ const submit = () => {
             <div class="mt-4">
                 <InputLabel for="password" value="Contraseña" />
 
-                <TextInput
-                    id="password"
-                    type="password"
-                    class="mt-1 block w-full"
-                    v-model="form.password"
-                    required
-                    autocomplete="current-password"
-                />
+                <TextInput id="password" type="password" class="mt-1 block w-full" v-model="form.password" required
+                    autocomplete="current-password" />
 
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
@@ -77,18 +65,19 @@ const submit = () => {
             </div>
 
             <div class="flex items-center justify-end mt-4">
-                <Link
-                    v-if="canResetPassword"
-                    :href="route('password.request')"
-                    class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
-                >
-                    ¿Olvidaste la contraseña?
+                <Link v-if="canResetPassword" :href="route('password.request')"
+                    class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">
+                ¿Olvidaste la contraseña?
                 </Link>
-
                 <PrimaryButton class="ms-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                     Identificarse
                 </PrimaryButton>
             </div>
         </form>
+        <p class="mt-4 text-end text-xs text-skyblue-vlight  hover:text-skyblue-light hover:underline">
+            <Link :href="route('home')">
+            Volver a página principal
+            </Link>
+        </p>
     </GuestLayout>
 </template>

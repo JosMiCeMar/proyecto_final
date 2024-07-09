@@ -9,6 +9,5 @@ const titulo='Bienvenid@';
 
   <Base :titulo="titulo">
     <Carrusel />
-    {{ $page.props.auth.tipo }}
   </Base>
 </template>

@@ -24,7 +24,8 @@ Route::get('/centros_asociados', function () {
 })->name('centros');
 
 //Ruta para pruebas --- ELIMINAR AL TERMINAR
-Route::get('/pruebas', [AdministradoreController::class, 'pruebas'])->name('pruebas');
+Route::get('/generarCodigo', [AdministradoreController::class, 'genCode'])->name('genCode');
+Route::post('/generarCodigo', [AdministradoreController::class, 'showCode']);
 
 //Ruta código de registro
 Route::get('/registro', [CodRegistroController::class, 'insertCode'])->name('cod_registro.check');

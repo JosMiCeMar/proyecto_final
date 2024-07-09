@@ -10,14 +10,20 @@ use Inertia\Inertia;
 class AdministradoreController extends Controller
 {
     //
+    public function genCode(){
+        return Inertia::render('Users/Admin/GenCode');
+    }
 
-    public function pruebas(){
+    public function showCode(Request $request){
 
-        $admin = new Administradore();
+        $request->validate(['type' => 'required|boolean'], [
+            'type.required' => 'Debes seleccionar una de las opciones.',
+            'type.boolean' => 'El tipo de dato introducido es incorrecto.',
+        ]);
 
-        $codigo=$admin->generarCodigo();
-
+        $admin=new Administradore();
+        $codigo=$admin->genCode($request->type);
         
-        return Inertia::render('Pruebas', ['datos'=>$codigo]);
+        return Inertia::render('Users/Admin/ShowCode',['codigo'=>$codigo,'tipo'=>$request->type]);
     }
 }

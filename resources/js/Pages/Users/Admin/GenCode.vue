@@ -1,0 +1,80 @@
+<template>
+
+    <Head title="Generar Código" />
+
+    <AuthenticatedLayout>
+        <div class="py-12">
+            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div class="rounded-md bg-gradient-to-b from-skyblue-vlight to-white shadow-md">
+                    <div class="p-7 rounded-md textura_fondo w-full h-full">
+                        <h3 class="text-2xl text-center font-bold text-lavender-dark uppercase">
+                            Generar Código de Registro
+                        </h3>
+                        <p class="text-center text-skyblue-dark font-bold">
+                            Genera un código de registro para nuevos
+                            responsables de centros asociados o para nuevos
+                            clientes.
+                        </p>
+                        <form @submit.prevent="submit"
+                            class="flex flex-col align-items-center justify-center w-100 mt-4 text-lavender-dark text-lg">
+                            <p class="text-center font-bold mb-4">
+                                Selecciona el rol del nuevo usuario:
+                            </p>
+
+                            <div class="flex items-center justify-center gap-2">
+                                <label for="responsable" class="uppercase font-bold hover:underline">Responsable:</label>
+                                <input id="responsable"
+                                    class="form-radio text-lavender-logo focus:outline-lavender-logo h-5 w-5"
+                                    type="radio" v-model="form.type" name="type" value="0" />
+                            </div>
+                            <p class="text-sm text-center mb-4">
+                                *Recuerda crear el nuevo centro asociado antes
+                                de proporcionar el código al responsable
+                            </p>
+
+                            <div class="flex items-center justify-center gap-2 ">
+                                <label for="cliente" class="uppercase font-bold hover:underline">Cliente:</label>
+                                <input id="cliente"
+                                    class="form-radio text-lavender-logo focus:outline-lavender-logo h-5 w-5"
+                                    type="radio" v-model="form.type" name="type" value="1" />
+                            </div>
+                            <InputError class="font-bold text-center" :message="form.errors.type" />
+                            <div class="flex items-center justify-center mt-6">
+                                <Button>Generar Código</Button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </AuthenticatedLayout>
+</template>
+
+<script setup>
+import AuthenticatedLayout from "@/Layouts/breeze_layouts/AuthenticatedLayout.vue";
+import { Head, useForm } from "@inertiajs/vue3";
+import Button from "@/Components/dashboard_components/Button.vue";
+import InputError from "@/Components/breeze_components/InputError.vue";
+import { inject } from "vue";
+const swal = inject("$swal");
+
+const form = useForm({
+    type: "",
+});
+
+const submit = () => {
+
+    if (!form.type) {
+        swal({
+            icon: 'error',
+            text: "Debes seleccionar una de las opciones",
+            confirmButtonText: "Aceptar",
+            confirmButtonColor: "#3A2642",
+            background: "linear-gradient(to right, #e3b8f5, #bdd6ff)",
+            color: "#3A2642",
+        });
+    } else {
+        form.post(route("genCode"));
+    }
+};
+</script>

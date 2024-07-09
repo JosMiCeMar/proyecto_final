@@ -6,6 +6,7 @@ use App\Models\CodRegistro;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
+
 class CodRegistroController extends Controller
 {
 
@@ -44,4 +45,7 @@ class CodRegistroController extends Controller
 
         return redirect(route('cod_registro.check'))->withErrors($mensajeError, 'error');
     }
+
+
+
 }

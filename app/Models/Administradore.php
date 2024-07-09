@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use App\Traits\GenerarCodigoAleatorio;
 use Illuminate\Support\Facades\Auth;
 
-
 class Administradore extends Model 
 {
     use HasFactory;
@@ -23,14 +22,14 @@ class Administradore extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function generarCodigo(){
+    public function genCode(bool $tipo){
         $codigo= $this->crearCodigo();
 
         $inst_cod=new CodRegistro();
 
         $inst_cod->codigo=$codigo;
         $inst_cod->id_creador=Auth::id();
-        $inst_cod->para_cliente=1;
+        $inst_cod->para_cliente=$tipo;
 
         $inst_cod->save();
 
