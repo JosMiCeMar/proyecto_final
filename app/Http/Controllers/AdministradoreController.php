@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Administradore;
+use App\Models\CodRegistro;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -10,8 +11,39 @@ use Inertia\Inertia;
 class AdministradoreController extends Controller
 {
     //
+
+
+    public function indexCode(){
+        return Inertia::render('Users/Admin/RegCode/Index');
+    }
+
+    public function listCode(){
+
+        $usados= CodRegistro::where('usado', true)->exists();
+
+        $codigos=CodRegistro::orderByDesc('usado')->orderBy('para_cliente')->orderBy('created_at')->get();
+
+
+       return Inertia::render('Users/Admin/RegCode/DelCode',['codigos'=>$codigos, 'usados'=>$usados]);
+
+    }
+
+    public function deleteCode(Request $request){
+        $request->validate(['id'=>'required|integer']);
+        
+        $codigo = CodRegistro::find($request->id);
+        
+        if($codigo){
+            $codigo->delete();
+        }elseif(!$codigo && $request->id===0){
+            CodRegistro::where('usado',true)->delete();
+        }
+
+        $this->listCode();
+    }
+
     public function genCode(){
-        return Inertia::render('Users/Admin/GenCode');
+        return Inertia::render('Users/Admin/RegCode/GenCode');
     }
 
     public function showCode(Request $request){
@@ -24,6 +56,6 @@ class AdministradoreController extends Controller
         $admin=new Administradore();
         $codigo=$admin->genCode($request->type);
         
-        return Inertia::render('Users/Admin/ShowCode',['codigo'=>$codigo,'tipo'=>$request->type]);
+        return Inertia::render('Users/Admin/RegCode/ShowCode',['codigo'=>$codigo,'tipo'=>boolval($request->type)]);
     }
 }

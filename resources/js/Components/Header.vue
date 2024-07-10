@@ -84,7 +84,7 @@ const closeSessionAlert = () => {
         text: "Has cerrado sesión correctamente",
         confirmButtonText: "Aceptar",
         confirmButtonColor: "#3A2642",
-        background: "linear-gradient(to right, #e3b8f5, #bdd6ff)",
+        background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
         color: "#3A2642",
     });
 };

@@ -3,11 +3,15 @@
         <NavLink :href="route('dashboard')" :active="route().current('dashboard')">
             Tu Perfil
         </NavLink>
-        <NavLink :href="route('genCode')" :active="route().current('genCode')">
-            Generar Código
+        <NavLink :href="route('indexCode')" :active="route().current('indexCode')">
+            Códigos de Registro
         </NavLink>
     </div>
 </template>
 <script setup>
 import NavLink from '@/Components/breeze_components/NavLink.vue';
+
+const isActive=()=>{
+
+}
 </script>

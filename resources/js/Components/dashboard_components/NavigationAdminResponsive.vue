@@ -1,26 +1,18 @@
 <template>
 
     <div class="pt-2 pb-3 space-y-1">
-        <ResponsiveNavLink
-            :href="route('dashboard')"
-            :active="route().current('dashboard')"
-        >
+        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
             Panel de Usuario
         </ResponsiveNavLink>
-        <ResponsiveNavLink
-            :href="route('genCode')"
-            :active="route().current('genCode')"
-        >
-            Generar Código
+        <ResponsiveNavLink :href="route('indexCode')" :active="route().current('indexCode')">
+            Códigos de Registro
         </ResponsiveNavLink>
     </div>
 
     <!-- Responsive Settings Options -->
     <div class="pt-4 pb-1 border-t border-skyblue-vlight">
         <div class="px-4">
-            <div
-                class="font-medium text-base text-white"
-            >
+            <div class="font-medium text-base text-white">
                 {{ $page.props.auth.user.nombre }}
                 {{ $page.props.auth.user.apellidos }}
             </div>
@@ -30,11 +22,13 @@
         </div>
 
         <div class="mt-3 space-y-1">
-            <ResponsiveNavLink :href="route('profile.edit')"  :active="route().current('profile.edit')">
+            <ResponsiveNavLink :href="route('home')">
+                Volver al Inicio
+            </ResponsiveNavLink>
+            <ResponsiveNavLink :href="route('profile.edit')" :active="route().current('profile.edit')">
                 Editar Perfil
             </ResponsiveNavLink>
-            <ResponsiveNavLink
-                :href="route('logout')">
+            <ResponsiveNavLink :href="route('logout')">
                 Desconectar
             </ResponsiveNavLink>
         </div>

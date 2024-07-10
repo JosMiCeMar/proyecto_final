@@ -23,9 +23,12 @@ Route::get('/centros_asociados', function () {
     return Inertia::render('Centros');
 })->name('centros');
 
-//Ruta para pruebas --- ELIMINAR AL TERMINAR
+//------------------SECCION EN CONSTRUCCION-----------------------
 Route::get('/generarCodigo', [AdministradoreController::class, 'genCode'])->name('genCode');
 Route::post('/generarCodigo', [AdministradoreController::class, 'showCode']);
+Route::get('/codigo_registro', [AdministradoreController::class, 'indexCode'])->name('indexCode');
+Route::get('/eliminar_codigo', [AdministradoreController::class, 'listCode'])->name('delCode');
+Route::post('/eliminar_codigo', [AdministradoreController::class, 'deleteCode']);
 
 //Ruta código de registro
 Route::get('/registro', [CodRegistroController::class, 'insertCode'])->name('cod_registro.check');
