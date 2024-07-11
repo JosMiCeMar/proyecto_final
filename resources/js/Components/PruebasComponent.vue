@@ -70,11 +70,11 @@ const productList = ref([]);
 const agregarProducto = () => {
     const objeto = {
         nombre: nombre.value,
-        precio: parseFloat(precio.value), // Convertir el precio a número
+        precio: parseFloat(precio.value)
     };
     productList.value.push(objeto);
-    nombre.value = ""; // Limpiar el campo de nombre
-    precio.value = 0; // Limpiar el campo de precio
+    nombre.value = ""; 
+    precio.value = 0; 
     console.log(productList.value);
 };
 

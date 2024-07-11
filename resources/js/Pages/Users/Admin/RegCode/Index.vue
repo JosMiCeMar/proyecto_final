@@ -8,6 +8,7 @@
                     :description="box.description" />
             </div>
         </ContentBox>
+        {{ props.usuario }}
     </AuthenticatedLayout>
 </template>
 <script setup>
@@ -15,6 +16,13 @@ import AuthenticatedLayout from "@/Layouts/breeze_layouts/AuthenticatedLayout.vu
 import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import { Head } from "@inertiajs/vue3";
 import LinkBox from "@/Components/dashboard_components/LinkBox.vue";
+import { defineProps } from "vue";
+
+const props=defineProps({
+    usuario:{
+        required:true
+    }
+})
 
 const linksList = [
     {

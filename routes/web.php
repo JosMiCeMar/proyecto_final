@@ -6,6 +6,11 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
+//En caso de no existir la ruta, retorna al inicio
+Route::fallback(function () {
+    return redirect('/');
+});
+
 //Páginas públicas
 Route::get('/', function () {
     return Inertia::render('Welcome');
@@ -23,29 +28,17 @@ Route::get('/centros_asociados', function () {
     return Inertia::render('Centros');
 })->name('centros');
 
-//------------------SECCION EN CONSTRUCCION-----------------------
-Route::get('/generarCodigo', [AdministradoreController::class, 'genCode'])->name('genCode');
-Route::post('/generarCodigo', [AdministradoreController::class, 'showCode']);
-Route::get('/codigo_registro', [AdministradoreController::class, 'indexCode'])->name('indexCode');
-Route::get('/eliminar_codigo', [AdministradoreController::class, 'listCode'])->name('delCode');
-Route::post('/eliminar_codigo', [AdministradoreController::class, 'deleteCode']);
+Route::get('/sin_acceso', function(){
+    return Inertia::render('SinAcceso');
+})->name('sin_acceso');
+
 
 //Ruta código de registro
 Route::get('/registro', [CodRegistroController::class, 'insertCode'])->name('cod_registro.check');
 Route::post('/registro', [CodRegistroController::class, 'checkCode']);
 
-//Ruta panel de usuario --- INTENTAR MOVER A /routes/auth.php
-Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-//Rutas editar perfil ---- INTENTAR MOVER A /routes/auth.php
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-});
 
 //Requires con los archivos con rutas con groups de middlewares
 require __DIR__ . '/auth.php';
-require __DIR__ . '/regcode.php';
+require __DIR__ . '/reg_code_routes.php';
+require __DIR__ . '/admin_routes.php';

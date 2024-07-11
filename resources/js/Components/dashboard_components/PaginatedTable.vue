@@ -26,7 +26,7 @@
                             : 'bg-lavender-light'
                         "></span>
             </div>
-            <button @click="nextPage" :disabled="currentPage === totalPages"
+            <button @click="nextPage" :disabled="currentPage === totalPages || totalPages === 0"
                 class="px-4 py-2 bg-lavender-dark text-white shadow-md hover:text-skyblue-light active:shadow-none disabled:bg-neutral-400 rounded">
                 Siguiente
             </button>

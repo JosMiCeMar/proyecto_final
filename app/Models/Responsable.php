@@ -17,6 +17,11 @@ class Responsable extends Model
         'centro_id'
     ];
 
+    public static function isRespons(){
+         
+        $userId = Auth::id();
+        return self::where('user_id', $userId)->exists();
+   }
 
     public function user()
     {

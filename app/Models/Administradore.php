@@ -17,6 +17,12 @@ class Administradore extends Model
         'user_id'
     ];
 
+    public static function isAdmin(){
+         
+         $userId = Auth::id();
+         return self::where('user_id', $userId)->exists();
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);

@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 
 class Cliente extends Model
 {
@@ -15,6 +16,12 @@ class Cliente extends Model
         'condicion_especial',
         'fecha_nacimiento'
     ];
+
+    public static function isClient(){
+         
+        $userId = Auth::id();
+        return self::where('user_id', $userId)->exists();
+   }
 
     public function user()
     {
