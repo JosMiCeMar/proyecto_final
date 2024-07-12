@@ -87,7 +87,7 @@ const submit = () => {
             iconColor:"#3A2642"
         });
     } else {
-        form.post(route("genCode"));
+        form.post(route("admin.genCode"));
     }
 };
 </script>

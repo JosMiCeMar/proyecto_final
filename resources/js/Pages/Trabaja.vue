@@ -1,6 +1,6 @@
 <script setup>
 import Base from '@/Layouts/Base.vue';
-import IconMarca from '@/Components/IconMarca.vue';
+import Title from '@/Components/Title.vue';
 
 
 const titulo = 'Trabaja con Nosotros';
@@ -10,8 +10,7 @@ const titulo = 'Trabaja con Nosotros';
 
   <Base :titulo="titulo">
   <section class="flex flex-col items-center text-lavender-dark justify-center gap-2 mt-4 mb-8  mx-4">
-    <h1 class="texto-degradado uppercase font-bold text-3xl">Impulsa tu negocio al siguiente nivel</h1>
-    <p class="text-lg font-bold">Con la explotación compartida de Mímate, ampliarás los servicios de tu negocio sin realizar ninguna inversión.</p>
+    <Title value="Impulsa tu negocio al siguiente nivel" subText="Con la explotación compartida de Mímate, ampliarás los servicios de tu negocio sin realizar ninguna inversión" />
   </section>
   <div class="separador rounded-full bg-gradient-to-tr from-lavender-logo to-skyblue-logo"></div>
   <section class="my-8 ml-8 text-lavender-dark">
@@ -78,10 +77,4 @@ const titulo = 'Trabaja con Nosotros';
  height: 3px;
 }
 
-.texto-degradado {
-    background: linear-gradient(0deg, #3A2642, #315D66);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
 </style>

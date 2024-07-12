@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\AdministradoreController;
+use App\Http\Controllers\CentroController;
 use App\Http\Controllers\CodRegistroController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
@@ -24,9 +24,7 @@ Route::get('/trabaja_con_nosotros', function () {
     return Inertia::render('Trabaja');
 })->name('trabaja');
 
-Route::get('/centros_asociados', function () {
-    return Inertia::render('Centros');
-})->name('centros');
+Route::get('/centros_asociados',[CentroController::class, 'all'])->name('centros');
 
 Route::get('/sin_acceso', function(){
     return Inertia::render('SinAcceso');
@@ -42,3 +40,5 @@ Route::post('/registro', [CodRegistroController::class, 'checkCode']);
 require __DIR__ . '/auth.php';
 require __DIR__ . '/reg_code_routes.php';
 require __DIR__ . '/admin_routes.php';
+require __DIR__ . '/client_routes.php';
+require __DIR__ . '/respon_routes.php';

@@ -30,7 +30,7 @@ import DropdownLink from "@/Components/breeze_components/DropdownLink.vue";
             <NavigatorLink
                 :href="route('somos')"
                 :active="route().current('somos')"
-                >¿Quienes somos?</NavigatorLink
+                >¿Quiénes somos?</NavigatorLink
             >
         </div>
     </nav>

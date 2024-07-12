@@ -18,8 +18,9 @@ return new class extends Migration
             $table->integer('telefono');
             $table->string('localidad');
             $table->string('provincia');
-            $table->string('web')->nullable();
-            $table->string('email')->nullable();
+            $table->string('web')->nullable()->default(null);
+            $table->string('email')->nullable()->default(null);
+            $table->longText('ubicacion')->nullable()->default(null);
             $table->timestamps();
         });
     }

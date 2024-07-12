@@ -1,6 +1,6 @@
 <template>
     <div class="m-4 relative overflow-x-auto">
-        <table class="w-full text-sm text-left rtl:text-right">
+        <table class="w-full shadow-md text-sm text-left rtl:text-right">
             <thead class="text-white font-bold uppercase bg-gradient-to-t from-lavender-dark to-skyblue-dark">
                 <tr>
                     <th v-for="header in headers" :key="header" scope="col" class="px-6 py-3">
@@ -8,7 +8,7 @@
                     </th>
                 </tr>
             </thead>
-            <tbody class="border-b border-skyblue-dark text-lavender-dark">
+            <tbody class="border-b border-skyblue-dark text-lavender-dark bg-white">
                 <tr v-for="item in paginatedItems" :key="item.id" class="border-t border-lavender-logo">
                     <slot :item="item"></slot>
                 </tr>

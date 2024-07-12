@@ -4,15 +4,18 @@
         <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
             Panel de Usuario
         </ResponsiveNavLink>
-        <ResponsiveNavLink :href="route('indexCode')" :active="route().current('indexCode')">
+        <ResponsiveNavLink :href="route('admin.indexCode')"  :active="route().current('admin.indexCode')||route().current('admin.genCode')||route().current('admin.delCode')">
             Códigos de Registro
+        </ResponsiveNavLink>
+        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+            Gestionar Centros
         </ResponsiveNavLink>
     </div>
 
     <!-- Responsive Settings Options -->
     <div class="pt-4 pb-1 border-t border-skyblue-vlight">
         <div class="px-4">
-            <div class="font-medium text-base text-white">
+            <div class="font-medium text-base text-gray-300">
                 {{ $page.props.auth.user.nombre }}
                 {{ $page.props.auth.user.apellidos }}
             </div>

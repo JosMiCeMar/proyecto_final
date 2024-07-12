@@ -26,13 +26,13 @@ const props=defineProps({
 
 const linksList = [
     {
-        route: route('genCode'),
+        route: route('admin.genCode'),
         icon: 'img/icons/plus_person_lavender.svg',
         title: "Generar Código de Registro",
         description: "Formulario de creación de código para registrar un nuevo usuario"
     },
     {
-        route: route('delCode'),
+        route: route('admin.delCode'),
         icon: 'img/icons/delete_lavender.svg',
         title: "Eliminar Códigos de Registro",
         description: "Menú para eliminar códigos ya creados"

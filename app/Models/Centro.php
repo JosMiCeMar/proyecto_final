@@ -15,7 +15,8 @@ class Centro extends Model
         'localidad',
         'provincia',
         'web',
-        'email'
+        'email',
+        'ubicacion'
     ];
 
     public function responsable()
