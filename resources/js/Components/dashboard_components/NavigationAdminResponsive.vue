@@ -7,8 +7,8 @@
         <ResponsiveNavLink :href="route('admin.indexCode')"  :active="route().current('admin.indexCode')||route().current('admin.genCode')||route().current('admin.delCode')">
             Códigos de Registro
         </ResponsiveNavLink>
-        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
-            Gestionar Centros
+        <ResponsiveNavLink :href="route('admin.indexCenter')" :active="route().current('admin.indexCenter')">
+            Centros Asociados
         </ResponsiveNavLink>
     </div>
 

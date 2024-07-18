@@ -13,7 +13,8 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans]
+                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                handwrite: ['HandWriteFont', 'sans-serif']
             },
             colors: {
                 'lavender-logo':'#BA7AD6',

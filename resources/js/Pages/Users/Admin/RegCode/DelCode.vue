@@ -1,35 +1,53 @@
 <template>
-
     <Head title="Eliminar Código" />
     <AuthenticatedLayout>
-        <ContentBox title="Eliminar Códigos de Registro"
-            description="Selecciona los códigos de registro que vas a eliminar">
+        <ContentBox
+            title="Eliminar Códigos de Registro"
+            description="Selecciona los códigos de registro que vas a eliminar"
+        >
             <template v-if="props.codigos.length === 0">
-                <div class="m-4">
+                <div class="m-4 my-20">
                     <p class="text-center">
-                        <span class="text-lavender-dark font-bold sm:text-xl p-2 bg-red-300 rounded-lg">No existen
-                            códigos en la base de datos
-                            actualmente.</span>
+                        <span
+                            class="text-lavender-dark font-bold sm:text-xl p-2 bg-red-300 rounded-lg"
+                            >No existen códigos de registro actualmente</span
+                        >
                     </p>
                 </div>
             </template>
             <template v-else>
                 <div>
                     <form @submit.prevent="submit">
-                        <div v-if="usados" class="flex text-lg items-center justify-end">
-                            <div class="flex items-center gap-4 mx-6 p-2 rounded-md">
-                                <span class="font-bold text-lavender-dark uppercase">Eliminar todos los códigos
-                                    usados</span>
-                                <TrashButton @click.prevent="confirmDelete(0)" />
+                        <div
+                            v-if="usados"
+                            class="flex text-lg items-center justify-end"
+                        >
+                            <div
+                                class="flex items-center gap-4 mx-6 p-2 rounded-md"
+                            >
+                                <span
+                                    class="font-bold text-lavender-dark uppercase"
+                                    >Eliminar todos los códigos usados</span
+                                >
+                                <TrashButton
+                                    @click.prevent="confirmDelete(0)"
+                                />
                             </div>
                         </div>
                         <PaginatedTable :items="codigos" :headers="headers">
-                            <template #default="{ item }" class="text-lavender-dark">
-                                <td class="px-6 py-4 font-bold whitespace-nowrap">
+                            <template
+                                #default="{ item }"
+                                class="text-lavender-dark"
+                            >
+                                <td
+                                    class="px-6 py-4 font-bold whitespace-nowrap"
+                                >
                                     {{ item.codigo }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    <span v-if="item.para_cliente">Cliente</span>
+                                    <span v-if="item.para_cliente"
+                                        >Cliente</span
+                                    >
                                     <span v-else>Responsable</span>
                                 </td>
                                 <td class="px-6 py-4">
@@ -40,7 +58,9 @@
                                     {{ formatDate(item.created_at) }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    <TrashButton @click.prevent="confirmDelete(item.id)" />
+                                    <TrashButton
+                                        @click.prevent="confirmDelete(item.id)"
+                                    />
                                 </td>
                             </template>
                         </PaginatedTable>
@@ -48,8 +68,12 @@
                 </div>
             </template>
             <div class="flex sm:justify-end justify-center w-full">
-                <ReturnLink class="text-skyblue-dark font-bold sm:mx-8" iconColor="#315D66" :link="route('admin.indexCode')"
-                    value="Volver al menú" />
+                <ReturnLink
+                    class="text-skyblue-dark font-bold sm:mx-8"
+                    iconColor="#315D66"
+                    :link="route('admin.indexCode')"
+                    value="Volver al menú"
+                />
             </div>
         </ContentBox>
     </AuthenticatedLayout>

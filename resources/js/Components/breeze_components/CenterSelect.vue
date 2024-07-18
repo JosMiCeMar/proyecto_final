@@ -1,5 +1,5 @@
 <script setup>
-import { defineProps } from 'vue';
+import { defineProps,ref } from 'vue';
 
 const props = defineProps({
   centers: {
@@ -7,6 +7,13 @@ const props = defineProps({
     required: true
   }
 });
+
+const selectedCenter = ref(''); 
+
+function updateCenter(value) {
+  selectedCenter.value = value;
+  emit('update:modelValue', value);
+}
 </script>
 
 <template>

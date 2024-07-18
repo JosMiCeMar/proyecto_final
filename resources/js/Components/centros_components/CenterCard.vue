@@ -30,7 +30,7 @@
             </div>
         </div>
         <div
-            class="p-1 bg-gradient-to-r from-lavender-logo to-skyblue-logo"
+            class="p-1 bg-gradient-to-r from-lavender-logo via-lavender-dark to-skyblue-logo"
         ></div>
         <div class="p-3">
             <h2 class="text-xl text-lavender-dark font-bold text-center">
@@ -93,7 +93,7 @@
                             class="text-lavender-dark hover:text-skyblue-dark hover:underline"
                             :href="web"
                             target="_blank"
-                            >Web del Centro</a
+                            >Sitio web</a
                         ></span
                     >
                 </p>

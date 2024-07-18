@@ -2,6 +2,13 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+    font-family: 'HandWriteFont';
+    src: url(../../public/fonts/handwrite.ttf) format('woff2');
+    font-weight: normal;
+  font-style: normal;
+}
+
 .textura_fondo {
     background-image: url("../../public/img/bg.png");
     background-repeat: repeat;

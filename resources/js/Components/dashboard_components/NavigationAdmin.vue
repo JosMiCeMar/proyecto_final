@@ -6,8 +6,8 @@
         <NavLink :href="route('admin.indexCode')" :active="route().current('admin.indexCode')||route().current('admin.genCode')||route().current('admin.delCode')">
             Códigos de Registro
         </NavLink>
-        <NavLink :href="route('admin.indexCode')" :active="false">
-            Gestionar Centros
+        <NavLink :href="route('admin.indexCenter')" :active="route().current('admin.indexCenter')">
+            Centros Asociados
         </NavLink>
     </div>
 </template>

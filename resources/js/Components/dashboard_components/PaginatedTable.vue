@@ -16,8 +16,8 @@
         </table>
         <div class="flex justify-between items-center mt-4">
             <button @click="previousPage" :disabled="currentPage === 1"
-                class="px-4 py-2 bg-lavender-dark text-white shadow-md hover:text-skyblue-light active:shadow-none disabled:bg-neutral-400 rounded">
-                Anterior
+            class="px-4 py-2 bg-lavender-dark text-white shadow-md enabled:hover:text-skyblue-light active:shadow-none disabled:bg-neutral-400 rounded">
+            Anterior
             </button>
             <div class="flex space-x-2">
                 <span v-for="page in totalPages" :key="page" @click="currentPage = page"
@@ -27,7 +27,7 @@
                         "></span>
             </div>
             <button @click="nextPage" :disabled="currentPage === totalPages || totalPages === 0"
-                class="px-4 py-2 bg-lavender-dark text-white shadow-md hover:text-skyblue-light active:shadow-none disabled:bg-neutral-400 rounded">
+                class="px-4 py-2 bg-lavender-dark text-white shadow-md enabled:hover:text-skyblue-light active:shadow-none disabled:bg-neutral-400 rounded">
                 Siguiente
             </button>
         </div>
