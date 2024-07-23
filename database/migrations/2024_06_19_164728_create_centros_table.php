@@ -21,6 +21,7 @@ return new class extends Migration
             $table->string('web')->nullable()->default(null);
             $table->string('email')->nullable()->default(null);
             $table->longText('ubicacion')->nullable()->default(null);
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

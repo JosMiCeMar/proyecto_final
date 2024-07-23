@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('dias', function (Blueprint $table) {
             $table->id();
             $table->foreignId('centro_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->date('fecha')->unique();
+            $table->date('fecha');
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

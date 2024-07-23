@@ -14,9 +14,9 @@ class CodRegistroController extends Controller
     {
         if (session()->has('cod') && session()->has('client')) {
             if (session()->get('client')) {
-                return redirect(route('cliente.create'));
+                return redirect()->route('cliente.create');
             }
-            return redirect(route('responsable.create'));
+            return redirect()->route('responsable.create');
         }
 
         return Inertia::render('Auth/InsertCode');
@@ -36,16 +36,13 @@ class CodRegistroController extends Controller
             session()->put(['cod' => $codigo->codigo, 'client' => $codigo->para_cliente]);
             $codigo->usado = 1;
             $codigo->save();
-            if($codigo->para_cliente){
+            if ($codigo->para_cliente) {
                 return redirect(route('cliente.create'));
-            }else{
+            } else {
                 return redirect(route('responsable.create'));
             }
         }
 
         return redirect(route('cod_registro.check'))->withErrors($mensajeError, 'error');
     }
-
-
-
 }

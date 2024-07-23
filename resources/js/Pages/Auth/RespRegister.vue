@@ -132,9 +132,8 @@ const submit = () => {
 </script>
 
 <template>
-    <GuestLayout>
+    <GuestLayout formName="datos del nuevo responsable">
         <Head title="Registro de Responsables" />
-
         <form @submit.prevent="submit">
             <div>
                 <InputLabel for="name" value="Nombre" />
@@ -221,7 +220,9 @@ const submit = () => {
                     autocomplete="new-password"
                     placeholder="Introduce la contraseña"
                 />
-
+                <p class="text-lavender-light text-xs">
+                    *La contraseña debe tener almenos 8 caracteres, incluyendo mayúsculas, minúsculas, números y símbolos.
+                </p>
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
 

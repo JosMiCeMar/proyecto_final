@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('dia_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->time('hora_inicio');
             $table->time('hora_fin');
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

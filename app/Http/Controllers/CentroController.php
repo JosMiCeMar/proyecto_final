@@ -20,14 +20,31 @@ class CentroController extends Controller
     }
 
     public function create(){
-
+        return Inertia::render('Users/Admin/Centros/formCenter');
     }
 
-    public function store(){
+    public function store(Request $request){
 
+        $centro = new Centro();
+        $centro->nombre=$request->name;
+        $centro->direccion=$request->address;
+        $centro->provincia=$request->province;
+        $centro->localidad=$request->town;
+        $centro->telefono=$request->tel;
+        $centro->web=$request->web;
+        $centro->ubicacion=$request->location;
+
+        $centro->save();
+
+        return redirect(route('admin.indexCenter'));
     }
 
-    public function edit(){
+    public function list(){
+        $centros=Centro::select('id','nombre','direccion','localidad','provincia','telefono')->get();
+        return Inertia::render('Users/Admin/Centros/TableCenter',['centros'=>$centros]);
+    }
+
+    public function mod(){
 
     }
 
@@ -35,9 +52,6 @@ class CentroController extends Controller
 
     }
 
-    public function list(){
-
-    }
 
     public function delete(){
         

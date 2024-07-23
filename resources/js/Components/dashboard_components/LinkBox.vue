@@ -1,11 +1,11 @@
 <template>
     <Link :href="props.route">
-    <div class="hover:bg-lavender-vlight rounded-md bg-white p-4 w-fit shadow-md transition-all ease-in-out">
+    <div class="hover:bg-lavender-vlight rounded-md text-lavender-dark bg-white p-4 w-fit shadow-md transition-all ease-in-out">
         <div class="flex flex-wrap gap-2 mb-2 items-center">
             <img class="fill-lavender-dark inline w-6" :src="props.icon" alt="icon" />
-            <p class="font-bold inline">{{ props.title }}</p>
+            <span class="font-bold ">{{ props.title }}</span>
         </div>
-        <p class="text-sm">
+        <p class="text-sm ">
             {{ props.description }}
         </p>
     </div>

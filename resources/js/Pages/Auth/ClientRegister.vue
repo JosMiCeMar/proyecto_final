@@ -133,7 +133,7 @@ const submit = () => {
 </script>
 
 <template>
-    <GuestLayout>
+    <GuestLayout  formName="datos del nuevo cliente">
         <Head title="Registro de Clientes" />
         <form @submit.prevent="submit">
             <div>
@@ -240,7 +240,7 @@ const submit = () => {
                     autocomplete="new-password"
                     placeholder="Introduce la contraseña"
                 />
-                <p class="text-lavender-light text-sm">
+                <p class="text-lavender-light text-xs">
                     *La contraseña debe tener almenos 8 caracteres, incluyendo mayúsculas, minúsculas, números y símbolos.
                 </p>
                 <InputError class="mt-2" :message="form.errors.password" />

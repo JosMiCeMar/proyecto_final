@@ -17,8 +17,8 @@ Route::middleware([CheckAdmin::class, 'auth'])->group(function () {
     Route::get('/admin_centros_asociados', [CentroController::class, 'index'])->name('admin.indexCenter');
     Route::get('/admin_crear_centro',[CentroController::class,'create'])->name('admin.createCenter');
     Route::post('/admin_crear_centro',[CentroController::class,'store']);
-    Route::get('/admin_mod_centro',[CentroController::class,'edit'])->name('admin.modCenter');
+    Route::get('/admin_del_centro',[CentroController::class,'list'])->name('admin.listCenter');
+    Route::get('/admin_mod_centro',[CentroController::class,'mod'])->name('admin.modCenter');
     Route::post('/admin_mod_centro',[CentroController::class,'update']);
-    Route::get('/admin_del_centro',[CentroController::class,'list'])->name('admin.delCenter');
-    Route::post('/admin_del_centro',[CentroController::class,'delete']);
+    Route::post('/admin_del_centro',[CentroController::class,'delete'])->name('admin.delCenter');
 });

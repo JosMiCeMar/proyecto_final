@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('nombre')->unique();
             $table->float('precio');
             $table->time('tiempo_estimado');
+            $table->boolean('active')->default(true);
             $table->timestamps();
         });
     }

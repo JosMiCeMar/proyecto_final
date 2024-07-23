@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('telefono');
             $table->string('email')->unique();
             $table->string('password');
+            $table->boolean('active')->default(true);
             $table->rememberToken();
             $table->timestamps();
         });
