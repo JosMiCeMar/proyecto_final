@@ -26,7 +26,6 @@
 <script setup>
 import ClientCard from "@/Components/ClientCitaCard.vue";
 import { ref } from "vue";
-import { defineProps, defineEmits } from "vue";
 
 const baseClass = (time) => {
     return `bg-white rounded w-80 shadow-md px-2 py-${time}`;

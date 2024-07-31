@@ -66,7 +66,6 @@
 import Dropdown from "@/Components/breeze_components/Dropdown.vue";
 import DropdownLink from "@/Components/breeze_components/DropdownLink.vue";
 import { Link } from "@inertiajs/vue3";
-import { defineProps } from "vue";
 import { inject } from "vue";
 const swal = inject("$swal");
 

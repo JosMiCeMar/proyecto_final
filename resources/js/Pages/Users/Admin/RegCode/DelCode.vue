@@ -85,8 +85,7 @@ import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import TrashButton from "@/Components/dashboard_components/TrashButton.vue";
 import PaginatedTable from "@/Components/dashboard_components/PaginatedTable.vue";
 import ReturnLink from "@/Components/dashboard_components/ReturnLink.vue";
-import { Head, useForm, Link } from "@inertiajs/vue3";
-import { defineProps } from "vue";
+import { Head, useForm } from "@inertiajs/vue3";
 import { inject } from "vue";
 
 const swal = inject("$swal");

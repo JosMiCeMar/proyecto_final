@@ -22,8 +22,7 @@
                 route().current('admin.indexCenter') ||
                 route().current('admin.createCenter') ||
                 route().current('admin.listCenter') ||
-                route().current('admin.modCenter') ||
-                route().current('admin.delCenter')
+                route().current('admin.modCenter')
             "
         >
             Centros Asociados

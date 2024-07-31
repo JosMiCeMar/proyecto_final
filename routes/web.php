@@ -8,7 +8,7 @@ use Inertia\Inertia;
 
 //En caso de no existir la ruta, retorna al inicio
 Route::fallback(function () {
-    return redirect('/');
+   return redirect('/');
 });
 
 //Páginas públicas

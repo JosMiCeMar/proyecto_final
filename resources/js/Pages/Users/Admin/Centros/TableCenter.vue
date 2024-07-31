@@ -16,6 +16,9 @@
                 </div>
             </template>
             <template v-else>
+                <div v-if="mensaje" class="p-4">
+                            <p class="text-center bg-lime-500 font-bold p-3 rounded-lg">{{ props.mensaje }}</p>
+                </div>
                 <div>
                     <form @submit.prevent="submit">
                         <PaginatedTable :items="centros" :headers="headers">
@@ -40,17 +43,22 @@
                                 <td class="px-6 py-4">
                                     {{ item.telefono }}
                                 </td>
-                                <td class="px-6 py-4 flex gap-2 flex-wrap justify-around">
+                                <td class="px-6 py-4">
                                     <ModButton
-                                        @click.prevent="confirmDelete(item.id)"
+                                        @click.prevent="confirmMod(item.id, item.nombre)"
                                     />
+                                </td>
+                                <td class="px-6 py-4">
                                     <TrashButton
-                                        @click.prevent="confirmDelete(item.id)"
+                                        @click.prevent="confirmDelete(item.id, item.nombre)"
                                     />
                                     
                                 </td>
                             </template>
                         </PaginatedTable>
+                        <div v-show="form.errors.id" class="bg-red-500 rounded-md text-center text-white font-bold text-lg">
+                            <p>{{ form.errors.id }}</p>
+                        </div>
                     </form>
                 </div>
             </template>
@@ -73,8 +81,7 @@ import TrashButton from "@/Components/dashboard_components/TrashButton.vue";
 import ModButton from "@/Components/dashboard_components/ModButton.vue";
 import PaginatedTable from "@/Components/dashboard_components/PaginatedTable.vue";
 import ReturnLink from "@/Components/dashboard_components/ReturnLink.vue";
-import { Head, useForm, Link } from "@inertiajs/vue3";
-import { defineProps } from "vue";
+import { Head, router, useForm } from "@inertiajs/vue3";
 import { inject } from "vue";
 
 const swal = inject("$swal");
@@ -83,6 +90,10 @@ const props = defineProps({
     centros: {
         type: Array,
         required: true,
+    },
+    mensaje:{
+        type: String,
+        default: ''
     }
 });
 
@@ -90,12 +101,12 @@ const form = useForm({
     id: "",
 });
 
-const headers = ["Nombre","Dirección", "Localidad", "Provincia", "Telefono", "Modificar - Eliminar"];
+const headers = ["Nombre","Dirección", "Localidad", "Provincia", "Telefono", "Modificar", "Eliminar"];
 
 
-const confirmDelete = (itemId) => {
+const confirmDelete = (itemId, name) => {
     swal.fire({
-        title: "¿Estás seguro?",
+        title: `¿Seguro que quieres eliminar ${name}?`,
         text: "No podrás revertir esto",
         icon: "warning",
         showCancelButton: true,
@@ -108,13 +119,37 @@ const confirmDelete = (itemId) => {
         iconColor: "#3A2642",
     }).then((result) => {
         if (result.isConfirmed) {
-            submit(itemId);
+            deleteCenter(itemId);
         }
     });
 };
 
-const submit = (itemId) => {
+const confirmMod = (itemId, name) => {
+    swal.fire({
+        title: `¿Vas a modificar ${name}?`,
+        text: "Se mostrará un formulario donde cambiar los datos",
+        icon: "warning",
+        showCancelButton: true,
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, modificar",
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "#3A2642",
+        background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
+        color: "#3A2642",
+        iconColor: "#3A2642",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            modCenter(itemId);
+        }
+    });
+};
+
+const deleteCenter = (itemId) => {
     form.id = itemId;
     form.post(route("admin.delCenter"));
+};
+
+const modCenter = (itemId) => {
+    router.get(route("admin.modCenter", { id: itemId }));
 };
 </script>

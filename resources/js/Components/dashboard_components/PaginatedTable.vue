@@ -9,7 +9,7 @@
                 </tr>
             </thead>
             <tbody class="border-b border-skyblue-dark text-lavender-dark bg-white">
-                <tr v-for="item in paginatedItems" :key="item.id" class="border-t border-lavender-logo">
+                <tr v-for="item in paginatedItems" :key="item.id" class="border-t border-lavender-logo hover:bg-blue-100 transition-all ease-in-out duration-500">
                     <slot :item="item"></slot>
                 </tr>
             </tbody>
@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import { defineProps, ref, computed } from "vue";
+import { ref, computed } from "vue";
 
 const props = defineProps({
     items: {

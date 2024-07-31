@@ -1,6 +1,6 @@
 <template>
     <Link :href="props.route">
-    <div class="hover:bg-lavender-vlight rounded-md text-lavender-dark bg-white p-4 w-fit shadow-md transition-all ease-in-out">
+    <div class="hover:bg-lavender-vlight rounded-md text-lavender-dark bg-white p-4 w-fit shadow-md transition-all ease-in-out duration-500">
         <div class="flex flex-wrap gap-2 mb-2 items-center">
             <img class="fill-lavender-dark inline w-6" :src="props.icon" alt="icon" />
             <span class="font-bold ">{{ props.title }}</span>
@@ -13,7 +13,6 @@
 </template>
 <script setup>
 import { Link } from "@inertiajs/vue3";
-import { defineProps } from "vue";
 
 const props = defineProps({
     route: {

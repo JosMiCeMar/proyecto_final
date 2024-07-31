@@ -1,9 +1,9 @@
 <template>
-    <Head title="Códigos Registros" />
+    <Head title="Centros Asociados" />
     <AuthenticatedLayout>
         <ContentBox
-            title="Añadir centro asociado"
-            description="Formulario de creación de centro asociado"
+            title="Modificar centro asociado"
+            description="Formulario para modificar un centro asociado"
         >
             <div class="flex items-center justify-center w-full">
                 <form
@@ -20,18 +20,39 @@
                             v-model="form.name"
                             autofocus
                             autocomplete="name"
-                            placeholder="Introduce el nombre del centro"
                         />
                         <InputError class="mt-2" :message="form.errors.name" />
                     </div>
 
-                    <!-- Componente CcaaSelect -->
-                    <CcaaSelect
-                        class="mt-4"
-                        @updateProvince="updateProvince"
-                        @updateTown="updateTown"
-                    />
-                    <InputError class="mt-2" :message="form.errors.town" />
+                    <!--Provincia-->
+                    <div class="mt-4">
+                        <InputLabel for="province" value="Provincia" />
+                        <TextInput
+                            id="province"
+                            type="text"
+                            class="mt-1 block w-full"
+                            v-model="form.province"
+                        />
+                        <InputError
+                            class="mt-2"
+                            :message="form.errors.province"
+                        />
+                    </div>
+
+                    <!--Localidad-->
+                    <div class="mt-4">
+                        <InputLabel for="town" value="Localidad" />
+                        <TextInput
+                            id="town"
+                            type="text"
+                            class="mt-1 block w-full"
+                            v-model="form.town"
+                        />
+                        <InputError
+                            class="mt-2"
+                            :message="form.errors.town"
+                        />
+                    </div>
 
                     <!-- Dirección -->
                     <div class="mt-4">
@@ -42,7 +63,6 @@
                             class="mt-1 block w-full"
                             v-model="form.address"
                             autocomplete="address"
-                            placeholder="Introduce la dirección"
                         />
                         <InputError
                             class="mt-2"
@@ -60,7 +80,6 @@
                             v-model="form.tel"
                             maxlength="9"
                             autocomplete="tel"
-                            placeholder="Introduce el número de teléfono"
                         />
                         <InputError class="mt-2" :message="form.errors.tel" />
                     </div>
@@ -74,7 +93,6 @@
                             class="mt-1 block w-full"
                             v-model="form.email"
                             autocomplete="email"
-                            placeholder="Introduce el correo electrónico"
                         />
                         <p class="text-lavender-light text-xs">*Opcional</p>
                         <InputError class="mt-2" :message="form.errors.email" />
@@ -89,7 +107,6 @@
                             class="mt-1 block w-full"
                             v-model="form.web"
                             autocomplete="web"
-                            placeholder="Introduce la web del centro"
                         />
                         <p class="text-lavender-light text-xs">*Opcional</p>
                         <InputError class="mt-2" :message="form.errors.web" />
@@ -113,7 +130,6 @@
                             class="mt-1 block w-full"
                             v-model="form.location"
                             autocomplete="location"
-                            placeholder="Introduce la localización del centro"
                         />
                         <p class="text-lavender-light text-xs">*Opcional</p>
                         <InputError
@@ -130,7 +146,7 @@
                             :disabled="form.processing"
                             @click="submit"
                         >
-                            Agregar Centro
+                            Modificar Centro
                         </PrimaryButton>
                     </div>
                 </form>
@@ -147,29 +163,28 @@ import InputError from "@/Components/breeze_components/InputError.vue";
 import InputLabel from "@/Components/breeze_components/InputLabel.vue";
 import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
 import TextInput from "@/Components/breeze_components/TextInput.vue";
-import CcaaSelect from "@/Components/centros_components/CcaaSelect.vue";
 import { inject } from "vue";
 const swal = inject("$swal");
 
+const props = defineProps({
+    datos:{
+        type:Object,
+        required:true
+    }
+})
 
 const form = useForm({
-    name: "",
-    address: "",
-    tel: "",
-    email: "",
-    province: "",
-    town: "",
-    web: "",
-    location: "",
+    id:props.datos.id,
+    name: props.datos.nombre,
+    address:props.datos.direccion,
+    tel: String(props.datos.telefono),
+    email: props.datos.email!==null?props.datos.email : "",
+    province: props.datos.provincia || "",
+    town: props.datos.localidad || "",
+    web: props.datos.web!==null?props.datos.web : "",
+    location: props.datos.ubicacion!==null?props.datos.ubicacion : "",
 });
 
-const updateProvince = (value) => {
-    form.province = value;
-};
-
-const updateTown = (value) => {
-    form.town = value;
-};
 
 const cleanLocationFormat = () => {
     if (form.location.trim()) {
@@ -195,7 +210,7 @@ function validateForm() {
 
     //Validacion  ubicacion (CCAA, Provincia y Localidad)
     if (!form.province.trim() || !form.town.trim()) {
-        errors.town = "La comunidad, provincia y localidad son obligatorias";
+        errors.town = "La provincia y localidad son obligatorias";
     } else {
         if (
             !ubicationRegex.test(form.province) ||
@@ -219,7 +234,6 @@ function validateForm() {
         errors.tel = "El teléfono debe tener 9 dígitos";
     }
     }
-
 
     //Validación email
     if (form.email.trim()) {
@@ -249,11 +263,11 @@ function validateForm() {
 const submit = () => {
     if (validateForm()) {
         swal.fire({
-            title: "Confirmar Envío",
-            text:`¿Quieres añadir a ${form.name} como nuevo centro asociado?`,
+            title: "Confirmar Modificación",
+            text:`¿Quieres modificar los datos de ${form.name}?`,
             icon: "warning",
             showCancelButton: true,
-            confirmButtonText: "Enviar",
+            confirmButtonText: "Modificar",
             cancelButtonText: "Cancelar",
             confirmButtonColor: "#3A2642",
             cancelButtonColor: "#d33",
@@ -262,7 +276,7 @@ const submit = () => {
             iconColor: "#3A2642",
         }).then((result) => {
             if (result.isConfirmed) {
-                form.post(route("admin.createCenter"));
+                form.post(route("admin.updateCenter"));
             }
         });
     } else {

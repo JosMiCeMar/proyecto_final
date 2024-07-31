@@ -33,11 +33,11 @@ import AuthenticatedLayout from "@/Layouts/breeze_layouts/AuthenticatedLayout.vu
 import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import ReturnLink from "@/Components/dashboard_components/ReturnLink.vue";
 import { Head } from "@inertiajs/vue3";
-import { defineProps, inject } from "vue";
+import { inject } from "vue";
 
 const swal = inject("$swal");
 
-let props = defineProps({
+const props = defineProps({
     codigo: {
         type: String,
         required: true,

@@ -1,5 +1,4 @@
 <script setup>
-import { defineProps } from "vue";
 import GuestLayout from "@/Layouts/breeze_layouts/GuestLayout.vue";
 import InputError from "@/Components/breeze_components/InputError.vue";
 import InputLabel from "@/Components/breeze_components/InputLabel.vue";

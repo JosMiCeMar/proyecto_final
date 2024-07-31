@@ -1,13 +1,30 @@
 <template>
-
     <div class="pt-2 pb-3 space-y-1">
-        <ResponsiveNavLink :href="route('dashboard')" :active="route().current('dashboard')">
+        <ResponsiveNavLink
+            :href="route('dashboard')"
+            :active="route().current('dashboard')"
+        >
             Panel de Usuario
         </ResponsiveNavLink>
-        <ResponsiveNavLink :href="route('admin.indexCode')"  :active="route().current('admin.indexCode')||route().current('admin.genCode')||route().current('admin.delCode')">
+        <ResponsiveNavLink
+            :href="route('admin.indexCode')"
+            :active="
+                route().current('admin.indexCode') ||
+                route().current('admin.genCode') ||
+                route().current('admin.delCode')
+            "
+        >
             Códigos de Registro
         </ResponsiveNavLink>
-        <ResponsiveNavLink :href="route('admin.indexCenter')" :active="route().current('admin.indexCenter')||route().current('admin.createCenter')">
+        <ResponsiveNavLink
+            :href="route('admin.indexCenter')"
+            :active="
+                route().current('admin.indexCenter') ||
+                route().current('admin.createCenter') ||
+                route().current('admin.listCenter') ||
+                route().current('admin.modCenter')
+            "
+        >
             Centros Asociados
         </ResponsiveNavLink>
     </div>
@@ -28,7 +45,10 @@
             <ResponsiveNavLink :href="route('home')">
                 Volver al Inicio
             </ResponsiveNavLink>
-            <ResponsiveNavLink :href="route('profile.edit')" :active="route().current('profile.edit')">
+            <ResponsiveNavLink
+                :href="route('profile.edit')"
+                :active="route().current('profile.edit')"
+            >
                 Editar Perfil
             </ResponsiveNavLink>
             <ResponsiveNavLink :href="route('logout')">
@@ -38,5 +58,5 @@
     </div>
 </template>
 <script setup>
-import ResponsiveNavLink from '@/Components/breeze_components/ResponsiveNavLink.vue';
+import ResponsiveNavLink from "@/Components/breeze_components/ResponsiveNavLink.vue";
 </script>

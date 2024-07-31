@@ -6,10 +6,12 @@
         <select
           v-model="selectedCcaaLabel"
           @change="onCcaaChange"
-          class="rounded-md bg-skyblue-vlight text-lavender-dark"
+          class="border-lavender-dark bg-blue-100 text-lavender-dark focus:border-lavender-light focus:ring-lavender-light rounded-md shadow-sm"
+
         >
           <option value="">Selecciona la CCAA</option>
           <option
+          class="checked:bg-lavender-logo checked:text-white"
             v-for="region in ccaa"
             :key="region.code"
             :value="region.label"
@@ -25,7 +27,8 @@
         <select
           v-model="selectedProvinceLabel"
           @change="onProvinceChange"
-          class="rounded-md bg-skyblue-vlight text-lavender-dark"
+          class="border-lavender-dark bg-blue-100 text-lavender-dark focus:border-lavender-light focus:ring-lavender-light rounded-md shadow-sm"
+
         >
           <option value="">Selecciona la provincia</option>
           <option
@@ -44,7 +47,7 @@
         <select
           v-model="selectedTownLabel"
           @change="onTownChange"
-          class="rounded-md bg-skyblue-vlight text-lavender-dark"
+          class="border-lavender-dark bg-blue-100 text-lavender-dark focus:border-lavender-light focus:ring-lavender-light rounded-md shadow-sm"
         >
           <option value="">Selecciona la localidad</option>
           <option
@@ -60,7 +63,7 @@
   </template>
   
   <script setup>
-  import { ref, onMounted, watch, defineEmits } from 'vue';
+  import { ref, onMounted, watch } from 'vue';
   import CcaaService from '@/Services/CcaaService';
   import InputLabel from '@/Components/breeze_components/InputLabel.vue';
   
