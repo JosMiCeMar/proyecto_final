@@ -41,10 +41,10 @@ import DropdownLink from "@/Components/breeze_components/DropdownLink.vue";
                     <span class="inline-flex rounded-md">
                         <button
                             type="button"
-                            class="inline-flex m-4 fill-skyblue-vlight items-center p-3 border border-transparent leading-4 rounded-md bg-lavender-dark focus:outline-none transition ease-in-out duration-150"
+                            class="inline-flex svgChange m-4 items-center p-3 border border-transparent leading-4 rounded-md bg-lavender-dark focus:outline-none transition ease-in-out duration-150"
                         >
                             <svg
-                                class="w-7"
+                                class="w-4 fill-white"
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 448 512"
                             >
@@ -84,5 +84,11 @@ import DropdownLink from "@/Components/breeze_components/DropdownLink.vue";
         </div>
     </div>
 </template>
+<style>
 
-<style></style>
+.svgChange:hover > svg{
+    fill: #87b3fa;
+}
+
+</style>
+

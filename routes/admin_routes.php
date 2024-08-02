@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdministradoreController;
 use App\Http\Controllers\CentroController;
+use App\Http\Controllers\ZonaController;
 use App\Http\Middleware\CheckAdmin;
 use Illuminate\Support\Facades\Route;
 
@@ -21,4 +22,14 @@ Route::middleware([CheckAdmin::class, 'auth'])->group(function () {
     Route::get('/admin_mod_centro/{id}',[CentroController::class,'mod'])->name('admin.modCenter');
     Route::post('/admin_mod_centro',[CentroController::class,'update'])->name('admin.updateCenter');
     Route::post('/admin_del_centro',[CentroController::class,'delete'])->name('admin.delCenter');
+
+    //Rutas para zonas de tratamiento
+    Route::get('admin_zonas_tratamiento',[ZonaController::class, 'index'])->name('admin.indexZona');
+    Route::get('/admin_crear_zona',[ZonaController::class,'create'])->name('admin.createZona');
+    Route::post('/admin_crear_zona',[ZonaController::class,'store']);
+    Route::get('/admin_lista_zona',[ZonaController::class,'list'])->name('admin.listZona');
+    Route::get('/admin_mod_zona/{id}',[ZonaController::class,'mod'])->name('admin.modZona');
+    Route::post('/admin_mod_zona',[ZonaController::class,'update'])->name('admin.updateZona');
+    Route::post('/admin_del_zona',[ZonaController::class,'delete'])->name('admin.delZona');
+    
 });

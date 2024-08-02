@@ -1,16 +1,16 @@
 <template>
-    <Head title="Modificar o Eliminar Centros Asociados" />
+    <Head title="Modificar o Eliminar Zonas Tratamiento" />
     <AuthenticatedLayout>
         <ContentBox
-            title="Modificar o Eliminar Centros Asociados"
-            description="Selecciona la opción del centro asociado"
+            title="Modificar o Eliminar Zonas Tratamiento"
+            description="Selecciona la opción de la zona de tratamiento"
         >
-            <template v-if="props.centros.length === 0">
+            <template v-if="zonas.length === 0">
                 <div class="m-4 my-20">
                     <p class="text-center">
                         <span
                             class="text-lavender-dark font-bold sm:text-xl p-2 bg-red-300 rounded-lg"
-                            >No existen centros asociados actualmente</span
+                            >No existen zonas de tratamiento actualmente</span
                         >
                     </p>
                 </div>
@@ -18,7 +18,7 @@
             <template v-else>
                 <div>
                     <form @submit.prevent="submit">
-                        <PaginatedTable :items="centros" :headers="headers">
+                        <PaginatedTable :items="zonas" :headers="headers">
                             <template
                                 #default="{ item }"
                                 class="text-lavender-dark"
@@ -26,19 +26,13 @@
                                 <td
                                     class="px-6 py-4 font-bold whitespace-nowrap"
                                 >
-                                    {{ item.nombre }}
+                                    {{ item.nombre.toUpperCase() }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ item.direccion }}
+                                    {{ item.precio }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ item.localidad }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    {{ item.provincia }}
-                                </td>
-                                <td class="px-6 py-4">
-                                    {{ item.telefono }}
+                                    {{ item.tiempo_estimado }}
                                 </td>
                                 <td class="px-6 py-4">
                                     <ModButton
@@ -63,7 +57,7 @@
                 <ReturnLink
                     class="text-skyblue-dark font-bold sm:mx-8"
                     iconColor="#315D66"
-                    :link="route('admin.indexCenter')"
+                    :link="route('admin.indexZona')"
                     value="Volver al menú"
                 />
             </div>
@@ -84,7 +78,7 @@ import { inject } from "vue";
 const swal = inject("$swal");
 
 const props = defineProps({
-    centros: {
+    zonas: {
         type: Array,
         required: true,
     }
@@ -94,12 +88,12 @@ const form = useForm({
     id: "",
 });
 
-const headers = ["Nombre","Dirección", "Localidad", "Provincia", "Telefono", "Modificar", "Eliminar"];
+const headers = ["Nombre","Precio", "Tiempo Estimado","Modificar", "Eliminar"];
 
 
 const confirmDelete = (itemId, name) => {
     swal.fire({
-        title: `¿Seguro que quieres eliminar ${name}?`,
+        title: `¿Seguro que quieres eliminar la zona: ${name.toUpperCase()}?`,
         text: "No podrás revertir esto",
         icon: "warning",
         showCancelButton: true,
@@ -112,7 +106,7 @@ const confirmDelete = (itemId, name) => {
         iconColor: "#3A2642",
     }).then((result) => {
         if (result.isConfirmed) {
-            deleteCenter(itemId);
+            deleteZone(itemId);
         }
     });
 };
@@ -132,17 +126,17 @@ const confirmMod = (itemId, name) => {
         iconColor: "#3A2642",
     }).then((result) => {
         if (result.isConfirmed) {
-            modCenter(itemId);
+            modZone(itemId);
         }
     });
 };
 
-const deleteCenter = (itemId) => {
+const deleteZone = (itemId) => {
     form.id = itemId;
-    form.post(route("admin.delCenter"));
+    form.post(route("admin.delZone"));
 };
 
-const modCenter = (itemId) => {
+const modZone = (itemId) => {
     router.get(route("admin.modCenter", { id: itemId }));
 };
 </script>

@@ -27,6 +27,11 @@
         >
             Centros Asociados
         </NavLink>
+        <NavLink
+        :href="route('admin.indexZona')"
+        :active="route().current('admin.indexZona')">
+            Zonas Tratamiento
+        </NavLink>
     </div>
 </template>
 <script setup>

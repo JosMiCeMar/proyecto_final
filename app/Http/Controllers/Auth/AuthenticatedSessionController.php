@@ -36,7 +36,7 @@ class AuthenticatedSessionController extends Controller
 
         session()->forget(['cod','client']);
         
-        return redirect('/');
+        return redirect(route('dashboard', absolute: false));
     }
 
     /**

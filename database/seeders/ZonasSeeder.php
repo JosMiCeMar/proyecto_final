@@ -15,27 +15,27 @@ class ZonasSeeder extends Seeder
     {
         //
         $datos=[
-            ['nombre'=>'labio superior','precio'=>15,'tiempo_estimado'=>'00:20'],
-            ['nombre'=>'menton','precio'=>15,'tiempo_estimado'=>'00:20'],
-            ['nombre'=>'patillas','precio'=>15,'tiempo_estimado'=>'00:20'],
-            ['nombre'=>'pomulo','precio'=>15,'tiempo_estimado'=>'00:20'],
-            ['nombre'=>'cuello','precio'=>15,'tiempo_estimado'=>'00:20'],
-            ['nombre'=>'linea alba','precio'=>15,'tiempo_estimado'=>'00:20'],
-            ['nombre'=>'manos','precio'=>15,'tiempo_estimado'=>'00:20'],
-            ['nombre'=>'pies','precio'=>15,'tiempo_estimado'=>'00:20'],
-            ['nombre'=>'nuca','precio'=>15,'tiempo_estimado'=>'00:20'],
-            ['nombre'=>'brazos completos','precio'=>50,'tiempo_estimado'=>'00:35'],
-            ['nombre'=>'antebrazos','precio'=>30,'tiempo_estimado'=>'00:30'],
-            ['nombre'=>'espalda completa','precio'=>50,'tiempo_estimado'=>'00:40'],
-            ['nombre'=>'media espalda','precio'=>30,'tiempo_estimado'=>'00:25'],
-            ['nombre'=>'ingles','precio'=>30,'tiempo_estimado'=>'00:25'],
-            ['nombre'=>'perianal','precio'=>20,'tiempo_estimado'=>'00:20'],
-            ['nombre'=>'hombros','precio'=>30,'tiempo_estimado'=>'00:25'],
-            ['nombre'=>'axilas','precio'=>30,'tiempo_estimado'=>'00:25'],
-            ['nombre'=>'torax','precio'=>50,'tiempo_estimado'=>'00:45'],
-            ['nombre'=>'medio torax','precio'=>30,'tiempo_estimado'=>'00:35'],
-            ['nombre'=>'piernas completas','precio'=>60,'tiempo_estimado'=>'01:00'],
-            ['nombre'=>'medias piernas','precio'=>40,'tiempo_estimado'=>'00:45']
+            ['nombre'=>'Labio Superior','precio'=>15,'tiempo_estimado'=>'00:20'],
+            ['nombre'=>'Mentón','precio'=>15,'tiempo_estimado'=>'00:20'],
+            ['nombre'=>'Patillas','precio'=>15,'tiempo_estimado'=>'00:20'],
+            ['nombre'=>'Pomulo','precio'=>15,'tiempo_estimado'=>'00:20'],
+            ['nombre'=>'Cuello','precio'=>15,'tiempo_estimado'=>'00:20'],
+            ['nombre'=>'Linea Alba','precio'=>15,'tiempo_estimado'=>'00:20'],
+            ['nombre'=>'Manos','precio'=>15,'tiempo_estimado'=>'00:20'],
+            ['nombre'=>'Pies','precio'=>15,'tiempo_estimado'=>'00:20'],
+            ['nombre'=>'Nuca','precio'=>15,'tiempo_estimado'=>'00:20'],
+            ['nombre'=>'Brazos Completos','precio'=>50,'tiempo_estimado'=>'00:35'],
+            ['nombre'=>'Antebrazos','precio'=>30,'tiempo_estimado'=>'00:30'],
+            ['nombre'=>'Espalda Completa','precio'=>50,'tiempo_estimado'=>'00:40'],
+            ['nombre'=>'Media Espalda','precio'=>30,'tiempo_estimado'=>'00:25'],
+            ['nombre'=>'Ingles','precio'=>30,'tiempo_estimado'=>'00:25'],
+            ['nombre'=>'Perianal','precio'=>20,'tiempo_estimado'=>'00:20'],
+            ['nombre'=>'Hombros','precio'=>30,'tiempo_estimado'=>'00:25'],
+            ['nombre'=>'Axilas','precio'=>30,'tiempo_estimado'=>'00:25'],
+            ['nombre'=>'Tórax','precio'=>50,'tiempo_estimado'=>'00:45'],
+            ['nombre'=>'Medio tórax','precio'=>30,'tiempo_estimado'=>'00:35'],
+            ['nombre'=>'Piernas Completas','precio'=>60,'tiempo_estimado'=>'01:00'],
+            ['nombre'=>'Medias Piernas','precio'=>40,'tiempo_estimado'=>'00:45']
         ];
 
         foreach($datos as $zona){
