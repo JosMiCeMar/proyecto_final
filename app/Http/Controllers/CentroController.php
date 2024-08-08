@@ -24,7 +24,7 @@ class CentroController extends Controller
     //Vista del formulario de creacion de centro asociado
     public function create()
     {
-        return Inertia::render('Users/Admin/Centros/formCenter');
+        return Inertia::render('Users/Admin/Centros/FormCenter');
     }
 
     //Validacion y creacion de nuevo centro asociado
@@ -36,7 +36,7 @@ class CentroController extends Controller
             'tel' => 'required|regex:/^\d{9}$/', 
             'province' => 'required|string|max:255',
             'town' => 'required|string|max:255',
-            'email' => 'email|max:255',
+            'email' => 'nullable|email|max:255',
             'web' => 'nullable|string|max:255|url',
             'location' => 'nullable|string|regex:/^https:\/\/www\.google\.com\/maps\/embed\?pb=[^"]+$/'
         ]);

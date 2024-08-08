@@ -29,7 +29,7 @@
                                     {{ item.nombre.toUpperCase() }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ item.precio }}
+                                    {{ item.precio + "€" }}
                                 </td>
                                 <td class="px-6 py-4">
                                     {{ item.tiempo_estimado }}
@@ -98,7 +98,7 @@ const confirmDelete = (itemId, name) => {
         icon: "warning",
         showCancelButton: true,
         cancelButtonColor: "#d33",
-        confirmButtonText: "Sí, eliminarlo",
+        confirmButtonText: "Sí, eliminarla",
         cancelButtonText: "Cancelar",
         confirmButtonColor: "#3A2642",
         background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
@@ -133,10 +133,10 @@ const confirmMod = (itemId, name) => {
 
 const deleteZone = (itemId) => {
     form.id = itemId;
-    form.post(route("admin.delZone"));
+    form.post(route("admin.delZona"));
 };
 
 const modZone = (itemId) => {
-    router.get(route("admin.modCenter", { id: itemId }));
+    router.get(route("admin.modZona", { id: itemId }));
 };
 </script>

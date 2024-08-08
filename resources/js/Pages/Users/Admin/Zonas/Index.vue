@@ -18,7 +18,7 @@ import LinkBox from "@/Components/dashboard_components/LinkBox.vue";
 
 const linksList = [
     {
-        route: route('admin.createCenter'),
+        route: route('admin.createZona'),
         icon: 'img/icons/plus_lavender.svg',
         title: "Añadir Zona de Tratamiento",
         description: "Formulario de creación para una nueva zona de tratamiento"

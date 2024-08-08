@@ -1,5 +1,5 @@
 <template>
-    <Head title="Códigos Registros" />
+    <Head title="Crear Centro Asociado" />
     <AuthenticatedLayout>
         <ContentBox
             title="Añadir centro asociado"
@@ -182,15 +182,20 @@ const cleanLocationFormat = () => {
 
 function validateForm() {
     const errors = {};
-    const ubicationRegex =/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+(?:[-'a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s,]*)$/;
+    const ubicationRegex =/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+(?:[-'a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s,/]*)$/;
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^[0-9]{9}$/;
     const webRegex = /^(https?:\/\/)?([a-zA-Z0-9_-]+\.)+[a-zA-Z]{2,}(\/[a-zA-Z0-9._-]*)*(\?[a-zA-Z0-9=&_]*)?(#[a-zA-Z0-9_-]*)?$/;
     const locationRegex= /^https:\/\/www\.google\.com\/maps\/embed\?pb=[^"]+$/;
+    const nameRegex=/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ0-9]+(?:[-'a-zA-ZáéíóúÁÉÍÓÚñÑüÜ0-9\s]*)$/;
 
     //Validacion nombre
     if (!form.name.trim()) {
         errors.name = "El nombre es obligatorio";
+    }else{
+        if(!nameRegex.test(form.name)){
+            errors.name="El nombre sólo puede contener letras, números y espacios";
+        }
     }
 
     //Validacion  ubicacion (CCAA, Provincia y Localidad)
