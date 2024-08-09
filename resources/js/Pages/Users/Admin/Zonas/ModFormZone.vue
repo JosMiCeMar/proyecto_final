@@ -1,9 +1,9 @@
 <template>
-    <Head title="Crear Zona Tratamiento" />
+    <Head title="Modificar Zona Tratamiento" />
     <AuthenticatedLayout>
         <ContentBox
-            title="Añadir Zona Tratamiento"
-            description="Formulario de creación de zona de tratamiento"
+            title="Modificar Zona Tratamiento"
+            description="Formulario de modificación de zona de tratamiento"
         >
             <div class="flex items-center justify-center w-full">
                 <form
@@ -75,7 +75,7 @@
                             :disabled="form.processing"
                             @click="submit"
                         >
-                            Agregar Zona
+                            Modificar Zona
                         </PrimaryButton>
                     </div>
                 </form>
@@ -96,10 +96,21 @@ import { inject } from "vue";
 
 const swal = inject("$swal");
 
+const props = defineProps({
+    datos:{
+        type:Object,
+        required:true
+    }
+})
+
+const splitTime = props.datos.tiempo_estimado.split(':');
+const formatTime=`${splitTime[0]}:${splitTime[1]}`;
+
 const form = useForm({
-    name: "",
-    price: 0,
-    time: "",
+    id:props.datos.id,
+    name: props.datos.nombre,
+    price: props.datos.precio,
+    time: formatTime,
 });
 
 //Funcion para redondear (0-5) los decimales del precio
@@ -169,10 +180,10 @@ const submit = () => {
     if (validateForm()) {
         swal.fire({
             title: "Confirmar Envío",
-            text: `¿Quieres añadir ${form.name} como nueva zona?`,
+            text: `¿Quieres modificar ${form.name}?`,
             icon: "warning",
             showCancelButton: true,
-            confirmButtonText: "Enviar",
+            confirmButtonText: "Modificar",
             cancelButtonText: "Cancelar",
             confirmButtonColor: "#3A2642",
             cancelButtonColor: "#d33",
@@ -181,7 +192,7 @@ const submit = () => {
             iconColor: "#3A2642",
         }).then((result) => {
             if (result.isConfirmed) {
-                form.post(route("admin.createZona"));
+                form.post(route("admin.updateZona"));
             }
         });
     } else {

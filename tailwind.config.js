@@ -14,7 +14,9 @@ export default {
         extend: {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
-                handwrite: ['HandWriteFont', 'sans-serif']
+                handwrite: ['HandWriteFont', 'sans-serif'],
+                monserrat: ['MonserratFont', 'sans-serif'],
+                inter: ['InterFont', 'sans-serif']
             },
             colors: {
                 'lavender-logo':'#BA7AD6',

@@ -28,14 +28,14 @@ class Administradore extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function genCode(bool $tipo){
+    public function genCode(bool $esCliente){
         $codigo= $this->crearCodigo();
 
         $inst_cod=new CodRegistro();
 
         $inst_cod->codigo=$codigo;
         $inst_cod->id_creador=Auth::id();
-        $inst_cod->para_cliente=$tipo;
+        $inst_cod->para_cliente=$esCliente;
 
         $inst_cod->save();
 

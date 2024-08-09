@@ -11,7 +11,7 @@ class CentroController extends Controller
     //Vista publica de todos los centros asociados
     public function all()
     {
-        $centros = Centro::where('active', 1)->get();
+        $centros = Centro::where('active', 1)->orderBy('provincia')->get();
         return Inertia::render('Centros', ['centros' => $centros]);
     }
 

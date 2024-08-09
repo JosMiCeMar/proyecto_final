@@ -9,6 +9,22 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: 'MonserratFont';
+  src: url(../../public/fonts/monserrat.ttf) format('woff2');
+  font-weight: normal;
+font-style: normal;
+}
+
+@font-face {
+  font-family: 'InterFont';
+  src: url(../../public/fonts/inter.ttf) format('woff2');
+  font-weight: normal;
+font-style: normal;
+}
+
+
+
 .textura_fondo {
     background-image: url("../../public/img/bg.png");
     background-repeat: repeat;

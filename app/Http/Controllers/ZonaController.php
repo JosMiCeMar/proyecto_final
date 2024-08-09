@@ -41,12 +41,37 @@ class ZonaController extends Controller
         return Inertia::render('Users/Admin/Zonas/TableZones', ['zonas' => $zonas]);
     }
 
-    public function mod(){
-        
+    public function mod($id){
+        $zona = Zona::where('id',$id)->where('active',true)->first();
+
+        if ($zona) {
+           return Inertia::render('Users/Admin/Zonas/ModFormZone', ["datos" => $zona]);
+
+        }
+
+        return redirect()->back();
     }
 
-    public function update(){
-        
+    public function update(Request $request){
+        $request->validate([
+            'id'=>'required|integer|exists:zonas,id',
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|decimal:0,2|min:0.5|max:10000',
+            'time' => 'required||date_format:H:i'
+        ]);
+
+        $zona=Zona::find($request->id);
+
+        if($zona){
+            $zona->nombre=$request->name;
+            $zona->precio=$request->price;
+            $zona->tiempo_estimado=$request->time;
+
+            $zona->save();
+            return redirect(route('admin.listZona'));
+        }
+
+        return redirect()->back();
     }
 
     public function delete(Request $request){

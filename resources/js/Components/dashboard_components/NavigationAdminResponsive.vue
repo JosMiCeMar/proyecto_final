@@ -27,6 +27,17 @@
         >
             Centros Asociados
         </ResponsiveNavLink>
+        <ResponsiveNavLink
+            :href="route('admin.indexZona')"
+            :active="
+                route().current('admin.indexZona') ||
+                route().current('admin.createZona') ||
+                route().current('admin.listZona') ||
+                route().current('admin.modZona')
+            "
+        >
+            Zonas Tratamiento
+        </ResponsiveNavLink>
     </div>
 
     <!-- Responsive Settings Options -->
