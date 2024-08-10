@@ -51,7 +51,7 @@ const submit = () => {
 
         <div class=" text-xs">
             <p class="text-center mt-4 text-lavender-vlight">
-                *El código te ha debido ser proporcionado por el responsable del centro <br>
+                *El código te ha debido ser proporcionado por el responsable del centro o empleado de Mímate.<br>
                 Consta de 8 carácteres alfanuméricos<br>
                 Ejemplo: AbCd1234
             </p>

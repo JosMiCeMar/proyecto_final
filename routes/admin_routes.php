@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdministradoreController;
 use App\Http\Controllers\CentroController;
+use App\Http\Controllers\DiaController;
 use App\Http\Controllers\ZonaController;
 use App\Http\Middleware\CheckAdmin;
 use Illuminate\Support\Facades\Route;
@@ -31,5 +32,14 @@ Route::middleware([CheckAdmin::class, 'auth'])->group(function () {
     Route::get('/admin_mod_zona/{id}',[ZonaController::class,'mod'])->name('admin.modZona');
     Route::post('/admin_mod_zona',[ZonaController::class,'update'])->name('admin.updateZona');
     Route::post('/admin_del_zona',[ZonaController::class,'delete'])->name('admin.delZona');
+
+    //Rutas para dias asignados
+    Route::get('admin_dias',[DiaController::class, 'index'])->name('admin.indexDias');
+    Route::get('/admin_asignar_dia',[DiaController::class,'create'])->name('admin.createDias');
+    Route::post('/admin_asignar_dia',[DiaController::class,'store']);
+    Route::get('/admin_lista_dias',[DiaController::class,'list'])->name('admin.listDias');
+    Route::get('/admin_mod_dia/{id}',[DiaController::class,'mod'])->name('admin.modDias');
+    Route::post('/admin_mod_dia',[DiaController::class,'update'])->name('admin.updateDias');
+    Route::post('/admin_del_dia',[DiaController::class,'delete'])->name('admin.delDias');
     
 });

@@ -6,14 +6,14 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <Link :href="route('home')">
-                        <IconMarca
-                            class="block h-9 w-auto fill-current text-lavender-vlight"
+                        <LogoMarca
+                            class="inline h-9 w-auto fill-white stroke-white hover:fill-skyblue-vlight hover:stroke-skyblue-vlight transition-colors ease-in-out duration-200"
                         />
                     </Link>
                 </div>
                 <!-- Links de navegadores -->
                 <template v-if="$page.props.auth.tipo == 'admin'">
-                    <NavigationAdmin @openOptions="openAdmin = !openAdmin" />
+                    <NavigationAdmin @openOptions="navDropdown" />
                 </template>
                 <template v-else-if="$page.props.auth.tipo == 'responsable'">
                     <NavigationResp />
@@ -124,16 +124,10 @@
             <NavigationClientResponsive />
         </template>
     </div>
-    <!--Menu desplegable de gestion de datos del administrador-->
-    <transition name="fade">
-        <div v-if="openAdmin" class="menu-container">
-            <NavigationAdminDBMan />
-        </div>
-    </transition>
+
 </template>
 <script setup>
-import { ref, computed } from "vue";
-import IconMarca from "@/Components/IconMarca.vue";
+import { ref } from "vue";
 import Dropdown from "@/Components/breeze_components/Dropdown.vue";
 import DropdownLink from "@/Components/breeze_components/DropdownLink.vue";
 import NavigationAdmin from "@/Components/dashboard_components/NavigationAdmin.vue";
@@ -144,11 +138,15 @@ import NavigationRespResponsive from "@/Components/dashboard_components/Navigati
 import NavigationClientResponsive from "@/Components/dashboard_components/NavigationClientResponsive.vue";
 import { Link } from "@inertiajs/vue3";
 import { inject } from "vue";
-import NavigationAdminDBMan from "../dashboard_components/NavigationAdminDBMan.vue";
+import LogoMarca from "../LogoMarca.vue";
 
 const swal = inject("$swal");
 
-let openAdmin = ref(false);
+const emit = defineEmits(["navDropdown"]);
+
+const navDropdown = ()=>{
+    emit("navDropdown");
+}
 
 
 const showingNavigationDropdown = ref(false);
@@ -171,23 +169,5 @@ const closeSessionAlert = () => {
     });
 };
 </script>
-<style scoped>
-.menu-container {
-    padding: 1rem;
-}
 
-.fade-enter-active, .fade-leave-active {
-    transition: opacity 0.5s ease, transform 0.5s ease;
-}
-
-.fade-enter-from, .fade-leave-to {
-    opacity: 0;
-    transform: translateY(-10px);
-}
-
-.fade-enter-to, .fade-leave-from {
-    opacity: 1;
-    transform: translateY(0);
-}
-</style>
 

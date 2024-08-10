@@ -1,6 +1,6 @@
 <template>
-    <div class="flex gap-4">
-        <DropNavLink
+    <div class="hidden sm:flex sm:gap-4 shadow-md bg-skyblue-dark px-10 ">
+        <DropNavLink class="mx-2 py-2"
             :href="route('admin.indexCode')"
             :active="
                 route().current('admin.indexCode') ||
@@ -10,7 +10,7 @@
         >
             Códigos de Registro
         </DropNavLink>
-        <DropNavLink
+        <DropNavLink class="mx-2 py-2"
             :href="route('admin.indexCenter')"
             :active="
                 route().current('admin.indexCenter') ||
@@ -21,13 +21,21 @@
         >
             Centros Asociados
         </DropNavLink>
-        <DropNavLink
+        <DropNavLink class="mx-2 py-2"
         :href="route('admin.indexZona')"
         :active="route().current('admin.indexZona')||
                 route().current('admin.createZona') ||
                 route().current('admin.listZona') ||
                 route().current('admin.modZona')">
             Zonas Tratamiento
+        </DropNavLink>
+        <DropNavLink class="mx-2 py-2"
+        :href="route('admin.indexDias')"
+        :active="route().current('admin.indexDias')||
+                route().current('admin.createDias') ||
+                route().current('admin.listDias') ||
+                route().current('admin.modDiass')">
+            Dias Asignados
         </DropNavLink>
     </div>
 </template>
