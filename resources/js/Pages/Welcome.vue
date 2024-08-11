@@ -10,6 +10,6 @@ const titulo='Bienvenid@';
 
   <Base :titulo="titulo">
     <Title value="Bienvenid@s a Mímate" />
-    <Carrusel />
+    <Carrusel class="hidden sm:flex"/>
   </Base>
 </template>
