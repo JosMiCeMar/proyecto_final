@@ -34,9 +34,6 @@
                             v-model="form.center"
                             class="w-full border-lavender-dark bg-blue-100 text-lavender-dark focus:border-lavender-light focus:ring-lavender-light checked:bg-lavender-dark rounded-md shadow-sm"
                         >
-                            <option value="">
-                                Selecciona un centro asociado
-                            </option>
                             <option
                                 class="checked:bg-lavender-dark checked:text-white"
                                 v-for="center in centros"
@@ -60,7 +57,7 @@
                             :disabled="form.processing"
                             @click="submit"
                         >
-                            Asignar Día
+                            Modificar Día
                         </PrimaryButton>
                     </div>
                 </form>
@@ -83,6 +80,10 @@ import { es } from "date-fns/locale";
 const swal = inject("$swal");
 
 const props = defineProps({
+    datos:{
+        type:Object,
+        required:true
+    },
     centros: {
         type: Array,
         required: true,
@@ -111,8 +112,9 @@ const disabledDates = () => {
 };
 
 const form = useForm({
-    day: today,
-    center: "",
+    id: props.datos.id,
+    day: new Date(props.datos.fecha),
+    center: props.datos.centro_id,
 });
 
 function validateForm() {
@@ -163,11 +165,11 @@ function validateForm() {
 const submit = () => {
     if (validateForm()) {
         swal.fire({
-            title: "Confirmar Envío",
-            text: `¿Quieres asignar el dia ${form.day.toLocaleDateString()}?`,
+            title: "Confirmar Modificación",
+            text: `¿Quieres modificar el dia ${form.day.toLocaleDateString()}?`,
             icon: "warning",
             showCancelButton: true,
-            confirmButtonText: "Enviar",
+            confirmButtonText: "Modificar",
             cancelButtonText: "Cancelar",
             confirmButtonColor: "#3A2642",
             cancelButtonColor: "#d33",
@@ -176,7 +178,7 @@ const submit = () => {
             iconColor: "#3A2642",
         }).then((result) => {
             if (result.isConfirmed) {
-                form.post(route("admin.createDias"));
+                form.post(route("admin.updateDias"));
             }
         });
     } else {

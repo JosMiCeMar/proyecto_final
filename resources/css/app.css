@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  --vdp-bg-color: #dde9fd;
+  --vdp-text-color: #3A2642;
+  --vdp-border-radius: 10px;
+  --vdp-selected-bg-color:#3A2642;
+  --vdp-hover-bg-color: #BA7AD6;
+  --vdp-current-date-outline-color: #BA7AD6;
+  --vdp-disabled-color:#b0adad;
+  --vdp-elem-border-radius:5px;
+  --vdp-divider-color:#3A2642;
+  --vdp-arrow-color:#3A2642;
+}
+
 @font-face {
     font-family: 'HandWriteFont';
     src: url(../../public/fonts/handwrite.ttf) format('woff2');
@@ -26,6 +39,6 @@ font-style: normal;
 
 
 .textura_fondo {
-    background-image: url("../../public/img/bg.png");
+    background-image: url(../../public/img/bg.png);
     background-repeat: repeat;
 }

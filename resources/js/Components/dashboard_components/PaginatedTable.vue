@@ -1,8 +1,8 @@
 <template>
-    <div class="m-4 relative overflow-x-auto">
-        <table class="w-full shadow-md text-sm text-left rtl:text-right">
+    <div class="m-4 relative overflow-x-auto rounded-t-md">
+        <table class="w-full text-sm text-left rtl:text-right shadow-md">
             <thead
-                class="text-white font-bold uppercase bg-gradient-to-t from-lavender-dark to-skyblue-dark"
+                class="text-white font-bold uppercase bg-gradient-to-t from-lavender-dark to-skyblue-dark "
             >
                 <tr>
                     <th
