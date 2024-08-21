@@ -1,139 +1,5 @@
-<script setup>
-import GuestLayout from "@/Layouts/breeze_layouts/GuestLayout.vue";
-import InputError from "@/Components/breeze_components/InputError.vue";
-import InputLabel from "@/Components/breeze_components/InputLabel.vue";
-import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
-import TextInput from "@/Components/breeze_components/TextInput.vue";
-import { Head, useForm } from "@inertiajs/vue3";
-import Checkbox from "@/Components/breeze_components/Checkbox.vue";
-import { inject } from "vue";
-const swal = inject("$swal");
-
-const form = useForm({
-    name: "",
-    lastname: "",
-    tel: "",
-    email: "",
-    fecha: "",
-    condicion: false,
-    password: "",
-    password_confirmation: "",
-});
-
-function edadMinima() {
-    const hoy = new Date();
-    const anio = hoy.getFullYear() - 13;
-    const mes = String(hoy.getMonth() + 1).padStart(2, "0");
-    const dia = String(hoy.getDate()).padStart(2, "0");
-    return `${anio}-${mes}-${dia}`;
-}
-
-function validateForm() {
-    const errors = {};
-    const minDate = new Date(edadMinima());
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^[0-9]{9}$/;
-    const nameRegex=/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+(?:[-'a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]*)$/;
-
-    //Validacion nombre
-    if (!form.name.trim()) {
-        errors.name = "El nombre es obligatorio";
-    }else{
-        if(!nameRegex.test(form.name)){
-            errors.name="El nombre sólo puede contener letras y espacios";
-        }
-    }
-
-    //Validación apellidos
-    if (!form.lastname.trim()) {
-        errors.lastname = "Los apellidos son obligatorios";
-    }else{
-        if(!nameRegex.test(form.lastname)){
-            errors.lastname="El apellido sólo puede contener letras y espacios";
-        }
-    }
-    
-    //Validación teléfono
-    if (!phoneRegex.test(form.tel)) {
-        errors.tel = "El teléfono debe tener 9 dígitos";
-    }
-  
-    //Validación email
-    if (!emailRegex.test(form.email)) {
-        errors.email = "El correo electrónico no es válido";
-    }
-
-    //Validación fecha nacimiento
-    if (!form.fecha) {
-        errors.fecha = "La fecha de nacimiento es obligatoria";
-    }else{
-        const selectedDate = new Date(form.fecha);
-        if (selectedDate > minDate) {
-            errors.fecha = 'Debes tener al menos 13 años';
-        }
-    }
-
-    //Validación contraseña
-    if (!form.password) {
-        errors.password = "La contraseña es obligatoria";
-    }else{
-         // Validar longitud mínima de 8 caracteres
-         if (form.password.length < 8) {
-            errors.password = "La contraseña debe tener mínimo 8 caracteres";
-        }
-        //Validar longitud máxima de 250 caracteres
-        else if(form.password.length > 250) {
-            errors.password = "La contraseña debe tener máximo 250 caracteres";
-        }
-        // Validar al menos una letra minúscula
-        else if (!/[a-z]/.test(form.password)) {
-            errors.password = "La contraseña debe contener al menos una letra minúscula";
-        }
-        // Validar al menos una letra mayúscula
-        else if (!/[A-Z]/.test(form.password)) {
-            errors.password = "La contraseña debe contener al menos una letra mayúscula";
-        }
-        // Validar al menos un número
-        else if (!/\d/.test(form.password)) {
-            errors.password = "La contraseña debe contener al menos un número";
-        }
-        // Validar al menos un caracter especial
-        else if (!/[!@#$%^&*()_+={}\[\]:;<>,.?~-]/.test(form.password)) {
-            errors.password = "La contraseña debe contener al menos un carácter especial";
-        }
-    }
-
-    //Validación confirmar contraseña
-    if (form.password !== form.password_confirmation) {
-        errors.password_confirmation = "Las contraseñas no coinciden";
-    }
-
-    form.errors = errors;
-
-    return Object.keys(errors).length === 0;
-}
-
-const submit = () => {
-    if (validateForm()) {
-        form.post(route("cliente.create"), {
-            onFinish: () => form.reset("password", "password_confirmation"),
-        });
-    } else {
-        swal({
-            icon: "error",
-            text: "Completa correctamente el formulario",
-            confirmButtonText: "Aceptar",
-            confirmButtonColor: "#3A2642",
-            background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
-            color: "#3A2642",
-            iconColor: "#3A2642",
-        });
-    }
-};
-</script>
-
 <template>
-    <GuestLayout  formName="datos del nuevo cliente">
+    <GuestLayout formName="datos del nuevo cliente">
         <Head title="Registro de Clientes" />
         <form @submit.prevent="submit">
             <div>
@@ -196,12 +62,14 @@ const submit = () => {
 
             <div class="mt-4">
                 <InputLabel for="fecha" value="Fecha Nacimiento" />
-                <TextInput
+                <Datepicker
                     id="fecha"
-                    type="date"
-                    class="mt-1 block w-full"
                     v-model="form.fecha"
-                    :max="edadMinima()"
+                    inputFormat="dd-MM-yyyy"
+                    :upperLimit="minDate"
+                    :lowerLimit="maxDate"
+                    :locale="localLanguage"
+                    class="w-full border-lavender-dark bg-blue-100 text-lavender-dark focus:border-lavender-light focus:ring-lavender-light rounded-md shadow-sm"
                 />
                 <InputError class="mt-2" :message="form.errors.fecha" />
             </div>
@@ -220,11 +88,10 @@ const submit = () => {
                 />
                 <p class="text-lavender-light text-sm">
                     *Consulta la
-                    <a
+                    <span
                         class="text-skyblue-light underline hover:text-skyblue-vlight"
-                        :href="route('home')"
-                        target="_blank"
-                        >lista</a
+                        @click="medicalConditionAlert"
+                        >lista</span
                     >
                     de condiciones médicas especiales.
                 </p>
@@ -241,7 +108,8 @@ const submit = () => {
                     placeholder="Introduce la contraseña"
                 />
                 <p class="text-lavender-light text-xs">
-                    *La contraseña debe tener almenos 8 caracteres, incluyendo mayúsculas, minúsculas, números y símbolos.
+                    *La contraseña debe tener almenos 8 caracteres, incluyendo
+                    mayúsculas, minúsculas, números y símbolos.
                 </p>
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
@@ -279,3 +147,180 @@ const submit = () => {
         </form>
     </GuestLayout>
 </template>
+<script setup>
+import GuestLayout from "@/Layouts/breeze_layouts/GuestLayout.vue";
+import InputError from "@/Components/breeze_components/InputError.vue";
+import InputLabel from "@/Components/breeze_components/InputLabel.vue";
+import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
+import TextInput from "@/Components/breeze_components/TextInput.vue";
+import { Head, useForm } from "@inertiajs/vue3";
+import Checkbox from "@/Components/breeze_components/Checkbox.vue";
+import { inject } from "vue";
+import Datepicker from "vue3-datepicker";
+import { es } from "date-fns/locale";
+
+//Fecha minima de nacimiento (13 años)
+const minDate = new Date();
+minDate.setHours(0,0,0,0);
+minDate.setFullYear(minDate.getFullYear()-13);
+
+
+//Fecha maxima de nacimiento (120 años)
+const maxDate= new Date();
+maxDate.setHours(0,0,0,0);
+maxDate.setFullYear(maxDate.getFullYear()-120);
+
+const localLanguage = es;
+
+const swal = inject("$swal");
+
+const form = useForm({
+    name: "",
+    lastname: "",
+    tel: "",
+    email: "",
+    fecha: minDate,
+    condicion: false,
+    password: "",
+    password_confirmation: "",
+});
+
+
+function validateForm() {
+    const errors = {};
+    
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[0-9]{9}$/;
+    const nameRegex =
+        /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+(?:[-'a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]*)$/;
+
+    //Validacion nombre
+    if (!form.name.trim()) {
+        errors.name = "El nombre es obligatorio";
+    } else {
+        if (!nameRegex.test(form.name)) {
+            errors.name = "El nombre sólo puede contener letras y espacios";
+        }
+    }
+
+    //Validación apellidos
+    if (!form.lastname.trim()) {
+        errors.lastname = "Los apellidos son obligatorios";
+    } else {
+        if (!nameRegex.test(form.lastname)) {
+            errors.lastname =
+                "El apellido sólo puede contener letras y espacios";
+        }
+    }
+
+    //Validación teléfono
+    if (!phoneRegex.test(form.tel)) {
+        errors.tel = "El teléfono debe tener 9 dígitos";
+    }
+
+    //Validación email
+    if (!emailRegex.test(form.email)) {
+        errors.email = "El correo electrónico no es válido";
+    }
+
+    //Validación fecha nacimiento
+    if (isNaN(form.fecha.getTime())) {
+        errors.fecha = "La fecha de nacimiento es obligatoria";
+    } else {
+        if (form.fecha > minDate) {
+            errors.fecha = "Debes tener al menos 13 años";
+        }
+
+        if(form.fecha< maxDate){
+            errors.fecha = "La edad máxima son 120 años";
+        }
+    }
+
+    //Validación contraseña
+    if (!form.password) {
+        errors.password = "La contraseña es obligatoria";
+    } else {
+        // Validar longitud mínima de 8 caracteres
+        if (form.password.length < 8) {
+            errors.password = "La contraseña debe tener mínimo 8 caracteres";
+        }
+        //Validar longitud máxima de 250 caracteres
+        else if (form.password.length > 250) {
+            errors.password = "La contraseña debe tener máximo 250 caracteres";
+        }
+        // Validar al menos una letra minúscula
+        else if (!/[a-z]/.test(form.password)) {
+            errors.password =
+                "La contraseña debe contener al menos una letra minúscula";
+        }
+        // Validar al menos una letra mayúscula
+        else if (!/[A-Z]/.test(form.password)) {
+            errors.password =
+                "La contraseña debe contener al menos una letra mayúscula";
+        }
+        // Validar al menos un número
+        else if (!/\d/.test(form.password)) {
+            errors.password = "La contraseña debe contener al menos un número";
+        }
+        // Validar al menos un caracter especial
+        else if (!/[!@#$%^&*()_+={}\[\]:;,.?~-]/.test(form.password)) {
+            errors.password =
+                "La contraseña debe contener al menos un carácter especial";
+        }
+    }
+
+    //Validación confirmar contraseña
+    if (form.password !== form.password_confirmation) {
+        errors.password_confirmation = "Las contraseñas no coinciden";
+    }
+
+    form.errors = errors;
+
+    return Object.keys(errors).length === 0;
+}
+
+const submit = () => {
+    if (validateForm()) {
+        form.post(route("cliente.create"), {
+            onFinish: () => form.reset("password", "password_confirmation"),
+        });
+    } else {
+        swal({
+            icon: "error",
+            text: "Completa correctamente el formulario",
+            confirmButtonText: "Aceptar",
+            confirmButtonColor: "#3A2642",
+            background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
+            color: "#3A2642",
+            iconColor: "#3A2642",
+        });
+    }
+};
+
+const medicalConditionAlert = () => {
+    swal({
+        icon: "question",
+        html:
+            "<p><b>Te mostraremos una lista donde podrás ver bajo que condiciones deberás marcar esta casilla</b></p></,.?~->" +
+            "<ul>" +
+            "<li><b>Diabetes:</b> Las personas con diabetes pueden tener una cicatrización más lenta, lo que podría aumentar el riesgo de infecciones o complicaciones post-tratamiento.</li>" +
+            "</br><li><b>Epilepsia:</b> La luz del láser podría desencadenar convulsiones en personas con epilepsia fotosensible.</li>" +
+            "</br><li><b>Enfermedades autoinmunes:</b> Algunas enfermedades autoinmunes, como el lupus, pueden hacer que la piel sea más sensible al láser y aumentar el riesgo de efectos secundarios.</li>" +
+            "</br><li><b>Várices o problemas de circulación:</b> Las personas con problemas de circulación, como várices, deben consultar a un médico antes de realizarse la depilación láser, ya que podría no ser seguro en esas áreas.</li>" +
+            "</br><li><b>Desórdenes hormonales:</b> Condiciones como el síndrome de ovario poliquístico (SOP) pueden causar crecimiento excesivo de vello, lo que podría requerir más sesiones de láser o un enfoque específico.</li>" +
+            "</br><li><b>Enfermedades de la piel:</b> Condiciones como la psoriasis, el eccema o el vitiligo pueden ser exacerbadas por el tratamiento con láser.</li>" +
+            "</ul>",
+        footer: "*Este dato solo hará saber al operario que debe preguntar al cliente, no almacenaremos ninguna información al respecto.",
+        confirmButtonText: "Aceptar",
+        confirmButtonColor: "#3A2642",
+        background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
+        color: "#3A2642",
+        iconColor: "#3A2642",
+    });
+};
+</script>
+<style scoped>
+.swal-content-custom {
+    font-size: 8px;
+}
+</style>

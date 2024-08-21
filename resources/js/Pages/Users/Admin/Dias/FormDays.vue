@@ -101,12 +101,23 @@ lastDay.setFullYear(today.getFullYear() + 1);
 lastDay.setHours(0, 0, 0, 0);
 const localLanguage = es;
 
-//Funcion que recibe las fechas del back y las pasa a objetos Date de js, devolviendo una lista de estas
+//Funcion que recibe las fechas ocupadas del back y las pasa a objetos Date de js, devolviendo una lista de estas
 const disabledDates = () => {
     let dates = [];
+
     props.fechas.forEach((day) => {
         dates.push(new Date(day.fecha));
     });
+
+    //Algoritmo para añadir los domingos a la lista de dias deshabilitados 
+    let currentDate = new Date(today);
+    while (currentDate <= lastDay) {
+        if (currentDate.getDay() === 0) { // 0 representa el domingo
+            dates.push(new Date(currentDate));
+        }
+        currentDate.setDate(currentDate.getDate() + 1);
+    }
+
     return dates;
 };
 

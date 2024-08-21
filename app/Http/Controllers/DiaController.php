@@ -23,24 +23,24 @@ class DiaController extends Controller
         $centros = Centro::select('id', 'nombre', 'localidad')->where('active', 1)->get();
         $dias = Dia::select('fecha')->where('active', 1)->get();
 
-        return Inertia::render('Users/Admin/Dias/FormDia', ['centros' => $centros, 'fechas' => $dias]);
+        return Inertia::render('Users/Admin/Dias/FormDays', ['centros' => $centros, 'fechas' => $dias]);
     }
 
     //Validacion y asignacion del dia
     public function store(Request $request)
     {
         // Se parsea la fecha recibida al formato yyyy/MM/dd en la zona horaria del servidor
-        $fechaRecibida = Carbon::parse($request->input('day'))->setTimezone(config('app.timezone'))->format('Y/m/d');
+        $fechaRecibida = Carbon::parse($request->input('day'))->setTimezone(config('app.timezone'))->format('Y-m-d');
 
         // Crear las fechas mínima y máxima en el mismo formato yyyy/MM/dd
-        $fechaMinima = Carbon::now()->startOfDay()->format('Y/m/d');
-        $fechaMaxima = Carbon::now()->addYear()->startOfDay()->format('Y/m/d');
+        $fechaMinima = Carbon::now()->startOfDay()->format('Y-m-d');
+        $fechaMaxima = Carbon::now()->addYear()->startOfDay()->format('Y-m-d');
 
         //Se sobrescribe el valor de 'day' en el request
         $request->merge(['day' => $fechaRecibida]);
 
         $request->validate([
-            'day' => 'required|date_format:Y/m/d|before:' . $fechaMaxima . '|after_or_equal:' . $fechaMinima,
+            'day' => 'required|date_format:Y-m-d|before:' . $fechaMaxima . '|after_or_equal:' . $fechaMinima.'|unique:dias,fecha',
             'center' => 'required|exists:centros,id'
         ]);
 
@@ -52,6 +52,7 @@ class DiaController extends Controller
         return redirect(route('admin.indexDias'));
     }
 
+    //Vista de los dias asignados
     public function list()
     {
 
@@ -60,9 +61,10 @@ class DiaController extends Controller
             ->where('dias.active', 1)
             ->get();
 
-        return Inertia::render('Users/Admin/Dias/TableDia', ['dias' => $dias]);
+        return Inertia::render('Users/Admin/Dias/TableDays', ['dias' => $dias]);
     }
 
+    //Vista de formulario de modificación de dias
     public function delete(Request $request)
     {
 
@@ -88,12 +90,13 @@ class DiaController extends Controller
             $centros = Centro::select('id', 'nombre', 'localidad')->where('active', 1)->get();
             $diasDisponibles = Dia::select('fecha')->where('active', 1)->get();
 
-            return Inertia::render('Users/Admin/Dias/ModFormDia', ["datos" => $dia, 'centros' => $centros, 'fechas' => $diasDisponibles]);
+            return Inertia::render('Users/Admin/Dias/ModFormDays', ["datos" => $dia, 'centros' => $centros, 'fechas' => $diasDisponibles]);
         }
 
         return redirect()->back();
     }
 
+    //Actualizacion del dia asignaddo
     public function update(Request $request)
     {
 
