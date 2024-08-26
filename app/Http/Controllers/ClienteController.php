@@ -3,25 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cliente;
+use App\Models\CodRegistro;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
 
 class ClienteController extends Controller
 {
 
     public function create(){
-        return Inertia::render('Auth/ClientRegister');
+        return Inertia::render('Auth/ClientRegister',['cod',session()->get('cod')]);
     }
 
    public function store(Request $request){
-
+    
     $edadMinima =Carbon::now()->subYear(13)->startOfDay()->format('Y-m-d');
     $edadMaxima =Carbon::now()->subYear(120)->startOfDay()->format('Y-m-d');
 
@@ -35,9 +35,10 @@ class ClienteController extends Controller
             'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
             'fecha' => 'required|date|before_or_equal:'.$edadMinima.'|after_or_equal:'.$edadMaxima,
             'condicion'=> 'boolean',
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => ['required', 'confirmed', Password::defaults()],
     ]);
 
+    //Creacion del registro de usuario
     $user = User::create([
         'nombre' => $request->name,
         'apellidos' => $request->lastname,
@@ -46,16 +47,28 @@ class ClienteController extends Controller
         'password' => Hash::make($request->password),
     ]);
 
+    //Creacion del registro de cliente
     Cliente::create([
         'user_id'=>$user->id,
         'condicion_especial'=>$request->condicion,
         'fecha_nacimiento'=>$request->fecha
     ]);
 
+    //Se marca como usado el codigo de registro almacenado en la sesion
+    $codigoRegistro = CodRegistro::find(session()->get('cod'));
+    if($codigoRegistro){
+        $codigoRegistro->usado=1;
+        $codigoRegistro->save();
+    }
+
     event(new Registered($user));
 
     Auth::login($user);
 
     return redirect(route('dashboard', absolute: false));
+   }
+
+   public function update(Request $request){
+    
    }
 }

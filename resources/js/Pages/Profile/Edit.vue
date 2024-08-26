@@ -1,9 +1,11 @@
 <script setup>
-import AuthenticatedLayout from '@/Layouts/breeze_layouts/AuthenticatedLayout.vue';
-import DeleteUserForm from './Partials/DeleteUserForm.vue';
-import UpdatePasswordForm from './Partials/UpdatePasswordForm.vue';
-import UpdateProfileInformationForm from './Partials/UpdateProfileInformationForm.vue';
-import { Head } from '@inertiajs/vue3';
+import AuthenticatedLayout from "@/Layouts/breeze_layouts/AuthenticatedLayout.vue";
+import DeleteUserForm from "./Partials/DeleteUserForm.vue";
+import UpdatePasswordForm from "./Partials/UpdatePasswordForm.vue";
+import UpdateAdminProfileInformationForm from "./Partials/UpdateAdminProfileInformationForm.vue";
+import UpdateClientProfileInformationForm from "./Partials/UpdateClientProfileInformationForm.vue";
+import UpdateRespProfileInformationForm from "./Partials/UpdateRespProfileInformationForm.vue";
+import { Head } from "@inertiajs/vue3";
 
 defineProps({
     mustVerifyEmail: {
@@ -16,28 +18,58 @@ defineProps({
 </script>
 
 <template>
-    <Head title="Profile" />
+    <Head title="Editar Perfil" />
 
     <AuthenticatedLayout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">Profile</h2>
-        </template>
-
         <div class="py-12">
+            <div class="max-w-7xl sm:mx-auto sm:px-6 lg:px-8 pb-3 ml-3">
+                <h3 class="text-2xl font-bold text-lavender-dark uppercase">
+                    Editar Perfil
+                </h3>
+                <p class="font-bold text-skyblue-dark">
+                    Formularios para actualizar tus datos
+                </p>
+            </div>
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
-                    <UpdateProfileInformationForm
+                <div
+                    class="p-4 sm:p-8 textura_fondo shadow-md sm:rounded-lg"
+                >
+            <!-- En funcion del tipo de usuario registrado, se mostrara un formulario distinto-->
+                <template v-if="$page.props.auth.tipo == 'admin'">
+                    <UpdateAdminProfileInformationForm
                         :must-verify-email="mustVerifyEmail"
                         :status="status"
                         class="max-w-xl"
                     />
-                </div>
+                </template>
 
-                <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                <template v-else-if="$page.props.auth.tipo == 'responsable'">
+                    <UpdateRespProfileInformationForm
+                        :must-verify-email="mustVerifyEmail"
+                        :status="status"
+                        class="max-w-xl"
+                    />
+                </template>
+
+                <template v-else>
+                    <UpdateClientProfileInformationForm
+                        :must-verify-email="mustVerifyEmail"
+                        :status="status"
+                        class="max-w-xl"
+                    />
+                </template>
+                    
+                </div>
+                <!--Formulario para actualizar contraseña-->
+                <div
+                    class="p-4 sm:p-8 textura_fondo shadow-md sm:rounded-lg"
+                >
                     <UpdatePasswordForm class="max-w-xl" />
                 </div>
-
-                <div class="p-4 sm:p-8 bg-white dark:bg-gray-800 shadow sm:rounded-lg">
+                <!-- Formulario para eliminar usuario -->
+                <div
+                    class="p-4 sm:p-8 textura_fondo shadow-md sm:rounded-lg"
+                >
                     <DeleteUserForm class="max-w-xl" />
                 </div>
             </div>

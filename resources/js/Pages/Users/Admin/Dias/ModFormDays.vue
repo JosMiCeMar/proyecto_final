@@ -2,8 +2,8 @@
     <Head title="Asignar Día" />
     <AuthenticatedLayout>
         <ContentBox
-            title="Asignar día a centro"
-            description="Formulario para asignar día de trabajo a centro asociado"
+            title="Modificar día asignado"
+            description="Formulario para modificar día de trabajo a centro asociado"
         >
             <div class="flex items-center justify-center w-full">
                 <form
@@ -106,7 +106,9 @@ const localLanguage = es;
 const disabledDates = () => {
     let dates = [];
     props.fechas.forEach((day) => {
-        dates.push(new Date(day.fecha));
+        if(day.fecha !== props.datos.fecha){
+            dates.push(new Date(day.fecha));
+        }
     });
     return dates;
 };

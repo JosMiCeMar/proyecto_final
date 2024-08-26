@@ -1,7 +1,33 @@
 <template>
     <div class="rounded-lg bg-white shadow-md h-fit">
         <div class="flex justify-center items-center">
-            <div v-if="mapLink" class="w-80 h-60">
+            <div v-if="mapLink" class="relative w-80 h-60">
+                <div
+                    v-if="isLoading"
+                    class="absolute inset-0 flex justify-center items-center"
+                >
+                    <!-- Loader spinner -->
+                    <svg
+                        class="animate-spin h-8 w-8 text-lavender-dark"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                    >
+                        <circle
+                            class="opacity-30"
+                            cx="12"
+                            cy="12"
+                            r="10"
+                            stroke="currentColor"
+                            stroke-width="4"
+                        ></circle>
+                        <path
+                            class="opacity-75"
+                            fill="currentColor"
+                            d="M4 12a8 8 0 018-8v8H4z"
+                        ></path>
+                    </svg>
+                </div>
                 <iframe
                     class="rounded-lg w-full h-full"
                     :src="mapLink"
@@ -9,6 +35,7 @@
                     allowfullscreen=""
                     loading="lazy"
                     referrerpolicy="no-referrer-when-downgrade"
+                    @load="isLoading = false"
                 ></iframe>
             </div>
             <div
@@ -118,7 +145,9 @@
 </template>
 
 <script setup>
-defineProps({
+import { ref, watch } from 'vue';
+
+const props=defineProps({
     nombre: {
         type: String,
         required: true,
@@ -149,4 +178,16 @@ defineProps({
         type: String,
     },
 });
+
+const isLoading = ref(true);
+
+watch(() => props.mapLink, (newVal) => {
+  if (newVal) {
+    isLoading.value = true;
+  }
+}, { immediate: true });
+
+const onLoad = () => {
+  isLoading.value = false;
+};
 </script>

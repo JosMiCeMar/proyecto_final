@@ -8,7 +8,7 @@
                 <p class="text-center my-7">
                     <span ref="texto" @click="copyText"
                         class="justify-center items-center hover:text-skyblue-dark hover:cursor-pointer text-3xl bold text-lavender-dark p-4 bg-gradient-to-t from-lavender-vlight to-white transition ease-in-out duration-300 shadow-md rounded-md">
-                        {{ codigo }}
+                        {{ codigo.codigo }}
                     </span>
                 </p>
                 <p class="text-xs text-lavender-dark mb-3">
@@ -39,7 +39,7 @@ const swal = inject("$swal");
 
 const props = defineProps({
     codigo: {
-        type: String,
+        type: Object,
         required: true,
     },
     tipo: {

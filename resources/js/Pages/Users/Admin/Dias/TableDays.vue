@@ -18,6 +18,10 @@
             </template>
             <!--De lo contrario, muestra la tabla-->
             <template v-else>
+                <!--Contenedor del mensaje a mostrar si se lleva a cabo la accion de eliminar o modificar correctamente-->
+                <div v-if="$page.props.errors.msg"  class="flex w-full justify-center">
+                        <span class="bg-lime-700 px-4 py-2 rounded-md text-center text-white text-lg">{{ $page.props.errors.msg[0] }}</span>
+                </div>
                 <!--Contenedor checkbox para mostrar dias anteriores al actual-->
                 <div class="flex w-full gap-1 items-center justify-end px-4">
                     <InputLabel
@@ -85,7 +89,7 @@
                 <ReturnLink
                     class="text-skyblue-dark font-bold sm:mx-8"
                     iconColor="#315D66"
-                    :link="route('admin.indexCenter')"
+                    :link="route('admin.indexDias')"
                     value="Volver al menú"
                 />
             </div>

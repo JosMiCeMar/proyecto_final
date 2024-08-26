@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdministradoreController;
 use App\Http\Controllers\CentroController;
+use App\Http\Controllers\CodRegistroController;
 use App\Http\Controllers\DiaController;
 use App\Http\Controllers\ZonaController;
 use App\Http\Middleware\CheckAdmin;
@@ -9,11 +10,11 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware([CheckAdmin::class, 'auth'])->group(function () {
     //Rutas para Codigos de Registro
-    Route::get('/admin_generar_codigo', [AdministradoreController::class, 'genCode'])->name('admin.genCode');
-    Route::post('/admin_generar_codigo', [AdministradoreController::class, 'showCode']);
-    Route::get('/admin_codigo_registro', [AdministradoreController::class, 'indexCode'])->name('admin.indexCode');
-    Route::get('/admin_eliminar_codigo', [AdministradoreController::class, 'listCode'])->name('admin.delCode');
-    Route::post('/admin_eliminar_codigo', [AdministradoreController::class, 'deleteCode']);
+    Route::get('/admin_generar_codigo', [CodRegistroController::class, 'genCodeAdmin'])->name('admin.genCode');
+    Route::post('/admin_generar_codigo', [CodRegistroController::class, 'showCodeAdmin']);
+    Route::get('/admin_codigo_registro', [CodRegistroController::class, 'indexCodeAdmin'])->name('admin.indexCode');
+    Route::get('/admin_eliminar_codigo', [CodRegistroController::class, 'listCodeAdmin'])->name('admin.delCode');
+    Route::post('/admin_eliminar_codigo', [CodRegistroController::class, 'deleteCodeAdmin']);
 
     //Rutas para Centros Asociados
     Route::get('/admin_centros_asociados', [CentroController::class, 'index'])->name('admin.indexCenter');

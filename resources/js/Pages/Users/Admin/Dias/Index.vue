@@ -1,11 +1,27 @@
 <template>
-
     <Head title="Días Asignados" />
     <AuthenticatedLayout>
-        <ContentBox title="Días Asignados" description="Menú de gestión de Asignación de Días">
+        <ContentBox
+            title="Días Asignados"
+            description="Menú de gestión de Asignación de Días"
+        >
             <div class="m-5 flex flex-col gap-5">
-                <LinkBox v-for="box in linksList" :route="box.route" :icon="box.icon" :title="box.title"
-                    :description="box.description" />
+                <LinkBox
+                    v-for="box in linksList"
+                    :route="box.route"
+                    :icon="box.icon"
+                    :title="box.title"
+                    :description="box.description"
+                />
+            </div>
+            <div
+                v-if="$page.props.errors.msg"
+                class="flex mx-5 w-full justify-start"
+            >
+                <span
+                    class="bg-lime-700 px-4 py-2 rounded-md text-center text-white"
+                    >{{ $page.props.errors.msg[0] }}</span
+                >
             </div>
         </ContentBox>
     </AuthenticatedLayout>
@@ -18,16 +34,17 @@ import LinkBox from "@/Components/dashboard_components/LinkBox.vue";
 
 const linksList = [
     {
-        route: route('admin.createDias'),
-        icon: 'img/icons/plus_lavender.svg',
+        route: route("admin.createDias"),
+        icon: "img/icons/plus_lavender.svg",
         title: "Asignar Día a Centro Asociado",
-        description: "Formulario de asignación de día de trabajo a un centro asociado"
+        description:
+            "Formulario de asignación de día de trabajo a un centro asociado",
     },
     {
-        route: route('admin.listDias'),
-        icon: 'img/icons/mod_lavender.svg',
+        route: route("admin.listDias"),
+        icon: "img/icons/mod_lavender.svg",
         title: "Modificar o Eliminar Días Asignados",
-        description: "Menú para modificar o eliminar días asignados"
+        description: "Menú para modificar o eliminar días asignados",
     },
-]
+];
 </script>
