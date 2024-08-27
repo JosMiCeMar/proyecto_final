@@ -5,6 +5,12 @@
             title="Eliminar Códigos de Registro"
             description="Selecciona los códigos de registro que vas a eliminar"
         >
+            <!--Contenedor del mensaje a mostrar si se lleva a cabo la accion de eliminar o modificar correctamente-->
+            <ConfirmMessage
+                v-if="$page.props.flash.msg"
+                :message="$page.props.flash.msg"
+                position="center"
+            />
             <template v-if="props.codigos.length === 0">
                 <div class="m-4 my-20">
                     <p class="text-center">
@@ -85,6 +91,7 @@ import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import TrashButton from "@/Components/dashboard_components/TrashButton.vue";
 import PaginatedTable from "@/Components/dashboard_components/PaginatedTable.vue";
 import ReturnLink from "@/Components/dashboard_components/ReturnLink.vue";
+import ConfirmMessage from "@/Components/dashboard_components/ConfirmMessage.vue";
 import { Head, useForm } from "@inertiajs/vue3";
 import { inject } from "vue";
 

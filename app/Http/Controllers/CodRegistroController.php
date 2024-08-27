@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
+//Constante para definir el tamaño del código
+define('LONGITUD_CODIGO', 8);
 
 class CodRegistroController extends Controller
 {
@@ -74,8 +76,10 @@ class CodRegistroController extends Controller
         
         if($codigo){
             $codigo->delete();
+            return redirect(route('admin.delCode'))->with('msg','Código de registro eliminado correctamente');
         }elseif(!$codigo || $request->id===0){
             CodRegistro::where('usado',true)->delete();
+            return redirect(route('admin.delCode'))->with('msg','Códigos usados eliminados correctamente');
         }
         return back();
     }
@@ -94,11 +98,24 @@ class CodRegistroController extends Controller
         ]);
 
         $codigo=new CodRegistro();
-        $codigo->codigo=CodRegistro::crearCodigo();
+        $codigo->codigo=$this->crearCodigo();
         $codigo->id_creador=Auth::id();
         $codigo->para_cliente=$request->type;
         $codigo->save();
         
         return Inertia::render('Users/Admin/RegCode/ShowCode',['codigo'=>$codigo,'tipo'=>boolval($request->type)]);
+    }
+
+    //Funcion estatica para generar el codigo aleatorio
+    private static function crearCodigo()
+    {
+        $caracteres = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        $codigo = '';
+
+        for ($i = 0; $i < LONGITUD_CODIGO; $i++) {
+            $codigo .= $caracteres[rand(0, strlen($caracteres) - 1)];
+        }
+
+        return $codigo;
     }
 }

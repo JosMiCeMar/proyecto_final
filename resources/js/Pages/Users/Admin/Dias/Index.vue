@@ -14,15 +14,11 @@
                     :description="box.description"
                 />
             </div>
-            <div
-                v-if="$page.props.errors.msg"
-                class="flex mx-5 w-full justify-start"
-            >
-                <span
-                    class="bg-lime-700 px-4 py-2 rounded-md text-center text-white"
-                    >{{ $page.props.errors.msg[0] }}</span
-                >
-            </div>
+           <!--Contenedor del mensaje a mostrar si se lleva a cabo la accion de eliminar o modificar correctamente-->
+           <ConfirmMessage
+                v-if="$page.props.flash.msg"
+                :message="$page.props.flash.msg"
+            />
         </ContentBox>
     </AuthenticatedLayout>
 </template>
@@ -31,6 +27,7 @@ import AuthenticatedLayout from "@/Layouts/breeze_layouts/AuthenticatedLayout.vu
 import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import { Head } from "@inertiajs/vue3";
 import LinkBox from "@/Components/dashboard_components/LinkBox.vue";
+import ConfirmMessage from "@/Components/dashboard_components/ConfirmMessage.vue";
 
 const linksList = [
     {

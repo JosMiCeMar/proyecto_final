@@ -33,7 +33,7 @@ class ZonaController extends Controller
 
         $zona->save();
 
-        return redirect(route('admin.indexZona'));
+        return redirect(route('admin.indexZona'))->with('msg','Zona creada correctamente');;
     }
 
     public function list(){
@@ -68,7 +68,7 @@ class ZonaController extends Controller
             $zona->tiempo_estimado=$request->time;
 
             $zona->save();
-            return redirect(route('admin.listZona'));
+            return redirect(route('admin.listZona'))->with('msg','Zona modificada correctamente');;
         }
 
         return redirect()->back();
@@ -86,7 +86,7 @@ class ZonaController extends Controller
         if ($zona) {
             $zona->active = 0;
             $zona->save();
-            return redirect(route('admin.listZona'));
+        return redirect(route('admin.listZona'))->with('msg','Zona eliminada correctamente');;
         }
 
         return redirect()->back();

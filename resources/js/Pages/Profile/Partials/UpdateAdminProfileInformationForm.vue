@@ -47,7 +47,6 @@
                     class="mt-1 block w-full"
                     v-model="form.lastname"
                     required
-                    autofocus
                     autocomplete="name"
                 />
 
@@ -67,7 +66,6 @@
                     class="mt-1 block w-full"
                     v-model="form.tel"
                     required
-                    autofocus
                     autocomplete="name"
                 />
 

@@ -51,8 +51,8 @@ class DiaController extends Controller
             $dia->centro_id = $request->center;
             $dia->fecha = $request->day;
             $dia->save();
-            //Aunque se retorne con un error, no lo es, es un mensaje informativo
-            return redirect(route('admin.indexDias'))->withErrors('Día asignado correctamente', 'msg');
+            //Se redirije con el mensaje indicativo
+            return redirect(route('admin.indexDias'))->with('msg','Día asignado correctamente');
         } catch (Exception $er) {
             return redirect(route('admin.indexDias'))->withErrors($er->getMessage(), 'msg');
         }
@@ -83,7 +83,7 @@ class DiaController extends Controller
         if ($dia) {
             $dia->active = 0;
             $dia->save();
-            return redirect(route('admin.listDias'))->withErrors('Día eliminado correctamente', 'msg');
+            return redirect(route('admin.listDias'))->with('msg','Día eliminado correctamente');
         }
         return redirect()->back();
     }
@@ -132,7 +132,7 @@ class DiaController extends Controller
             $dia->centro_id = $request->center;
             $dia->save();
 
-            return redirect(route('admin.listDias'))->withErrors('Día modificado correctamente', 'msg');
+            return redirect(route('admin.listDias'))->with('msg','Día modificado correctamente');
         }
 
         return redirect()->back();

@@ -53,7 +53,7 @@ class CentroController extends Controller
 
         $centro->save();
 
-        return redirect(route('admin.indexCenter'));
+        return redirect(route('admin.indexCenter'))->with('msg','Centro creado correctamente');;
     }
 
     //Vista de la tabla de centros activos para modificar o eliminar, parametro opcional para mostrado de mensaje (se usa en modificar y eliminar)
@@ -104,7 +104,7 @@ class CentroController extends Controller
             
             $centro->save();
 
-            return redirect(route('admin.listCenter'));
+            return redirect(route('admin.listCenter'))->with('msg','Centro modificado correctamente');;
         }
 
         return redirect()->back();
@@ -124,7 +124,7 @@ class CentroController extends Controller
         if ($centro) {
             $centro->active = 0;
             $centro->save();
-            return redirect(route('admin.listCenter'));
+            return redirect(route('admin.listCenter'))->with('msg','Centro eliminado correctamente');
         }
 
         return redirect()->back();

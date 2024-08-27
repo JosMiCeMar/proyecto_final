@@ -5,6 +5,12 @@
             title="Modificar o Eliminar Días Asignados"
             description="Selecciona la opción del día de trabajo"
         >
+           <!--Contenedor del mensaje a mostrar si se lleva a cabo la accion de eliminar o modificar correctamente-->
+           <ConfirmMessage
+                v-if="$page.props.flash.msg"
+                :message="$page.props.flash.msg"
+                position="center"
+            />
             <!--Si el array recibido del back esta vacio, muestra el mensaje-->
             <template v-if="props.dias.length === 0">
                 <div class="m-4 my-20">
@@ -16,12 +22,9 @@
                     </p>
                 </div>
             </template>
+
             <!--De lo contrario, muestra la tabla-->
             <template v-else>
-                <!--Contenedor del mensaje a mostrar si se lleva a cabo la accion de eliminar o modificar correctamente-->
-                <div v-if="$page.props.errors.msg"  class="flex w-full justify-center">
-                        <span class="bg-lime-700 px-4 py-2 rounded-md text-center text-white text-lg">{{ $page.props.errors.msg[0] }}</span>
-                </div>
                 <!--Contenedor checkbox para mostrar dias anteriores al actual-->
                 <div class="flex w-full gap-1 items-center justify-end px-4">
                     <InputLabel
@@ -29,12 +32,15 @@
                         for="checkbox"
                         value="Mostrar días anteriores:"
                     />
-                    <Checkbox id="checkbox" v-model="showAllDays"/>
+                    <Checkbox id="checkbox" v-model="showAllDays" />
                 </div>
                 <!--Tabla de datos-->
                 <div>
                     <form @submit.prevent="submit">
-                        <PaginatedTable :items="displayedDays" :headers="headers">
+                        <PaginatedTable
+                            :items="displayedDays"
+                            :headers="headers"
+                        >
                             <template
                                 #default="{ item }"
                                 class="text-lavender-dark"
@@ -108,6 +114,7 @@ import { Head, router, useForm } from "@inertiajs/vue3";
 import { inject, computed, ref } from "vue";
 import InputLabel from "@/Components/breeze_components/InputLabel.vue";
 import Checkbox from "@/Components/breeze_components/Checkbox.vue";
+import ConfirmMessage from "@/Components/dashboard_components/ConfirmMessage.vue";
 
 //Propiedades - datos recibidos del back
 const props = defineProps({
@@ -119,15 +126,14 @@ const props = defineProps({
 
 //Datos formulario
 const form = useForm({
-    id: ""
+    id: "",
 });
 
-
-const swal = inject("$swal");//Constante del sweetalert2
+const swal = inject("$swal"); //Constante del sweetalert2
 const today = new Date();
 today.setHours(0, 0, 0, 0);
-const showAllDays = ref(false);//Constante para controlar el mostrado de datos en tabla
-const headers = ["Centro", "Fecha", "Modificar", "Eliminar"];//Cabeceras de la tabla
+const showAllDays = ref(false); //Constante para controlar el mostrado de datos en tabla
+const headers = ["Centro", "Fecha", "Modificar", "Eliminar"]; //Cabeceras de la tabla
 
 //Array con los dias asignados posteriores o iguales a la fecha actual
 const filteredDays = computed(() => {

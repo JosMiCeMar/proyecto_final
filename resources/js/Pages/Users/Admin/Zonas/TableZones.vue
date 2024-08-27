@@ -5,6 +5,12 @@
             title="Modificar o Eliminar Zonas Tratamiento"
             description="Selecciona la opción de la zona de tratamiento"
         >
+            <!--Contenedor del mensaje a mostrar si se lleva a cabo la accion de eliminar o modificar correctamente-->
+            <ConfirmMessage
+                v-if="$page.props.flash.msg"
+                :message="$page.props.flash.msg"
+                position="center"
+            />
             <template v-if="zonas.length === 0">
                 <div class="m-4 my-20">
                     <p class="text-center">
@@ -36,18 +42,24 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <ModButton
-                                        @click.prevent="confirmMod(item.id, item.nombre)"
+                                        @click.prevent="
+                                            confirmMod(item.id, item.nombre)
+                                        "
                                     />
                                 </td>
                                 <td class="px-6 py-4">
                                     <TrashButton
-                                        @click.prevent="confirmDelete(item.id, item.nombre)"
+                                        @click.prevent="
+                                            confirmDelete(item.id, item.nombre)
+                                        "
                                     />
-                                    
                                 </td>
                             </template>
                         </PaginatedTable>
-                        <div v-show="form.errors.id" class="bg-red-500 rounded-md text-center text-white font-bold text-lg">
+                        <div
+                            v-show="form.errors.id"
+                            class="bg-red-500 rounded-md text-center text-white font-bold text-lg"
+                        >
                             <p>{{ form.errors.id }}</p>
                         </div>
                     </form>
@@ -72,6 +84,7 @@ import TrashButton from "@/Components/dashboard_components/TrashButton.vue";
 import ModButton from "@/Components/dashboard_components/ModButton.vue";
 import PaginatedTable from "@/Components/dashboard_components/PaginatedTable.vue";
 import ReturnLink from "@/Components/dashboard_components/ReturnLink.vue";
+import ConfirmMessage from "@/Components/dashboard_components/ConfirmMessage.vue";
 import { Head, router, useForm } from "@inertiajs/vue3";
 import { inject } from "vue";
 
@@ -81,15 +94,20 @@ const props = defineProps({
     zonas: {
         type: Array,
         required: true,
-    }
+    },
 });
 
 const form = useForm({
     id: "",
 });
 
-const headers = ["Nombre","Precio", "Tiempo Estimado","Modificar", "Eliminar"];
-
+const headers = [
+    "Nombre",
+    "Precio",
+    "Tiempo Estimado",
+    "Modificar",
+    "Eliminar",
+];
 
 const confirmDelete = (itemId, name) => {
     swal.fire({

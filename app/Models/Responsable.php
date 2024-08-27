@@ -10,7 +10,6 @@ use Illuminate\Support\Facades\Auth;
 class Responsable extends Model
 {
     use HasFactory;
-    use GenerarCodigoAleatorio;
 
     protected $fillable=[
         'user_id',
@@ -33,18 +32,5 @@ class Responsable extends Model
         return $this->belongsTo(Centro::class);
     }
 
-    public function genCode(){
-        $codigo= $this->crearCodigo();
-
-        $inst_cod=new CodRegistro();
-
-        $inst_cod->codigo=$codigo;
-        $inst_cod->id_creador=Auth::id();
-        $inst_cod->para_cliente=true;
-
-        $inst_cod->save();
-
-        return $codigo;
-    }
 
 }
