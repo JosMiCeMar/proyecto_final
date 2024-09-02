@@ -56,9 +56,27 @@
                             <DropdownLink :href="route('home')">
                                 Volver al Inicio
                             </DropdownLink>
-                            <DropdownLink :href="route('profile.edit')">
-                                Editar Perfil
-                            </DropdownLink>
+                            <template v-if="$page.props.auth.tipo == 'admin'">
+                                <DropdownLink 
+                                    :href="route('admin.profileEdit')"
+                                >
+                                    Editar Perfil
+                                </DropdownLink>
+                            </template>
+                            <template v-else-if="$page.props.auth.tipo == 'responsable'">
+                                <DropdownLink
+                                    :href="route('resp.profileEdit')"
+                                >
+                                    Editar Perfil
+                                </DropdownLink>
+                            </template>
+                            <template  v-else>
+                                <DropdownLink
+                                    :href="route('client.profileEdit')"
+                                >
+                                    Editar Perfil
+                                </DropdownLink>
+                            </template>
                             <DropdownLink @click.prevent="closeSessionAlert">
                                 Desconectar
                             </DropdownLink>
@@ -124,7 +142,6 @@
             <NavigationClientResponsive />
         </template>
     </div>
-
 </template>
 <script setup>
 import { ref } from "vue";
@@ -144,10 +161,9 @@ const swal = inject("$swal");
 
 const emit = defineEmits(["navDropdown"]);
 
-const navDropdown = ()=>{
+const navDropdown = () => {
     emit("navDropdown");
-}
-
+};
 
 const showingNavigationDropdown = ref(false);
 
@@ -169,5 +185,3 @@ const closeSessionAlert = () => {
     });
 };
 </script>
-
-

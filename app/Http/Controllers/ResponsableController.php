@@ -11,6 +11,12 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules\Password;
 use Inertia\Inertia;
+use Inertia\Response;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Redirect;
+use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Centro;
 
 class ResponsableController extends Controller
 {
@@ -48,8 +54,8 @@ class ResponsableController extends Controller
         ]);
 
         $codigoRegistro = CodRegistro::find(session()->get('cod'));
-        if($codigoRegistro){
-            $codigoRegistro->usado=1;
+        if ($codigoRegistro) {
+            $codigoRegistro->usado = 1;
             $codigoRegistro->save();
         }
 
@@ -60,8 +66,33 @@ class ResponsableController extends Controller
         return redirect(route('dashboard', absolute: false));
     }
 
-    public function update(Request $request){
-    
+    public function edit(Request $request)//: Response
+    {
+        $centros = CentroController::centrosSinResponsable();
+
+        //Obtener el responsable y su centro asociado
+        $responsable = Responsable::where('user_id', $request->user()->id)->first();
+        $centroAsignado = Centro::find($responsable->centro_id);
+
+        $centros->push($centroAsignado);
+
+        return Inertia::render('Profile/EditResp', [
+            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+            'status' => session('status'),
+            'centros' => $centros
+        ]);
     }
 
+    public function update(ProfileUpdateRequest $request): RedirectResponse
+    {
+        $request->user()->fill($request->validated());
+
+        if ($request->user()->isDirty('email')) {
+            $request->user()->email_verified_at = null;
+        }
+
+        $request->user()->save();
+
+        return Redirect::route('profile.edit');
+    }
 }

@@ -4,7 +4,6 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use App\Traits\GenerarCodigoAleatorio;
 use Illuminate\Support\Facades\Auth;
 
 class Responsable extends Model
@@ -20,6 +19,10 @@ class Responsable extends Model
          
         $userId = Auth::id();
         return self::where('user_id', $userId)->exists();
+   }
+
+   public function centroAsignado(){
+    return Centro::find($this->centro_id);
    }
 
     public function user()

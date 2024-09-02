@@ -2,16 +2,15 @@
     <section>
         <header>
             <h2 class="text-lg font-bold text-lavender-dark">
-                Actualizar Tus Datos
+                Actualizar Tus Datos 
             </h2>
 
             <p class="mt-1 text-skyblue-dark">
                 Formulario para actualizar sus datos de usuario
             </p>
         </header>
-
         <form
-            @submit.prevent="form.patch(route('profile.update'))"
+            @submit.prevent="submit()"
             class="mt-6 space-y-6"
         >
             <div>
@@ -127,9 +126,9 @@
                 >
                     <p
                         v-if="form.recentlySuccessful"
-                        class="text-sm text-lavender-dark"
+                        class="bg-lime-700 text-sm text-white rounded-md py-1 px-2"
                     >
-                        Actualizado
+                        Perfil Actualizado Correctamente
                     </p>
                 </Transition>
             </div>
@@ -142,6 +141,9 @@ import InputLabel from "@/Components/breeze_components/InputLabel.vue";
 import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
 import TextInput from "@/Components/breeze_components/TextInput.vue";
 import { Link, useForm, usePage } from "@inertiajs/vue3";
+import { inject } from "vue";
+
+const swal = inject("$swal");
 
 defineProps({
     mustVerifyEmail: {
@@ -161,4 +163,62 @@ const form = useForm({
     email: user.email,
 
 });
+
+function validateForm() {
+    const errors = {};
+    const nameRegex =
+        /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+(?:[-'a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]*)$/;
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const phoneRegex = /^[0-9]{9}$/;
+
+    //Validacion nombre
+    if (!form.name.trim()) {
+        errors.name = "El nombre es obligatorio";
+    } else {
+        if (!nameRegex.test(form.name)) {
+            errors.name = "El nombre sólo puede contener letras y espacios";
+        }
+    }
+
+    //Validación apellidos
+    if (!form.lastname.trim()) {
+        errors.lastname = "Los apellidos son obligatorios";
+    } else {
+        if (!nameRegex.test(form.lastname)) {
+            errors.lastname =
+                "El apellido sólo puede contener letras y espacios";
+        }
+    }
+
+    //Validación teléfono
+    if (!phoneRegex.test(form.tel)) {
+        errors.tel = "El teléfono debe tener 9 dígitos";
+    }
+
+    //Validación email
+    if (!emailRegex.test(form.email)) {
+        errors.email = "El correo electrónico no es válido";
+    }
+ 
+    form.errors = errors;
+
+    return Object.keys(errors).length === 0;
+}
+
+const submit = () => {
+    if (validateForm()) {
+        form.patch(route('admin.profileUpdate'));
+    } else {
+        swal({
+            icon: "error",
+            text: "Completa correctamente el formulario",
+            confirmButtonText: "Aceptar",
+            confirmButtonColor: "#3A2642",
+            background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
+            color: "#3A2642",
+            iconColor: "#3A2642",
+        });
+    }
+};
+
 </script>

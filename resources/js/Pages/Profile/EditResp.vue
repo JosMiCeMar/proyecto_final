@@ -2,8 +2,6 @@
 import AuthenticatedLayout from "@/Layouts/breeze_layouts/AuthenticatedLayout.vue";
 import DeleteUserForm from "./Partials/DeleteUserForm.vue";
 import UpdatePasswordForm from "./Partials/UpdatePasswordForm.vue";
-import UpdateAdminProfileInformationForm from "./Partials/UpdateAdminProfileInformationForm.vue";
-import UpdateClientProfileInformationForm from "./Partials/UpdateClientProfileInformationForm.vue";
 import UpdateRespProfileInformationForm from "./Partials/UpdateRespProfileInformationForm.vue";
 import { Head } from "@inertiajs/vue3";
 
@@ -14,6 +12,9 @@ defineProps({
     status: {
         type: String,
     },
+    centros:{
+        type:Array
+    }
 });
 </script>
 
@@ -31,45 +32,20 @@ defineProps({
                 </p>
             </div>
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8 space-y-6">
-                <div
-                    class="p-4 sm:p-8 textura_fondo shadow-md sm:rounded-lg"
-                >
-            <!-- En funcion del tipo de usuario registrado, se mostrara un formulario distinto-->
-                <template v-if="$page.props.auth.tipo == 'admin'">
-                    <UpdateAdminProfileInformationForm
-                        :must-verify-email="mustVerifyEmail"
-                        :status="status"
-                        class="max-w-xl"
-                    />
-                </template>
-
-                <template v-else-if="$page.props.auth.tipo == 'responsable'">
+                <div class="p-4 sm:p-8 textura_fondo shadow-md sm:rounded-lg">
                     <UpdateRespProfileInformationForm
                         :must-verify-email="mustVerifyEmail"
                         :status="status"
+                        :centers="centros"
                         class="max-w-xl"
                     />
-                </template>
-
-                <template v-else>
-                    <UpdateClientProfileInformationForm
-                        :must-verify-email="mustVerifyEmail"
-                        :status="status"
-                        class="max-w-xl"
-                    />
-                </template>
-                    
                 </div>
                 <!--Formulario para actualizar contraseña-->
-                <div
-                    class="p-4 sm:p-8 textura_fondo shadow-md sm:rounded-lg"
-                >
+                <div class="p-4 sm:p-8 textura_fondo shadow-md sm:rounded-lg">
                     <UpdatePasswordForm class="max-w-xl" />
                 </div>
                 <!-- Formulario para eliminar usuario -->
-                <div
-                    class="p-4 sm:p-8 textura_fondo shadow-md sm:rounded-lg"
-                >
+                <div class="p-4 sm:p-8 textura_fondo shadow-md sm:rounded-lg">
                     <DeleteUserForm class="max-w-xl" />
                 </div>
             </div>

@@ -60,9 +60,7 @@ Route::middleware('auth')->group(function () {
         ->name('logout');
 
 
-    //Rutas editar perfil
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    //Rutas actualizar / eliminar perfil
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 

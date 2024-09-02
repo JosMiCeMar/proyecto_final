@@ -37,7 +37,8 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
-                'tipo'=> $request->user()?$this->obtenerTipoUsuario($request->user()->id):null
+                'tipo'=> $request->user()?$this->obtenerTipoUsuario($request->user()->id):null,
+                'datos'=>$request->user()?$this->datosExtra($request->user()->id):null
             ],
         ];
     }

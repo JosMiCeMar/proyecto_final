@@ -57,8 +57,8 @@
                 Volver al Inicio
             </ResponsiveNavLink>
             <ResponsiveNavLink
-                :href="route('profile.edit')"
-                :active="route().current('profile.edit')"
+                :href="route('admin.profileEdit')"
+                :active="route().current('admin.profileEdit')"
             >
                 Editar Perfil
             </ResponsiveNavLink>

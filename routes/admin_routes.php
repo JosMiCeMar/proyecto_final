@@ -9,6 +9,11 @@ use App\Http\Middleware\CheckAdmin;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware([CheckAdmin::class, 'auth'])->group(function () {
+
+    //Rutas editar perfil
+    Route::get('/admin_profile', [AdministradoreController::class, 'edit'])->name('admin.profileEdit');
+    Route::patch('/admin_profile', [AdministradoreController::class, 'update'])->name('admin.profileUpdate');
+
     //Rutas para Codigos de Registro
     Route::get('/admin_generar_codigo', [CodRegistroController::class, 'genCodeAdmin'])->name('admin.genCode');
     Route::post('/admin_generar_codigo', [CodRegistroController::class, 'showCodeAdmin']);

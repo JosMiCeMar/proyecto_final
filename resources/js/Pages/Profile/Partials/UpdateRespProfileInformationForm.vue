@@ -91,6 +91,21 @@
                 <InputError class="mt-2" :message="form.errors.email" />
             </div>
 
+            <div>
+                <InputLabel
+                    class="text-lavender-dark font-semibold"
+                    for="center"
+                    value="Centro Asociado"
+                />
+
+                <CenterSelect
+                    id="center"
+                    class="mt-1 block w-full"
+                    v-model="form.center"
+                    :centers="centers"
+                />
+            </div>
+
             <div v-if="mustVerifyEmail && user.email_verified_at === null">
                 <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
                     Your email address is unverified.
@@ -141,6 +156,7 @@ import InputError from "@/Components/breeze_components/InputError.vue";
 import InputLabel from "@/Components/breeze_components/InputLabel.vue";
 import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
 import TextInput from "@/Components/breeze_components/TextInput.vue";
+import CenterSelect from "@/Components/breeze_components/CenterSelect.vue";
 import { Link, useForm, usePage } from "@inertiajs/vue3";
 
 defineProps({
@@ -150,15 +166,20 @@ defineProps({
     status: {
         type: String,
     },
+    centers:{
+        type: Array
+    }
 });
 
 const user = usePage().props.auth.user;
+const userExtraInfo = usePage().props.auth.datos;
 
 const form = useForm({
     name: user.nombre,
     lastname: user.apellidos,
-    tel:user.telefono,
+    tel: user.telefono,
     email: user.email,
-
+    center: userExtraInfo.centro
 });
+
 </script>
