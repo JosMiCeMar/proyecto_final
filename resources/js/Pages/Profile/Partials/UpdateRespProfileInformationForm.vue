@@ -10,10 +10,7 @@
             </p>
         </header>
 
-        <form
-            @submit.prevent="form.patch(route('profile.update'))"
-            class="mt-6 space-y-6"
-        >
+        <form @submit.prevent="submit" class="mt-6 space-y-6">
             <div>
                 <InputLabel
                     class="text-lavender-dark font-semibold"
@@ -47,7 +44,7 @@
                     class="mt-1 block w-full"
                     v-model="form.lastname"
                     required
-                    autocomplete="name"
+                    autocomplete="lastname"
                 />
 
                 <InputError class="mt-2" :message="form.errors.lastname" />
@@ -66,7 +63,7 @@
                     class="mt-1 block w-full"
                     v-model="form.tel"
                     required
-                    autocomplete="name"
+                    autocomplete="tel"
                 />
 
                 <InputError class="mt-2" :message="form.errors.tel" />
@@ -85,7 +82,7 @@
                     class="mt-1 block w-full"
                     v-model="form.email"
                     required
-                    autocomplete="username"
+                    autocomplete="email"
                 />
 
                 <InputError class="mt-2" :message="form.errors.email" />
@@ -102,11 +99,13 @@
                     id="center"
                     class="mt-1 block w-full"
                     v-model="form.center"
-                    :centers="centers"
+                    :centers="props.centers"
+                    :selected="userExtraInfo.centro"
                 />
+                <InputError class="mt-2" :message="form.errors.center" />
             </div>
 
-            <div v-if="mustVerifyEmail && user.email_verified_at === null">
+            <div v-if="props.mustVerifyEmail && user.email_verified_at === null">
                 <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
                     Your email address is unverified.
                     <Link
@@ -120,7 +119,7 @@
                 </p>
 
                 <div
-                    v-show="status === 'verification-link-sent'"
+                    v-show="props.status === 'verification-link-sent'"
                     class="mt-2 font-medium text-sm text-green-600 dark:text-green-400"
                 >
                     A new verification link has been sent to your email address.
@@ -140,12 +139,10 @@
                     leave-active-class="transition ease-in-out"
                     leave-to-class="opacity-0"
                 >
-                    <p
+                <InputCorrect
                         v-if="form.recentlySuccessful"
-                        class="text-sm text-lavender-dark"
-                    >
-                        Actualizado
-                    </p>
+                        message="Perfil Actualizado Correctamente"
+                    />
                 </Transition>
             </div>
         </form>
@@ -153,22 +150,25 @@
 </template>
 <script setup>
 import InputError from "@/Components/breeze_components/InputError.vue";
+import InputCorrect from "@/Components/breeze_components/InputCorrect.vue";
 import InputLabel from "@/Components/breeze_components/InputLabel.vue";
 import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
 import TextInput from "@/Components/breeze_components/TextInput.vue";
 import CenterSelect from "@/Components/breeze_components/CenterSelect.vue";
 import { Link, useForm, usePage } from "@inertiajs/vue3";
+import { incorrectForm } from "@/Utils/alerts";
+import { validateName, validateLastname, validateEmail, validatePhone, validateCenter } from "@/Utils/Validators/user_validator";
 
-defineProps({
+const props= defineProps({
     mustVerifyEmail: {
         type: Boolean,
     },
     status: {
         type: String,
     },
-    centers:{
-        type: Array
-    }
+    centers: {
+        type: Array,
+    },
 });
 
 const user = usePage().props.auth.user;
@@ -179,7 +179,28 @@ const form = useForm({
     lastname: user.apellidos,
     tel: user.telefono,
     email: user.email,
-    center: userExtraInfo.centro
+    center: userExtraInfo.centro,
 });
 
+function validateForm() {
+    const errors = {};
+    
+    errors.name = validateName(form.name); 
+    errors.lastname = validateLastname(form.lastname);
+    errors.tel = validatePhone(form.tel);
+    errors.email = validateEmail(form.email);
+    errors.center = validateCenter(form.center, props.centers);
+
+    form.errors = errors;
+
+    return Object.keys(errors).every(key => errors[key] === null); 
+}
+
+const submit = () => {
+    if (validateForm()) {
+        form.patch(route("resp.profileUpdate"));
+    } else {
+        incorrectForm();
+    }
+};
 </script>

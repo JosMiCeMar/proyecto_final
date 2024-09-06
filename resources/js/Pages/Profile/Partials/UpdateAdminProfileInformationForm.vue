@@ -2,17 +2,14 @@
     <section>
         <header>
             <h2 class="text-lg font-bold text-lavender-dark">
-                Actualizar Tus Datos 
+                Actualizar Tus Datos
             </h2>
 
             <p class="mt-1 text-skyblue-dark">
                 Formulario para actualizar sus datos de usuario
             </p>
         </header>
-        <form
-            @submit.prevent="submit()"
-            class="mt-6 space-y-6"
-        >
+        <form @submit.prevent="submit()" class="mt-6 space-y-6">
             <div>
                 <InputLabel
                     class="text-lavender-dark font-semibold"
@@ -25,7 +22,6 @@
                     type="text"
                     class="mt-1 block w-full"
                     v-model="form.name"
-                    required
                     autofocus
                     autocomplete="name"
                 />
@@ -45,7 +41,6 @@
                     type="text"
                     class="mt-1 block w-full"
                     v-model="form.lastname"
-                    required
                     autocomplete="name"
                 />
 
@@ -64,7 +59,6 @@
                     type="tel"
                     class="mt-1 block w-full"
                     v-model="form.tel"
-                    required
                     autocomplete="name"
                 />
 
@@ -83,7 +77,6 @@
                     type="email"
                     class="mt-1 block w-full"
                     v-model="form.email"
-                    required
                     autocomplete="username"
                 />
 
@@ -124,12 +117,10 @@
                     leave-active-class="transition ease-in-out"
                     leave-to-class="opacity-0"
                 >
-                    <p
+                    <InputCorrect
                         v-if="form.recentlySuccessful"
-                        class="bg-lime-700 text-sm text-white rounded-md py-1 px-2"
-                    >
-                        Perfil Actualizado Correctamente
-                    </p>
+                        message="Perfil Actualizado Correctamente"
+                    />
                 </Transition>
             </div>
         </form>
@@ -137,13 +128,19 @@
 </template>
 <script setup>
 import InputError from "@/Components/breeze_components/InputError.vue";
+import InputCorrect from "@/Components/breeze_components/InputCorrect.vue";
 import InputLabel from "@/Components/breeze_components/InputLabel.vue";
 import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
 import TextInput from "@/Components/breeze_components/TextInput.vue";
 import { Link, useForm, usePage } from "@inertiajs/vue3";
-import { inject } from "vue";
+import {
+    validateName,
+    validateLastname,
+    validateEmail,
+    validatePhone,
+} from "@/Utils/Validators/user_validator";
+import { incorrectForm } from "@/Utils/alerts";
 
-const swal = inject("$swal");
 
 defineProps({
     mustVerifyEmail: {
@@ -159,66 +156,28 @@ const user = usePage().props.auth.user;
 const form = useForm({
     name: user.nombre,
     lastname: user.apellidos,
-    tel:user.telefono,
+    tel: user.telefono,
     email: user.email,
-
 });
 
 function validateForm() {
     const errors = {};
-    const nameRegex =
-        /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+(?:[-'a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]*)$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^[0-9]{9}$/;
 
-    //Validacion nombre
-    if (!form.name.trim()) {
-        errors.name = "El nombre es obligatorio";
-    } else {
-        if (!nameRegex.test(form.name)) {
-            errors.name = "El nombre sólo puede contener letras y espacios";
-        }
-    }
+    errors.name = validateName(form.name); 
+    errors.lastname = validateLastname(form.lastname);
+    errors.tel = validatePhone(form.tel);
+    errors.email = validateEmail(form.email);
 
-    //Validación apellidos
-    if (!form.lastname.trim()) {
-        errors.lastname = "Los apellidos son obligatorios";
-    } else {
-        if (!nameRegex.test(form.lastname)) {
-            errors.lastname =
-                "El apellido sólo puede contener letras y espacios";
-        }
-    }
-
-    //Validación teléfono
-    if (!phoneRegex.test(form.tel)) {
-        errors.tel = "El teléfono debe tener 9 dígitos";
-    }
-
-    //Validación email
-    if (!emailRegex.test(form.email)) {
-        errors.email = "El correo electrónico no es válido";
-    }
- 
     form.errors = errors;
 
-    return Object.keys(errors).length === 0;
+    return Object.keys(errors).every(key => errors[key] === null); // Verifica si todos los campos están válidos
 }
 
 const submit = () => {
     if (validateForm()) {
-        form.patch(route('admin.profileUpdate'));
+        form.patch(route("admin.profileUpdate"));
     } else {
-        swal({
-            icon: "error",
-            text: "Completa correctamente el formulario",
-            confirmButtonText: "Aceptar",
-            confirmButtonColor: "#3A2642",
-            background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
-            color: "#3A2642",
-            iconColor: "#3A2642",
-        });
+        incorrectForm();
     }
 };
-
 </script>

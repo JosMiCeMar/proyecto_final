@@ -2,7 +2,7 @@
     <section>
         <header>
             <h2 class="text-lg font-bold text-lavender-dark">
-                Actualizar Tus Datos 
+                Actualizar Tus Datos
             </h2>
 
             <p class="mt-1 text-skyblue-dark">
@@ -10,11 +10,8 @@
             </p>
         </header>
 
-        <form
-            @submit.prevent="form.patch(route('profile.update'))"
-            class="mt-6 space-y-6"
-        >
-        <div>
+        <form @submit.prevent="submit" class="mt-6 space-y-6">
+            <div>
                 <InputLabel
                     class="text-lavender-dark font-semibold"
                     for="name"
@@ -26,7 +23,6 @@
                     type="text"
                     class="mt-1 block w-full"
                     v-model="form.name"
-                    required
                     autofocus
                     autocomplete="name"
                 />
@@ -46,7 +42,6 @@
                     type="text"
                     class="mt-1 block w-full"
                     v-model="form.lastname"
-                    required
                     autocomplete="name"
                 />
 
@@ -65,7 +60,6 @@
                     type="tel"
                     class="mt-1 block w-full"
                     v-model="form.tel"
-                    required
                     autocomplete="name"
                 />
 
@@ -84,7 +78,6 @@
                     type="email"
                     class="mt-1 block w-full"
                     v-model="form.email"
-                    required
                     autocomplete="username"
                 />
 
@@ -100,7 +93,7 @@
                 <Checkbox
                     class="mx-4"
                     id="condition"
-                    v-model:checked="form.condicion"
+                    v-model:checked="form.condition"
                     name="condicion"
                 />
                 <p class="text-lavender-dark text-sm">
@@ -113,7 +106,7 @@
                     de condiciones médicas especiales.
                 </p>
             </div>
-
+            <InputError class="mt-2" :message="form.errors.condition" />
             <div>
                 <InputLabel
                     class="text-lavender-dark font-semibold"
@@ -122,14 +115,14 @@
                 />
                 <Datepicker
                     id="date"
-                    v-model="form.fecha"
+                    v-model="form.date"
                     inputFormat="dd-MM-yyyy"
-                    :upperLimit="minDate"
-                    :lowerLimit="maxDate"
+                    :upperLimit="getMinDate()"
+                    :lowerLimit="getMaxDate()"
                     :locale="localLanguage"
                     class="w-full border-lavender-dark bg-blue-100 text-lavender-dark focus:border-lavender-light focus:ring-lavender-light rounded-md shadow-sm"
                 />
-                <InputError class="mt-2" :message="form.errors.fecha" />
+                <InputError class="mt-2" :message="form.errors.date" />
             </div>
 
             <div v-if="mustVerifyEmail && user.email_verified_at === null">
@@ -167,12 +160,10 @@
                     leave-active-class="transition ease-in-out"
                     leave-to-class="opacity-0"
                 >
-                    <p
+                    <InputCorrect
                         v-if="form.recentlySuccessful"
-                        class="text-sm text-lavender-dark"
-                    >
-                        Actualizado
-                    </p>
+                        message="Perfil Actualizado Correctamente"
+                    />
                 </Transition>
             </div>
         </form>
@@ -180,29 +171,26 @@
 </template>
 <script setup>
 import InputError from "@/Components/breeze_components/InputError.vue";
+import InputCorrect from "@/Components/breeze_components/InputCorrect.vue";
 import InputLabel from "@/Components/breeze_components/InputLabel.vue";
 import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
 import { Link, useForm, usePage } from "@inertiajs/vue3";
 import TextInput from "@/Components/breeze_components/TextInput.vue";
 import Checkbox from "@/Components/breeze_components/Checkbox.vue";
-import { inject } from "vue";
 import Datepicker from "vue3-datepicker";
 import { es } from "date-fns/locale";
-
-//Fecha minima de nacimiento (13 años)
-const minDate = new Date();
-minDate.setHours(0,0,0,0);
-minDate.setFullYear(minDate.getFullYear()-13);
-
-
-//Fecha maxima de nacimiento (120 años)
-const maxDate= new Date();
-maxDate.setHours(0,0,0,0);
-maxDate.setFullYear(maxDate.getFullYear()-120);
+import { incorrectForm, medicalConditionAlert } from "@/Utils/alerts";
+import {
+    getMinDate,
+    getMaxDate,
+    validateName,
+    validateLastname,
+    validateEmail,
+    validatePhone,
+    validateDateOfBirth,
+} from "@/Utils/Validators/user_validator";
 
 const localLanguage = es;
-
-const swal = inject("$swal");
 
 defineProps({
     mustVerifyEmail: {
@@ -219,31 +207,31 @@ const userExtraDates = usePage().props.auth.datos;
 const form = useForm({
     name: user.nombre,
     lastname: user.apellidos,
-    tel:user.telefono,
+    tel: user.telefono,
     email: user.email,
-    fecha: new Date(userExtraDates.fecha_nac),
-    condicion: Boolean(userExtraDates.condicion),
+    date: new Date(userExtraDates.fecha_nac),
+    condition: Boolean(userExtraDates.condicion),
 });
 
-const medicalConditionAlert = () => {
-    swal({
-        icon: "question",
-        html:
-            "<p><b>Te mostraremos una lista donde podrás ver bajo que condiciones deberás marcar esta casilla</b></p></,.?~->" +
-            "<ul>" +
-            "<li><b>Diabetes:</b> Las personas con diabetes pueden tener una cicatrización más lenta, lo que podría aumentar el riesgo de infecciones o complicaciones post-tratamiento.</li>" +
-            "</br><li><b>Epilepsia:</b> La luz del láser podría desencadenar convulsiones en personas con epilepsia fotosensible.</li>" +
-            "</br><li><b>Enfermedades autoinmunes:</b> Algunas enfermedades autoinmunes, como el lupus, pueden hacer que la piel sea más sensible al láser y aumentar el riesgo de efectos secundarios.</li>" +
-            "</br><li><b>Várices o problemas de circulación:</b> Las personas con problemas de circulación, como várices, deben consultar a un médico antes de realizarse la depilación láser, ya que podría no ser seguro en esas áreas.</li>" +
-            "</br><li><b>Desórdenes hormonales:</b> Condiciones como el síndrome de ovario poliquístico (SOP) pueden causar crecimiento excesivo de vello, lo que podría requerir más sesiones de láser o un enfoque específico.</li>" +
-            "</br><li><b>Enfermedades de la piel:</b> Condiciones como la psoriasis, el eccema o el vitiligo pueden ser exacerbadas por el tratamiento con láser.</li>" +
-            "</ul>",
-        footer: "*Este dato solo hará saber al operario que debe preguntar al cliente, no almacenaremos ninguna información al respecto.",
-        confirmButtonText: "Aceptar",
-        confirmButtonColor: "#3A2642",
-        background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
-        color: "#3A2642",
-        iconColor: "#3A2642",
-    });
+function validateForm() {
+    const errors = {};
+
+    errors.name = validateName(form.name);
+    errors.lastname = validateLastname(form.lastname);
+    errors.tel = validatePhone(form.tel);
+    errors.email = validateEmail(form.email);
+    errors.date = validateDateOfBirth(form.date);
+
+    form.errors = errors;
+
+    return Object.keys(errors).every((key) => errors[key] === null); // Verifica si todos los campos están válidos
+}
+
+const submit = () => {
+    if (validateForm()) {
+        form.patch(route("client.profileUpdate"));
+    } else {
+        incorrectForm();
+    }
 };
 </script>

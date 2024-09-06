@@ -21,76 +21,94 @@ use App\Http\Requests\ProfileUpdateRequest;
 class ClienteController extends Controller
 {
 
-    public function create(){
-        return Inertia::render('Auth/ClientRegister',['cod',session()->get('cod')]);
+    public function create()
+    {
+        return Inertia::render('Auth/ClientRegister', ['cod', session()->get('cod')]);
     }
 
-   public function store(Request $request){
-    
-    $edadMinima =Carbon::now()->subYear(13)->startOfDay()->format('Y-m-d');
-    $edadMaxima =Carbon::now()->subYear(120)->startOfDay()->format('Y-m-d');
+    public function store(Request $request)
+    {
 
-    $fechaFormateada= Carbon::parse($request->input('fecha'))->setTimezone(config('app.timezone'))->format('Y-m-d');
-    $request->merge(['fecha' => $fechaFormateada]);
+        $edadMinima = Carbon::now()->subYear(13)->startOfDay()->format('Y-m-d');
+        $edadMaxima = Carbon::now()->subYear(120)->startOfDay()->format('Y-m-d');
 
-    $request->validate([
+        $fechaFormateada = Carbon::parse($request->input('fecha'))->setTimezone(config('app.timezone'))->format('Y-m-d');
+        $request->merge(['fecha' => $fechaFormateada]);
+
+        $request->validate([
             'name' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
             'tel' => ['required', 'regex:/^\d{9}$/'],
             'email' => 'required|string|lowercase|email|max:255|unique:' . User::class,
-            'fecha' => 'required|date|before_or_equal:'.$edadMinima.'|after_or_equal:'.$edadMaxima,
-            'condicion'=> 'boolean',
+            'fecha' => 'required|date|before_or_equal:' . $edadMinima . '|after_or_equal:' . $edadMaxima,
+            'condicion' => 'boolean',
             'password' => ['required', 'confirmed', Password::defaults()],
-    ]);
+        ]);
 
-    //Creacion del registro de usuario
-    $user = User::create([
-        'nombre' => $request->name,
-        'apellidos' => $request->lastname,
-        'telefono'=>$request->tel,
-        'email' => $request->email,
-        'password' => Hash::make($request->password),
-    ]);
+        //Creacion del registro de usuario
+        $user = User::create([
+            'nombre' => $request->name,
+            'apellidos' => $request->lastname,
+            'telefono' => $request->tel,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
 
-    //Creacion del registro de cliente
-    Cliente::create([
-        'user_id'=>$user->id,
-        'condicion_especial'=>$request->condicion,
-        'fecha_nacimiento'=>$request->fecha
-    ]);
+        //Creacion del registro de cliente
+        Cliente::create([
+            'user_id' => $user->id,
+            'condicion_especial' => $request->condicion,
+            'fecha_nacimiento' => $request->fecha
+        ]);
 
-    //Se marca como usado el codigo de registro almacenado en la sesion
-    $codigoRegistro = CodRegistro::find(session()->get('cod'));
-    if($codigoRegistro){
-        $codigoRegistro->usado=1;
-        $codigoRegistro->save();
+        //Se marca como usado el codigo de registro almacenado en la sesion
+        $codigoRegistro = CodRegistro::find(session()->get('cod'));
+        if ($codigoRegistro) {
+            $codigoRegistro->usado = 1;
+            $codigoRegistro->save();
+        }
+
+        event(new Registered($user));
+
+        Auth::login($user);
+
+        return redirect(route('dashboard', absolute: false));
     }
 
-    event(new Registered($user));
+    public function edit(Request $request): Response
+    {
+        return Inertia::render('Profile/EditClient', [
+            'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
+            'status' => session('status')
+        ]);
+    }
 
-    Auth::login($user);
+    public function update(ProfileUpdateRequest $request): RedirectResponse
+    {
+        $edadMinima = Carbon::now()->subYear(13)->startOfDay()->format('Y-m-d');
+        $edadMaxima = Carbon::now()->subYear(120)->startOfDay()->format('Y-m-d');
 
-    return redirect(route('dashboard', absolute: false));
-   }
+        $fechaFormateada = Carbon::parse($request->input('date'))->setTimezone(config('app.timezone'))->format('Y-m-d');
+        $request->merge(['date' => $fechaFormateada]);
 
-   public function edit(Request $request): Response
-   {
-       return Inertia::render('Profile/EditClient', [
-           'mustVerifyEmail' => $request->user() instanceof MustVerifyEmail,
-           'status' => session('status')
-       ]);
-   }
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+            'tel' => ['required', 'regex:/^\d{9}$/'],
+            'email' => 'required|string|lowercase|email|max:255',
+            'date' => 'required|date|before_or_equal:' . $edadMinima . '|after_or_equal:' . $edadMaxima,
+            'condition' => 'boolean'
+        ]);
 
-   public function update(ProfileUpdateRequest $request): RedirectResponse
-   {
-       $request->user()->fill($request->validated());
+        $request->user()->nombre = $request->name;
+        $request->user()->apellidos = $request->lastname;
+        $request->user()->telefono = $request->tel;
+        if ($request->user()->email !== $request->email) {
+            $request->user()->email = $request->email;
+        }
+        $request->user()->save();
+        Cliente::where('user_id', $request->user()->id)->update(['fecha_nacimiento' => $request->date, 'condicion_especial' => $request->condition]);
 
-       if ($request->user()->isDirty('email')) {
-           $request->user()->email_verified_at = null;
-       }
-
-       $request->user()->save();
-
-       return Redirect::route('profile.edit');
-   }
+        return Redirect::route('client.profileEdit');
+    }
 }

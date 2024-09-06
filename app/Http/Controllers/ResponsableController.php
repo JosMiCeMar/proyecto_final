@@ -85,14 +85,23 @@ class ResponsableController extends Controller
 
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'lastname' => 'required|string|max:255',
+            'tel' => ['required', 'regex:/^\d{9}$/'],
+            'email' => 'required|string|lowercase|email|max:255',
+            'center'=>'required|integer|exists:centros,id'
+        ]);
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        $request->user()->nombre=$request->name;
+        $request->user()->apellidos=$request->lastname;
+        $request->user()->telefono=$request->tel;
+        if($request->user()->email!==$request->email){
+            $request->user()->email=$request->email;
         }
-
         $request->user()->save();
+        Responsable::where('user_id',$request->user()->id)->update(['centro_id'=>$request->center]);
 
-        return Redirect::route('profile.edit');
+        return Redirect::route('resp.profileEdit');
     }
 }
