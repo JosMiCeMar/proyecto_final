@@ -63,7 +63,7 @@ class ResponsableController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect(route('dashboard'));
     }
 
     public function edit(Request $request)//: Response

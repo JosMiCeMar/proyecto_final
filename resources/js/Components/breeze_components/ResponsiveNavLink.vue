@@ -5,7 +5,7 @@ import { Link } from '@inertiajs/vue3';
 const props = defineProps({
     href: {
         type: String,
-        required: true,
+        default: "#"
     },
     active: {
         type: Boolean,
@@ -20,7 +20,7 @@ const classes = computed(() =>
 </script>
 
 <template>
-    <Link :href="href" :class="classes">
+    <Link :href="href" :class="classes + ' cursor-pointer'">
         <slot />
     </Link>
 </template>

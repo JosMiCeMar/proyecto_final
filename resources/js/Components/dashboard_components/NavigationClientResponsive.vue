@@ -33,7 +33,7 @@
             >
                 Editar Perfil
             </ResponsiveNavLink>
-            <ResponsiveNavLink :href="route('logout')">
+            <ResponsiveNavLink @click.prevent="closeSession()">
                 Desconectar
             </ResponsiveNavLink>
         </div>
@@ -41,4 +41,5 @@
 </template>
 <script setup>
 import ResponsiveNavLink from "@/Components/breeze_components/ResponsiveNavLink.vue";
+import { closeSession } from "@/Utils/alerts";
 </script>

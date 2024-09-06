@@ -6,6 +6,7 @@ import InputLabel from '@/Components/breeze_components/InputLabel.vue';
 import PrimaryButton from '@/Components/breeze_components/PrimaryButton.vue';
 import TextInput from '@/Components/breeze_components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import InputCorrect from '@/Components/breeze_components/InputCorrect.vue';
 
 defineProps({
     canResetPassword: {
@@ -34,9 +35,7 @@ const submit = () => {
 
         <Head title="Acceso" />
 
-        <div v-if="status" class="mb-4 font-medium text-sm text-green-600">
-            {{ status }}
-        </div>
+        <InputCorrect v-if="status" :message="status" class="mb-2 text-center" />
 
         <form @submit.prevent="submit">
             <div>

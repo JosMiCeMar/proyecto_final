@@ -104,9 +104,10 @@ import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
 import TextInput from "@/Components/breeze_components/TextInput.vue";
 import { useForm } from "@inertiajs/vue3";
 import { ref } from "vue";
-import { inject } from "vue";
+import { validatePassword, validatePasswordConfirmation } from '@/Utils/Validators/user_validator';
+import { incorrectForm } from '@/Utils/alerts';
 
-const swal = inject("$swal");
+
 
 const passwordInput = ref(null);
 const currentPasswordInput = ref(null);
@@ -120,47 +121,12 @@ const form = useForm({
 function validateForm() {
     const errors = {};
 
-    //Validación contraseña
-    if (!form.password) {
-        errors.password = "Introduce la nueva contraseña";
-    } else {
-        // Validar longitud mínima de 8 caracteres
-        if (form.password.length < 8) {
-            errors.password = "La contraseña debe tener mínimo 8 caracteres";
-        }
-        //Validar longitud máxima de 250 caracteres
-        else if (form.password.length > 250) {
-            errors.password = "La contraseña debe tener máximo 250 caracteres";
-        }
-        // Validar al menos una letra minúscula
-        else if (!/[a-z]/.test(form.password)) {
-            errors.password =
-                "La contraseña debe contener al menos una letra minúscula";
-        }
-        // Validar al menos una letra mayúscula
-        else if (!/[A-Z]/.test(form.password)) {
-            errors.password =
-                "La contraseña debe contener al menos una letra mayúscula";
-        }
-        // Validar al menos un número
-        else if (!/\d/.test(form.password)) {
-            errors.password = "La contraseña debe contener al menos un número";
-        }
-        // Validar al menos un caracter especial
-        else if (!/[!@#$%^&*()_+={}\[\]:;<>,.?~-]/.test(form.password)) {
-            errors.password =
-                "La contraseña debe contener al menos un carácter especial";
-        }
-    }
-
-    //Validación confirmar contraseña
-    if (form.password !== form.password_confirmation) {
-        errors.password_confirmation = "Las contraseñas no coinciden";
-    }
+    errors.password = validatePassword(form.password);
+    errors.password_confirmation = validatePasswordConfirmation(form.password, form.password_confirmation);
 
     form.errors = errors;
 
-    return Object.keys(errors).length === 0;
+    return Object.keys(errors).every(key => errors[key] === null);
 }
 
 const updatePassword = () => {
@@ -180,15 +146,7 @@ const updatePassword = () => {
             },
         });
     } else {
-        swal({
-            icon: "error",
-            text: "Completa correctamente el formulario",
-            confirmButtonText: "Aceptar",
-            confirmButtonColor: "#3A2642",
-            background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
-            color: "#3A2642",
-            iconColor: "#3A2642",
-        });
+        incorrectForm();
     }
 };
 </script>

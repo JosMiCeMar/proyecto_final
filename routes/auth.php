@@ -67,4 +67,4 @@ Route::middleware('auth')->group(function () {
 //Ruta panel de control
 Route::get('/panel_control', function () {
     return Inertia::render('Dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth'])->name('dashboard');

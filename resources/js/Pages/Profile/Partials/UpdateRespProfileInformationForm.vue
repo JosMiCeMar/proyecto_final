@@ -105,25 +105,25 @@
                 <InputError class="mt-2" :message="form.errors.center" />
             </div>
 
-            <div v-if="props.mustVerifyEmail && user.email_verified_at === null">
-                <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
-                    Your email address is unverified.
+            <div v-if="mustVerifyEmail && user.email_verified_at === null">
+                <p class="text-sm mt-2 text-lavender-dark font-bold">
+                    Tu correo electrónico aún no se encuentra verificado.
                     <Link
                         :href="route('verification.send')"
                         method="post"
                         as="button"
-                        class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                        class="underline text-sm font-thin text-skyblue-dark hover:font-bold rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800"
                     >
-                        Click here to re-send the verification email.
+                        Haga click aquí para volver a enviar el mail de
+                        verificación.
                     </Link>
                 </p>
 
-                <div
-                    v-show="props.status === 'verification-link-sent'"
-                    class="mt-2 font-medium text-sm text-green-600 dark:text-green-400"
-                >
-                    A new verification link has been sent to your email address.
-                </div>
+                <InputCorrect
+                    v-show="status === 'verification-link-sent'"
+                    message="Mail de verificación enviado"
+                    class="w-fit"
+                />
             </div>
 
             <div class="flex items-center gap-4">
@@ -139,7 +139,7 @@
                     leave-active-class="transition ease-in-out"
                     leave-to-class="opacity-0"
                 >
-                <InputCorrect
+                    <InputCorrect
                         v-if="form.recentlySuccessful"
                         message="Perfil Actualizado Correctamente"
                     />
@@ -157,9 +157,15 @@ import TextInput from "@/Components/breeze_components/TextInput.vue";
 import CenterSelect from "@/Components/breeze_components/CenterSelect.vue";
 import { Link, useForm, usePage } from "@inertiajs/vue3";
 import { incorrectForm } from "@/Utils/alerts";
-import { validateName, validateLastname, validateEmail, validatePhone, validateCenter } from "@/Utils/Validators/user_validator";
+import {
+    validateName,
+    validateLastname,
+    validateEmail,
+    validatePhone,
+    validateCenter,
+} from "@/Utils/Validators/user_validator";
 
-const props= defineProps({
+const props = defineProps({
     mustVerifyEmail: {
         type: Boolean,
     },
@@ -184,8 +190,8 @@ const form = useForm({
 
 function validateForm() {
     const errors = {};
-    
-    errors.name = validateName(form.name); 
+
+    errors.name = validateName(form.name);
     errors.lastname = validateLastname(form.lastname);
     errors.tel = validatePhone(form.tel);
     errors.email = validateEmail(form.email);
@@ -193,7 +199,7 @@ function validateForm() {
 
     form.errors = errors;
 
-    return Object.keys(errors).every(key => errors[key] === null); 
+    return Object.keys(errors).every((key) => errors[key] === null);
 }
 
 const submit = () => {

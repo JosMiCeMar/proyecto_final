@@ -124,27 +124,25 @@
                 />
                 <InputError class="mt-2" :message="form.errors.date" />
             </div>
-
             <div v-if="mustVerifyEmail && user.email_verified_at === null">
-                <p class="text-sm mt-2 text-gray-800 dark:text-gray-200">
-                    Tu cuenta no está verificada, revisa la bandeja de entrada
-                    de tu correo electrónico.
+                <p class="text-sm mt-2 text-lavender-dark font-bold">
+                    Tu correo electrónico aún no se encuentra verificado.
                     <Link
                         :href="route('verification.send')"
                         method="post"
                         as="button"
-                        class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                        class="underline text-sm font-thin text-skyblue-dark hover:font-bold rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800"
                     >
-                        Click aquí para volver a enviar el mail de verificación.
+                        Haga click aquí para volver a enviar el mail de
+                        verificación.
                     </Link>
                 </p>
 
-                <div
+                <InputCorrect
                     v-show="status === 'verification-link-sent'"
-                    class="mt-2 font-medium text-sm text-green-600 dark:text-green-400"
-                >
-                    Un nuevo email de verificación ha sido enviado.
-                </div>
+                    message="Mail de verificación enviado"
+                    class="w-fit"
+                />
             </div>
 
             <div class="flex items-center gap-4">

@@ -21,7 +21,7 @@ defineProps({
     <Head title="Editar Perfil" />
 
     <AuthenticatedLayout>
-        <div class="py-12">
+        <div class="py-5">
             <div class="max-w-7xl sm:mx-auto sm:px-6 lg:px-8 pb-3 ml-3">
                 <h3 class="text-2xl font-bold text-lavender-dark uppercase">
                     Editar Perfil

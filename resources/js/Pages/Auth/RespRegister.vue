@@ -1,135 +1,3 @@
-<script setup>
-import GuestLayout from "@/Layouts/breeze_layouts/GuestLayout.vue";
-import InputError from "@/Components/breeze_components/InputError.vue";
-import InputLabel from "@/Components/breeze_components/InputLabel.vue";
-import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
-import TextInput from "@/Components/breeze_components/TextInput.vue";
-import CenterSelect from "@/Components/breeze_components/CenterSelect.vue";
-import { Head, useForm } from "@inertiajs/vue3";
-import { inject } from "vue";
-const swal = inject("$swal");
-
-
-const props = defineProps({
-    centers: {
-        type: Array,
-        required: true,
-    },
-});
-
-const form = useForm({
-    name: "",
-    lastname: "",
-    tel: "",
-    email: "",
-    center: "",
-    password: "",
-    password_confirmation: "",
-});
-
-function validateForm() {
-    const errors = {};
-    const nameRegex =
-        /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+(?:[-'a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]*)$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^[0-9]{9}$/;
-
-    //Validacion nombre
-    if (!form.name.trim()) {
-        errors.name = "El nombre es obligatorio";
-    } else {
-        if (!nameRegex.test(form.name)) {
-            errors.name = "El nombre sólo puede contener letras y espacios";
-        }
-    }
-
-    //Validación apellidos
-    if (!form.lastname.trim()) {
-        errors.lastname = "Los apellidos son obligatorios";
-    } else {
-        if (!nameRegex.test(form.lastname)) {
-            errors.lastname =
-                "El apellido sólo puede contener letras y espacios";
-        }
-    }
-
-    //Validación teléfono
-    if (!phoneRegex.test(form.tel)) {
-        errors.tel = "El teléfono debe tener 9 dígitos";
-    }
-
-    //Validación email
-    if (!emailRegex.test(form.email)) {
-        errors.email = "El correo electrónico no es válido";
-    }
-
-    // Validación centro asociado
-    if (form.center==='') {
-        errors.center = "El centro es obligatorio";
-    }
-
-    //Validación contraseña
-    if (!form.password) {
-        errors.password = "La contraseña es obligatoria";
-    } else {
-        // Validar longitud mínima de 8 caracteres
-        if (form.password.length < 8) {
-            errors.password = "La contraseña debe tener mínimo 8 caracteres";
-        }
-        //Validar longitud máxima de 250 caracteres
-        else if (form.password.length > 250) {
-            errors.password = "La contraseña debe tener máximo 250 caracteres";
-        }
-        // Validar al menos una letra minúscula
-        else if (!/[a-z]/.test(form.password)) {
-            errors.password =
-                "La contraseña debe contener al menos una letra minúscula";
-        }
-        // Validar al menos una letra mayúscula
-        else if (!/[A-Z]/.test(form.password)) {
-            errors.password =
-                "La contraseña debe contener al menos una letra mayúscula";
-        }
-        // Validar al menos un número
-        else if (!/\d/.test(form.password)) {
-            errors.password = "La contraseña debe contener al menos un número";
-        }
-        // Validar al menos un caracter especial
-        else if (!/[!@#$%^&*()_+={}\[\]:;<>,.?~-]/.test(form.password)) {
-            errors.password =
-                "La contraseña debe contener al menos un carácter especial";
-        }
-    }
-
-    //Validación confirmar contraseña
-    if (form.password !== form.password_confirmation) {
-        errors.password_confirmation = "Las contraseñas no coinciden";
-    }
-
-    form.errors = errors;
-
-    return Object.keys(errors).length === 0;
-}
-
-const submit = () => {
-    if (validateForm()) {
-        form.post(route("responsable.create"), {
-            onFinish: () => form.reset("password", "password_confirmation"),
-        });
-    } else {
-        swal({
-            icon: "error",
-            text: "Completa correctamente el formulario",
-            confirmButtonText: "Aceptar",
-            confirmButtonColor: "#3A2642",
-            background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
-            color: "#3A2642",
-            iconColor: "#3A2642",
-        });
-    }
-};
-</script>
-
 <template>
     <GuestLayout formName="datos del nuevo responsable">
         <Head title="Registro de Responsables" />
@@ -258,3 +126,68 @@ const submit = () => {
         </form>
     </GuestLayout>
 </template>
+<script setup>
+import GuestLayout from "@/Layouts/breeze_layouts/GuestLayout.vue";
+import InputError from "@/Components/breeze_components/InputError.vue";
+import InputLabel from "@/Components/breeze_components/InputLabel.vue";
+import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
+import TextInput from "@/Components/breeze_components/TextInput.vue";
+import CenterSelect from "@/Components/breeze_components/CenterSelect.vue";
+import { Head, useForm } from "@inertiajs/vue3";
+import { incorrectForm } from "@/Utils/alerts";
+import {
+    validateName,
+    validateLastname,
+    validateEmail,
+    validatePhone,
+    validatePassword,
+    validatePasswordConfirmation,
+    validateCenter
+} from "@/Utils/Validators/user_validator";
+
+const props = defineProps({
+    centers: {
+        type: Array,
+        required: true,
+    },
+});
+
+const form = useForm({
+    name: "",
+    lastname: "",
+    tel: "",
+    email: "",
+    center: "",
+    password: "",
+    password_confirmation: "",
+});
+
+function validateForm() {
+    const errors = {};
+
+    errors.name = validateName(form.name);
+    errors.lastname = validateLastname(form.lastname);
+    errors.tel = validatePhone(form.tel);
+    errors.email = validateEmail(form.email);
+    errors.center = validateCenter(form.center, props.centers)
+    errors.password = validatePassword(form.password);
+    errors.password_confirmation = validatePasswordConfirmation(
+        form.password,
+        form.password_confirmation
+    );
+
+    form.errors = errors;
+
+    return Object.keys(errors).every((key) => errors[key] === null);
+}
+
+const submit = () => {
+    if (validateForm()) {
+        form.post(route("responsable.create"), {
+            onFinish: () => form.reset("password", "password_confirmation"),
+        });
+    } else {
+        incorrectForm();
+    }
+};
+</script>

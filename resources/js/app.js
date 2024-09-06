@@ -20,15 +20,6 @@ createInertiaApp({
             .use(ZiggyVue)
             .use(VueSweetalert2)
 
-        /*
-        Estructura basica para directiva personalizada
-        
-        app.directive('nombre-directiva', {
-            beforeMount(el, binding) {
-               
-            }
-        });
-        */
         app.mount(el);
         return app;
     },

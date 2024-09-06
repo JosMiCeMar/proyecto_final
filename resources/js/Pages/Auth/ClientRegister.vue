@@ -66,8 +66,8 @@
                     id="fecha"
                     v-model="form.fecha"
                     inputFormat="dd-MM-yyyy"
-                    :upperLimit="minDate"
-                    :lowerLimit="maxDate"
+                    :upperLimit="getMinDate()"
+                    :lowerLimit="getMaxDate()"
                     :locale="localLanguage"
                     class="w-full border-lavender-dark bg-blue-100 text-lavender-dark focus:border-lavender-light focus:ring-lavender-light rounded-md shadow-sm"
                 />
@@ -155,147 +155,58 @@ import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
 import TextInput from "@/Components/breeze_components/TextInput.vue";
 import { Head, useForm } from "@inertiajs/vue3";
 import Checkbox from "@/Components/breeze_components/Checkbox.vue";
-import { inject } from "vue";
 import Datepicker from "vue3-datepicker";
 import { es } from "date-fns/locale";
-import { medicalConditionAlert } from "@/Utils/alerts"; 
-
-
+import { incorrectForm, medicalConditionAlert } from "@/Utils/alerts";
+import {
+    getMinDate,
+    getMaxDate,
+    validateName,
+    validateLastname,
+    validateEmail,
+    validatePhone,
+    validateDateOfBirth,
+    validatePassword,
+    validatePasswordConfirmation,
+} from "@/Utils/Validators/user_validator";
 
 const localLanguage = es;
-
-const swal = inject("$swal");
 
 const form = useForm({
     name: "",
     lastname: "",
     tel: "",
     email: "",
-    fecha: minDate,
+    fecha: getMinDate(),
     condicion: false,
     password: "",
     password_confirmation: "",
 });
 
-//Fecha minima de nacimiento (13 años)
-const minDate = new Date();
-minDate.setHours(0,0,0,0);
-minDate.setFullYear(minDate.getFullYear()-13);
-
-
-//Fecha maxima de nacimiento (120 años)
-const maxDate= new Date();
-maxDate.setHours(0,0,0,0);
-maxDate.setFullYear(maxDate.getFullYear()-120);
-
 function validateForm() {
     const errors = {};
-    
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^[0-9]{9}$/;
-    const nameRegex =
-        /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+(?:[-'a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]*)$/;
 
-    //Validacion nombre
-    if (!form.name.trim()) {
-        errors.name = "El nombre es obligatorio";
-    } else {
-        if (!nameRegex.test(form.name)) {
-            errors.name = "El nombre sólo puede contener letras y espacios";
-        }
-    }
-
-    //Validación apellidos
-    if (!form.lastname.trim()) {
-        errors.lastname = "Los apellidos son obligatorios";
-    } else {
-        if (!nameRegex.test(form.lastname)) {
-            errors.lastname =
-                "El apellido sólo puede contener letras y espacios";
-        }
-    }
-
-    //Validación teléfono
-    if (!phoneRegex.test(form.tel)) {
-        errors.tel = "El teléfono debe tener 9 dígitos";
-    }
-
-    //Validación email
-    if (!emailRegex.test(form.email)) {
-        errors.email = "El correo electrónico no es válido";
-    }
-
-    //Validación fecha nacimiento
-    if (isNaN(form.fecha.getTime())) {
-        errors.fecha = "La fecha de nacimiento es obligatoria";
-    } else {
-        if (form.fecha > minDate) {
-            errors.fecha = "Debes tener al menos 13 años";
-        }
-
-        if(form.fecha< maxDate){
-            errors.fecha = "La edad máxima son 120 años";
-        }
-    }
-
-    //Validación contraseña
-    if (!form.password) {
-        errors.password = "La contraseña es obligatoria";
-    } else {
-        // Validar longitud mínima de 8 caracteres
-        if (form.password.length < 8) {
-            errors.password = "La contraseña debe tener mínimo 8 caracteres";
-        }
-        //Validar longitud máxima de 250 caracteres
-        else if (form.password.length > 250) {
-            errors.password = "La contraseña debe tener máximo 250 caracteres";
-        }
-        // Validar al menos una letra minúscula
-        else if (!/[a-z]/.test(form.password)) {
-            errors.password =
-                "La contraseña debe contener al menos una letra minúscula";
-        }
-        // Validar al menos una letra mayúscula
-        else if (!/[A-Z]/.test(form.password)) {
-            errors.password =
-                "La contraseña debe contener al menos una letra mayúscula";
-        }
-        // Validar al menos un número
-        else if (!/\d/.test(form.password)) {
-            errors.password = "La contraseña debe contener al menos un número";
-        }
-        // Validar al menos un caracter especial
-        else if (!/[!@#$%^&*()_+={}\[\]:;,.?~-]/.test(form.password)) {
-            errors.password =
-                "La contraseña debe contener al menos un carácter especial";
-        }
-    }
-
-    //Validación confirmar contraseña
-    if (form.password !== form.password_confirmation) {
-        errors.password_confirmation = "Las contraseñas no coinciden";
-    }
+    errors.name = validateName(form.name);
+    errors.lastname = validateLastname(form.lastname);
+    errors.tel = validatePhone(form.tel);
+    errors.email = validateEmail(form.email);
+    errors.fecha = validateDateOfBirth(form.fecha);
+    errors.password = validatePassword(form.password);
+    errors.password_confirmation = validatePasswordConfirmation(
+        form.password,
+        form.password_confirmation
+    );
 
     form.errors = errors;
 
-    return Object.keys(errors).length === 0;
+    return Object.keys(errors).every((key) => errors[key] === null);
 }
 
 const submit = () => {
     if (validateForm()) {
         form.post(route("cliente.create"));
     } else {
-        swal({
-            icon: "error",
-            text: "Completa correctamente el formulario",
-            confirmButtonText: "Aceptar",
-            confirmButtonColor: "#3A2642",
-            background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
-            color: "#3A2642",
-            iconColor: "#3A2642",
-        });
+        incorrectForm();
     }
 };
-
 </script>
-

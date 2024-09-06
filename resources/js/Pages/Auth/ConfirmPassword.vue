@@ -19,10 +19,10 @@ const submit = () => {
 
 <template>
     <GuestLayout>
-        <Head title="Confirm Password" />
+        <Head title="Confirmar Contraseña" />
 
-        <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-            This is a secure area of the application. Please confirm your password before continuing.
+        <div class="mb-4 text-sm text-skyblue-vlight">
+            Esta es un área segura de la aplicación. Por favor, confirma tu contraseña antes de continuar.
         </div>
 
         <form @submit.prevent="submit">
