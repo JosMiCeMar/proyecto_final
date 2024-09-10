@@ -1,5 +1,5 @@
 <template>
-    <GuestLayout formName="datos del nuevo cliente">
+    <GuestLayout formName="formulario nuevo cliente">
         <Head title="Registro de Clientes" />
         <form @submit.prevent="submit">
             <div>
@@ -157,7 +157,7 @@ import { Head, useForm } from "@inertiajs/vue3";
 import Checkbox from "@/Components/breeze_components/Checkbox.vue";
 import Datepicker from "vue3-datepicker";
 import { es } from "date-fns/locale";
-import { incorrectForm, medicalConditionAlert } from "@/Utils/alerts";
+import { incorrectForm, medicalConditionAlert, sendForm } from "@/Utils/alerts";
 import {
     getMinDate,
     getMaxDate,
@@ -204,7 +204,7 @@ function validateForm() {
 
 const submit = () => {
     if (validateForm()) {
-        form.post(route("cliente.create"));
+       sendForm(()=>{form.post(route("cliente.create"))},"¿Finalizar la creación?, Tras enviar, recibirá un email de verificación.");
     } else {
         incorrectForm();
     }

@@ -4,7 +4,7 @@ import InputError from '@/Components/breeze_components/InputError.vue';
 import InputLabel from '@/Components/breeze_components/InputLabel.vue';
 import PrimaryButton from '@/Components/breeze_components/PrimaryButton.vue';
 import TextInput from '@/Components/breeze_components/TextInput.vue';
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, useForm, Link } from '@inertiajs/vue3';
 import { validatePassword, validatePasswordConfirmation } from '@/Utils/Validators/user_validator';
 import { incorrectForm } from '@/Utils/alerts';
 
@@ -106,5 +106,10 @@ const submit = () => {
                 </PrimaryButton>
             </div>
         </form>
+        <p class="mt-4 text-end text-xs text-skyblue-vlight  hover:text-skyblue-light hover:underline">
+            <Link :href="route('home')">
+            Volver a página principal
+            </Link>
+        </p>
     </GuestLayout>
 </template>

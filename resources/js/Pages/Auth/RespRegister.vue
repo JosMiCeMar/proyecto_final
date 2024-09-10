@@ -1,5 +1,5 @@
 <template>
-    <GuestLayout formName="datos del nuevo responsable">
+    <GuestLayout formName="formulario nuevo responsable">
         <Head title="Registro de Responsables" />
         <form @submit.prevent="submit">
             <div>
@@ -134,7 +134,7 @@ import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
 import TextInput from "@/Components/breeze_components/TextInput.vue";
 import CenterSelect from "@/Components/breeze_components/CenterSelect.vue";
 import { Head, useForm } from "@inertiajs/vue3";
-import { incorrectForm } from "@/Utils/alerts";
+import { incorrectForm, sendForm } from "@/Utils/alerts";
 import {
     validateName,
     validateLastname,
@@ -183,9 +183,7 @@ function validateForm() {
 
 const submit = () => {
     if (validateForm()) {
-        form.post(route("responsable.create"), {
-            onFinish: () => form.reset("password", "password_confirmation"),
-        });
+       sendForm(()=>{form.post(route("responsable.create"))},"¿Finalizar la creación? Tras enviar, recibirá un email de verificación.");
     } else {
         incorrectForm();
     }

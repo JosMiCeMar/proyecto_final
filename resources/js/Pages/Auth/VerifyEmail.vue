@@ -26,9 +26,8 @@ const verificationLinkSent = computed(
         <Head title="Email de Verificación" />
 
         <div class="mb-4 text-sm text-skyblue-vlight">
-            ¡Gracias por registrarte! Antes de comenzar, ¿podrías verificar tu
-            dirección de correo electrónico haciendo clic en el enlace que te
-            acabamos de enviar? Si no recibiste el correo, le enviaremos otro.
+            ¿Aún no has recibido tu correo de verificación? No te preocupes, le enviaremos otro.
+            <p class="text-xs text-skyblue-vlight mt-2">*Recuerda revisar en la bandeja de spam</p>
         </div>
 
         <div
@@ -57,5 +56,10 @@ const verificationLinkSent = computed(
                 >
             </div>
         </form>
+        <p class="mt-4 text-end text-xs text-skyblue-vlight  hover:text-skyblue-light hover:underline">
+            <Link :href="route('home')">
+            Volver a página principal
+            </Link>
+        </p>
     </GuestLayout>
 </template>

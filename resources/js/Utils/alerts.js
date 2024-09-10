@@ -1,4 +1,4 @@
-import Swal from 'sweetalert2';
+import Swal from "sweetalert2";
 
 export function medicalConditionAlert() {
     Swal.fire({
@@ -23,7 +23,27 @@ export function medicalConditionAlert() {
     });
 }
 
-export function incorrectForm(){
+export function sendForm(executeMethod, message) {
+    Swal.fire({
+        title: "Confirmar Envío",
+        text: message,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Enviar",
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "#3A2642",
+        cancelButtonColor: "#d33",
+        background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
+        color: "#3A2642",
+        iconColor: "#3A2642",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            executeMethod();
+        }
+    });
+}
+
+export function incorrectForm() {
     Swal.fire({
         icon: "error",
         title: "Error en el formulario",
@@ -36,7 +56,7 @@ export function incorrectForm(){
     });
 }
 
-export function closeSession(){
+export function closeSession() {
     Swal.fire({
         title: "¿Estás seguro?",
         text: "¿Deseas cerrar sesión?",
@@ -49,8 +69,7 @@ export function closeSession(){
         color: "#3A2642",
     }).then((result) => {
         if (result.isConfirmed) {
-            window.location.href = route('logout');
+            window.location.href = route("logout");
         }
     });
-    
 }

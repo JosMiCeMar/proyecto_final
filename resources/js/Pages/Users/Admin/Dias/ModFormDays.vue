@@ -20,7 +20,7 @@
                             :lowerLimit="today"
                             :upperLimit="lastDay"
                             :locale="localLanguage"
-                            :disabledDates="{ dates: disabledDates() }"
+                            :disabledDates="{ dates: invalidDates }"
                             class="w-full border-lavender-dark bg-blue-100 text-lavender-dark focus:border-lavender-light focus:ring-lavender-light rounded-md shadow-sm"
                         />
                         <InputError class="mt-2" :message="form.errors.day" />
@@ -62,6 +62,15 @@
                     </div>
                 </form>
             </div>
+            <!--Boton de retorno-->
+            <div class="flex sm:justify-end justify-center w-full">
+                <ReturnLink
+                    class="text-skyblue-dark font-bold sm:mx-8"
+                    iconColor="#315D66"
+                    :link="route('admin.indexDias')"
+                    value="Volver al menú"
+                />
+            </div>
         </ContentBox>
     </AuthenticatedLayout>
 </template>
@@ -72,12 +81,19 @@ import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import { Head, useForm } from "@inertiajs/vue3";
 import InputError from "@/Components/breeze_components/InputError.vue";
 import InputLabel from "@/Components/breeze_components/InputLabel.vue";
+import ReturnLink from "@/Components/dashboard_components/ReturnLink.vue";
 import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
-import { inject } from "vue";
 import Datepicker from "vue3-datepicker";
 import { es } from "date-fns/locale";
+import { incorrectForm, sendForm } from "@/Utils/alerts";
+import {
+    getToday,
+    getLastDate,
+    disabledDates,
+    validateDates,
+    validateCenter
+} from "@/Utils/Validators/dias_validator";
 
-const swal = inject("$swal");
 
 const props = defineProps({
     datos:{
@@ -94,33 +110,13 @@ const props = defineProps({
     },
 });
 
-//Fechas limite para el calendario y lenguaje de este
-const today = new Date();
-today.setHours(0, 0, 0, 0);
-const lastDay = new Date(today);
-lastDay.setFullYear(today.getFullYear() + 1);
-lastDay.setHours(0, 0, 0, 0);
+//Lenguaje del calendario
 const localLanguage = es;
 
-//Funcion que recibe las fechas del back y las pasa a objetos Date de js, devolviendo una lista de estas
-const disabledDates = () => {
-    let dates = [];
-    props.fechas.forEach((day) => {
-        if(day.fecha !== props.datos.fecha){
-            dates.push(new Date(day.fecha));
-        }
-    });
-
-    //Algoritmo para añadir los domingos a la lista de dias deshabilitados 
-    let currentDate = new Date(today);
-    while (currentDate <= lastDay) {
-        if (currentDate.getDay() === 0) { // 0 representa el domingo
-            dates.push(new Date(currentDate));
-        }
-        currentDate.setDate(currentDate.getDate() + 1);
-    }
-    return dates;
-};
+//Obtencion de las fechas limite y deshabilitadas
+const today = getToday();
+const lastDay = getLastDate();
+const invalidDates = disabledDates(props.fechas);
 
 const form = useForm({
     id: props.datos.id,
@@ -131,77 +127,19 @@ const form = useForm({
 function validateForm() {
     const errors = {};
 
-    //Validacion de la fecha, comprueba que la fecha introducida sea valida (limites introducidos y disponibilidad)
-    if (isNaN(form.day.getTime())) {
-        errors.day = "La fecha es obligatoria";
-    } else {
-        if (form.day < today || form.day > lastDay) {
-            errors.day =
-                "La fecha no puede ser inferior al día de hoy o superior a más de un año";
-        } else {
-            const invalidDates = disabledDates();
-            if (
-                invalidDates.some((fecha) => {
-                    // Compara solo la fecha, ignorando la hora
-                    return (
-                        fecha.getFullYear() === form.day.getFullYear() &&
-                        fecha.getMonth() === form.day.getMonth() &&
-                        fecha.getDate() === form.day.getDate()
-                    );
-                })
-            ) {
-                errors.day = "La fecha seleccionada no se encuentra disponible";
-            }
-        }
-    }
+    errors.day= validateDates(form.day, today, lastDay, invalidDates);
 
-    //Validacion del centro (id), comprueba que sea un numero entero y que se encuentre en la lista de centros recibida
-    if (isNaN(parseInt(form.center))) {
-        errors.center = "El centro es obligatorio";
-    } else {
-        const arrayIds = [];
-        props.centros.forEach((center) => {
-            arrayIds.push(center.id);
-        });
-        if (!arrayIds.includes(form.center)) {
-            errors.center =
-                "El identificador del centro no se encuentra en la lista";
-        }
-    }
+    errors.center = validateCenter(form.center, props.centros);
 
     form.errors = errors;
-    return Object.keys(errors).length === 0;
+    return Object.keys(errors).every((key) => errors[key] === null);
 }
 
 const submit = () => {
     if (validateForm()) {
-        swal.fire({
-            title: "Confirmar Modificación",
-            text: `¿Quieres modificar el dia ${form.day.toLocaleDateString()}?`,
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Modificar",
-            cancelButtonText: "Cancelar",
-            confirmButtonColor: "#3A2642",
-            cancelButtonColor: "#d33",
-            background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
-            color: "#3A2642",
-            iconColor: "#3A2642",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                form.post(route("admin.updateDias"));
-            }
-        });
+        sendForm(()=>{form.post(route("admin.updateDias"))}, `¿Quieres modificar el dia ${form.day.toLocaleDateString()}?`);
     } else {
-        swal.fire({
-            icon: "error",
-            text: "Completa correctamente el formulario",
-            confirmButtonText: "Aceptar",
-            confirmButtonColor: "#3A2642",
-            background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
-            color: "#3A2642",
-            iconColor: "#3A2642",
-        });
+        incorrectForm();
     }
 };
 </script>

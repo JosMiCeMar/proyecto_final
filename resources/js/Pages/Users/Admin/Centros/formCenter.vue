@@ -98,14 +98,23 @@
                     <!-- Localización -->
                     <div class="mt-4">
                         <InputLabel for="location">
-                            <div  class="flex justify-between items-end">
-                        <span>Localización</span>
-                        <button @click.prevent="cleanLocationFormat" class=" bg-lime-700 rounded-md shadow-md hover:bg-lime-500 p-2">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" class="fill-white w-4">
-                                <path d="M566.6 54.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192-34.7-34.7c-4.2-4.2-10-6.6-16-6.6c-12.5 0-22.6 10.1-22.6 22.6l0 29.1L364.3 320l29.1 0c12.5 0 22.6-10.1 22.6-22.6c0-6-2.4-11.8-6.6-16l-34.7-34.7 192-192zM341.1 353.4L222.6 234.9c-42.7-3.7-85.2 11.7-115.8 42.3l-8 8C76.5 307.5 64 337.7 64 369.2c0 6.8 7.1 11.2 13.2 8.2l51.1-25.5c5-2.5 9.5 4.1 5.4 7.9L7.3 473.4C2.7 477.6 0 483.6 0 489.9C0 502.1 9.9 512 22.1 512l173.3 0c38.8 0 75.9-15.4 103.4-42.8c30.6-30.6 45.9-73.1 42.3-115.8z"/>
-                            </svg>
-                        </button>
-                    </div> 
+                            <div class="flex justify-between items-end">
+                                <span>Localización</span>
+                                <button
+                                    @click.prevent="cleanLocationFormat"
+                                    class="bg-lime-700 rounded-md shadow-md hover:bg-lime-500 p-2"
+                                >
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 576 512"
+                                        class="fill-white w-4"
+                                    >
+                                        <path
+                                            d="M566.6 54.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192-34.7-34.7c-4.2-4.2-10-6.6-16-6.6c-12.5 0-22.6 10.1-22.6 22.6l0 29.1L364.3 320l29.1 0c12.5 0 22.6-10.1 22.6-22.6c0-6-2.4-11.8-6.6-16l-34.7-34.7 192-192zM341.1 353.4L222.6 234.9c-42.7-3.7-85.2 11.7-115.8 42.3l-8 8C76.5 307.5 64 337.7 64 369.2c0 6.8 7.1 11.2 13.2 8.2l51.1-25.5c5-2.5 9.5 4.1 5.4 7.9L7.3 473.4C2.7 477.6 0 483.6 0 489.9C0 502.1 9.9 512 22.1 512l173.3 0c38.8 0 75.9-15.4 103.4-42.8c30.6-30.6 45.9-73.1 42.3-115.8z"
+                                        />
+                                    </svg>
+                                </button>
+                            </div>
                         </InputLabel>
                         <TextInput
                             id="location"
@@ -135,6 +144,14 @@
                     </div>
                 </form>
             </div>
+            <div class="flex sm:justify-end justify-center w-full">
+                <ReturnLink
+                    class="text-skyblue-dark font-bold sm:mx-8"
+                    iconColor="#315D66"
+                    :link="route('admin.indexCenter')"
+                    value="Volver al menú"
+                />
+            </div>
         </ContentBox>
     </AuthenticatedLayout>
 </template>
@@ -145,12 +162,20 @@ import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import { Head, useForm } from "@inertiajs/vue3";
 import InputError from "@/Components/breeze_components/InputError.vue";
 import InputLabel from "@/Components/breeze_components/InputLabel.vue";
+import ReturnLink from "@/Components/dashboard_components/ReturnLink.vue";
 import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
 import TextInput from "@/Components/breeze_components/TextInput.vue";
 import CcaaSelect from "@/Components/centros_components/CcaaSelect.vue";
-import { inject } from "vue";
-const swal = inject("$swal");
-
+import { incorrectForm, sendForm } from "@/Utils/alerts";
+import {
+    validateName,
+    validateEmail,
+    validateLocalization,
+    validateAddress,
+    validatePhone,
+    validateUbication,
+    validateWeb,
+} from "@/Utils/Validators/center_validator";
 
 const form = useForm({
     name: "",
@@ -182,105 +207,27 @@ const cleanLocationFormat = () => {
 
 function validateForm() {
     const errors = {};
-    const ubicationRegex =/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+(?:[-'a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s,/]*)$/;
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^[0-9]{9}$/;
-    const webRegex = /^(https?:\/\/)?([a-zA-Z0-9_-]+\.)+[a-zA-Z]{2,}(\/[a-zA-Z0-9._-]*)*(\?[a-zA-Z0-9=&_]*)?(#[a-zA-Z0-9_-]*)?$/;
-    const locationRegex= /^https:\/\/www\.google\.com\/maps\/embed\?pb=[^"]+$/;
-    const nameRegex=/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ0-9]+(?:[-'a-zA-ZáéíóúÁÉÍÓÚñÑüÜ0-9\s]*)$/;
 
-    //Validacion nombre
-    if (!form.name.trim()) {
-        errors.name = "El nombre es obligatorio";
-    }else{
-        if(!nameRegex.test(form.name)){
-            errors.name="El nombre sólo puede contener letras, números y espacios";
-        }
-    }
-
-    //Validacion  ubicacion (CCAA, Provincia y Localidad)
-    if (!form.province.trim() || !form.town.trim()) {
-        errors.town = "La comunidad, provincia y localidad son obligatorias";
-    } else {
-        if (
-            !ubicationRegex.test(form.province) ||
-            !ubicationRegex.test(form.town)
-        ) {
-            errors.town =
-                "El formato introducido en provincia o localidad no es correcto";
-        }
-    }
-
-    //Validar direccion
-    if (!form.address.trim()) {
-        errors.address = "La dirección es obligatoria";
-    }
-
-    //Validación teléfono
-    if(!form.tel.trim()){
-        errors.tel="El teléfono es obligatorio";
-    }else{
-        if (!phoneRegex.test(form.tel)) {
-        errors.tel = "El teléfono debe tener 9 dígitos";
-    }
-    }
-
-
-    //Validación email
-    if (form.email.trim()) {
-        if (!emailRegex.test(form.email)) {
-            errors.email = "El correo electrónico no es válido";
-        }
-    }
-
-    //Validacion web
-    if(form.web.trim()){
-        if (!webRegex.test(form.web)) {
-            errors.web = "La URL de la web no es válida";
-        }
-    }
-
-    //Validacion localizacion
-    if(form.location.trim()){
-        if (!locationRegex.test(form.location)) {
-            errors.location = "La URL de la localización no es válida";
-        }
-    }
+    errors.name = validateName(form.name);
+    errors.address = validateAddress(form.address);
+    errors.town = validateLocalization(form.province, form.town);
+    errors.email = validateEmail(form.email);
+    errors.tel = validatePhone(form.tel);
+    errors.web = validateWeb(form.web);
+    errors.location = validateUbication(form.location);
 
     form.errors = errors;
-    return Object.keys(errors).length === 0;
+
+    return Object.keys(errors).every((key) => errors[key] === null);
 }
 
 const submit = () => {
     if (validateForm()) {
-        swal.fire({
-            title: "Confirmar Envío",
-            text:`¿Quieres añadir a ${form.name} como nuevo centro asociado?`,
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Enviar",
-            cancelButtonText: "Cancelar",
-            confirmButtonColor: "#3A2642",
-            cancelButtonColor: "#d33",
-            background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
-            color: "#3A2642",
-            iconColor: "#3A2642",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                form.post(route("admin.createCenter"));
-            }
-        });
+        sendForm(() => {
+            form.post(route("admin.createCenter"));
+        }, `¿Deseas agregar a ${form.name} como nuevo centro asociado?`);
     } else {
-        swal.fire({
-            icon: "error",
-            text: "Completa correctamente el formulario",
-            confirmButtonText: "Aceptar",
-            confirmButtonColor: "#3A2642",
-            background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
-            color: "#3A2642",
-            iconColor: "#3A2642",
-        });
+        incorrectForm();
     }
 };
-
 </script>

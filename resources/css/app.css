@@ -42,3 +42,10 @@ font-style: normal;
     background-image: url(../../public/img/bg.png);
     background-repeat: repeat;
 }
+
+.texto-degradado {
+  background: linear-gradient(0deg, #3A2642, #315D66);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
