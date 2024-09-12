@@ -87,6 +87,7 @@ import ReturnLink from "@/Components/dashboard_components/ReturnLink.vue";
 import ConfirmMessage from "@/Components/dashboard_components/ConfirmMessage.vue";
 import { Head, router, useForm } from "@inertiajs/vue3";
 import { inject } from "vue";
+import { deleteAlert, modAlert } from "@/Utils/alerts";
 
 const swal = inject("$swal");
 
@@ -110,43 +111,11 @@ const headers = [
 ];
 
 const confirmDelete = (itemId, name) => {
-    swal.fire({
-        title: `¿Seguro que quieres eliminar la zona: ${name.toUpperCase()}?`,
-        text: "No podrás revertir esto",
-        icon: "warning",
-        showCancelButton: true,
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Sí, eliminarla",
-        cancelButtonText: "Cancelar",
-        confirmButtonColor: "#3A2642",
-        background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
-        color: "#3A2642",
-        iconColor: "#3A2642",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            deleteZone(itemId);
-        }
-    });
+    deleteAlert(()=>{deleteZone(itemId);},`¿Seguro que quieres eliminar la zona: ${name.toUpperCase()}?`)
 };
 
 const confirmMod = (itemId, name) => {
-    swal.fire({
-        title: `¿Vas a modificar ${name}?`,
-        text: "Se mostrará un formulario donde cambiar los datos",
-        icon: "warning",
-        showCancelButton: true,
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Sí, modificar",
-        cancelButtonText: "Cancelar",
-        confirmButtonColor: "#3A2642",
-        background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
-        color: "#3A2642",
-        iconColor: "#3A2642",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            modZone(itemId);
-        }
-    });
+    modAlert(()=>{ modZone(itemId);},`¿Vas a modificar la zona ${name.toUpperCase()}?`);
 };
 
 const deleteZone = (itemId) => {

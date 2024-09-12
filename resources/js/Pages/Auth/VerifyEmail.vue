@@ -25,9 +25,16 @@ const verificationLinkSent = computed(
     <GuestLayout>
         <Head title="Email de Verificación" />
 
-        <div class="mb-4 text-sm text-skyblue-vlight">
-            ¿Aún no has recibido tu correo de verificación? No te preocupes, le enviaremos otro.
-            <p class="text-xs text-skyblue-vlight mt-2">*Recuerda revisar en la bandeja de spam</p>
+        <div class="mb-4 flex flex-col text-center gap-4 text-skyblue-vlight">
+            <p class="text-white">Hemos enviado un email de verificación a la dirección indicada.</p>
+            <p class="text-sm">
+                ¿Aún no has recibido tu correo de verificación?
+                <br />
+                No te preocupes, le enviaremos otro.
+            </p>
+            <p class="text-xs text-skyblue-vlight">
+                *Recuerda revisar en la bandeja de spam
+            </p>
         </div>
 
         <div
@@ -56,10 +63,10 @@ const verificationLinkSent = computed(
                 >
             </div>
         </form>
-        <p class="mt-4 text-end text-xs text-skyblue-vlight  hover:text-skyblue-light hover:underline">
-            <Link :href="route('home')">
-            Volver a página principal
-            </Link>
+        <p
+            class="mt-4 text-end text-xs text-skyblue-vlight hover:text-skyblue-light hover:underline"
+        >
+            <Link :href="route('home')"> Volver a página principal </Link>
         </p>
     </GuestLayout>
 </template>

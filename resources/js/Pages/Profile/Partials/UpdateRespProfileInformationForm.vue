@@ -84,8 +84,8 @@
                     required
                     autocomplete="email"
                 />
-
                 <InputError class="mt-2" :message="form.errors.email" />
+                <p class="text-lavender-dark text-sm">*Recuerda volver a verificar tu email si lo modificas</p>
             </div>
 
             <div>

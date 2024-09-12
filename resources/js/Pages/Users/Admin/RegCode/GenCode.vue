@@ -58,6 +58,14 @@
                     <Button>Generar Código</Button>
                 </div>
             </form>
+            <div class="flex sm:justify-end justify-center w-full">
+                <ReturnLink
+                    class="text-skyblue-dark font-bold sm:mx-8"
+                    iconColor="#315D66"
+                    :link="route('admin.indexCode')"
+                    value="Volver al menú"
+                />
+            </div>
         </ContentBox>
     </AuthenticatedLayout>
 </template>
@@ -68,7 +76,9 @@ import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import { Head, useForm } from "@inertiajs/vue3";
 import Button from "@/Components/dashboard_components/Button.vue";
 import InputError from "@/Components/breeze_components/InputError.vue";
+import ReturnLink from "@/Components/dashboard_components/ReturnLink.vue";
 import { inject } from "vue";
+import { emptySelectionAlert } from "@/Utils/alerts";
 const swal = inject("$swal");
 
 const form = useForm({
@@ -77,15 +87,7 @@ const form = useForm({
 
 const submit = () => {
     if (!form.type) {
-        swal({
-            icon: "error",
-            text: "Debes seleccionar una de las opciones",
-            confirmButtonText: "Aceptar",
-            confirmButtonColor: "#3A2642",
-            background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
-            color: "#3A2642",
-            iconColor:"#3A2642"
-        });
+        emptySelectionAlert();
     } else {
         form.post(route("admin.genCode"));
     }

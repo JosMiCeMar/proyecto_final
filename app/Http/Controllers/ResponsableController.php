@@ -98,6 +98,8 @@ class ResponsableController extends Controller
         $request->user()->telefono=$request->tel;
         if($request->user()->email!==$request->email){
             $request->user()->email=$request->email;
+            $request->user()->email_verified_at=null;
+            $request->user()->sendEmailVerificationNotification();
         }
         $request->user()->save();
         Responsable::where('user_id',$request->user()->id)->update(['centro_id'=>$request->center]);

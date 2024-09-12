@@ -1,5 +1,5 @@
 <template>
-    <div class="py-12">
+    <div class="py-5">
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="rounded-md bg-gradient-to-b from-skyblue-vlight to-white shadow-md">
                 <div class="p-7 rounded-md textura_fondo w-full h-full">

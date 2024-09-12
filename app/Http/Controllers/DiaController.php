@@ -96,9 +96,9 @@ class DiaController extends Controller
         //Si existe el dia, renderiza el formulario con los datos del dia asignado
         if ($dia) {
             $centros = Centro::select('id', 'nombre', 'localidad')->where('active', 1)->get();
-            $diasDisponibles = Dia::select('fecha')->where('active', 1)->get();
+            $diasNoDisponibles = Dia::select('fecha')->where('active', 1)->where('id', '!=', $id)->get();
 
-            return Inertia::render('Users/Admin/Dias/ModFormDays', ["datos" => $dia, 'centros' => $centros, 'fechas' => $diasDisponibles]);
+            return Inertia::render('Users/Admin/Dias/ModFormDays', ["datos" => $dia, 'centros' => $centros, 'fechas' => $diasNoDisponibles]);
         }
 
         //Si no existe dicho id, vuelve a la tabla

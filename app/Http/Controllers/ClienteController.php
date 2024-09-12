@@ -105,6 +105,8 @@ class ClienteController extends Controller
         $request->user()->telefono = $request->tel;
         if ($request->user()->email !== $request->email) {
             $request->user()->email = $request->email;
+            $request->user()->email_verified_at=null;
+            $request->user()->sendEmailVerificationNotification();
         }
         $request->user()->save();
         Cliente::where('user_id', $request->user()->id)->update(['fecha_nacimiento' => $request->date, 'condicion_especial' => $request->condition]);

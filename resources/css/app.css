@@ -6,46 +6,96 @@
   --vdp-bg-color: #dde9fd;
   --vdp-text-color: #3A2642;
   --vdp-border-radius: 10px;
-  --vdp-selected-bg-color:#3A2642;
+  --vdp-selected-bg-color: #3A2642;
   --vdp-hover-bg-color: #BA7AD6;
   --vdp-current-date-outline-color: #BA7AD6;
-  --vdp-disabled-color:#b0adad;
-  --vdp-elem-border-radius:5px;
-  --vdp-divider-color:#3A2642;
-  --vdp-arrow-color:#3A2642;
+  --vdp-disabled-color: #b0adad;
+  --vdp-elem-border-radius: 5px;
+  --vdp-divider-color: #3A2642;
+  --vdp-arrow-color: #3A2642;
+
+  --lavender-logo: #BA7AD6;
+  --skyblue-logo: #68C3D6;
+  --lavender-dark: #3A2642;
+  --skyblue-dark: #315D66;
+  --lavender-light: #db99f7;
+  --skyblue-light: #87b3fa;
+  --lavender-vlight: #e3b8f5;
+  --skyblue-vlight: #bdd6ff;
 }
 
-@font-face {
+  @font-face {
     font-family: 'HandWriteFont';
     src: url(../../public/fonts/handwrite.ttf) format('woff2');
     font-weight: normal;
-  font-style: normal;
-}
+    font-style: normal;
+  }
 
-@font-face {
-  font-family: 'MonserratFont';
-  src: url(../../public/fonts/monserrat.ttf) format('woff2');
-  font-weight: normal;
-font-style: normal;
-}
+  @font-face {
+    font-family: 'MonserratFont';
+    src: url(../../public/fonts/monserrat.ttf) format('woff2');
+    font-weight: normal;
+    font-style: normal;
+  }
 
-@font-face {
-  font-family: 'InterFont';
-  src: url(../../public/fonts/inter.ttf) format('woff2');
-  font-weight: normal;
-font-style: normal;
-}
+  @font-face {
+    font-family: 'InterFont';
+    src: url(../../public/fonts/inter.ttf) format('woff2');
+    font-weight: normal;
+    font-style: normal;
+  }
 
-
-
-.textura_fondo {
+  .textura_fondo {
     background-image: url(../../public/img/bg.png);
     background-repeat: repeat;
-}
+  }
 
-.texto-degradado {
-  background: linear-gradient(0deg, #3A2642, #315D66);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
+  .texto-degradado {
+    background: linear-gradient(0deg, var(--lavender-dark), var(--skyblue-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /*Estilos para carrusel de imagenes (sobreescriben a los predeterminados)*/
+  .carousel__prev,
+  .carousel__next {
+    color: var(--skyblue-light) !important;
+    background-color: var(--lavender-dark) !important;
+    opacity: 0.3;
+    padding: 10px 0px !important;
+    border-radius: 15px !important;
+    border: 1px solid var(--skyblue-light) !important;
+  }
+
+  .carousel__prev:hover,
+  .carousel__next:hover {
+    opacity: 1;
+  }
+
+  .carousel__pagination-button{
+    color:var(--lavender-dark) !important
+  }
+
+  /*Estilos para el time-picker (sobreescriben a los predeterminados)*/
+  .time_picker ul{
+    background-color: #DBEAFE;
+    color:#3A2642;
+  }
+  
+  .time_picker ul li:focus{
+      background: #e3b8f5 !important;
+      color:#3A2642 !important;
+  }
+  
+  .time_picker .active{
+      background: #e3b8f5 !important;
+      color:#3A2642 !important;
+  }
+  
+  .time_picker ul li:hover{
+      background-color: #87b3fa !important;
+      color:#3A2642 !important;
+  }
+  
+  

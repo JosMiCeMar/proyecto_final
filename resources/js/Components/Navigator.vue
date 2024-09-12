@@ -4,7 +4,7 @@ import Dropdown from "@/Components/breeze_components/Dropdown.vue";
 import DropdownLink from "@/Components/breeze_components/DropdownLink.vue";
 </script>
 <template>
-    <nav class="hidden justify-center sm:flex mx-6">
+    <nav class="hidden w-[75%] justify-center gap-5 md:flex mx-6">
         <div class="flex">
             <NavigatorLink
                 :href="route('home')"
@@ -34,17 +34,17 @@ import DropdownLink from "@/Components/breeze_components/DropdownLink.vue";
             >
         </div>
     </nav>
-    <div class="block sm:hidden w-fit">
-        <div class="ms-3 relative">
+    <nav class="inline md:hidden justify-center items-center w-fit">
+        <div class="relative">
             <Dropdown align="left" >
                 <template #trigger>
                     <span class="inline-flex rounded-md">
                         <button
                             type="button"
-                            class="inline-flex svgChange m-4 items-center p-3 border border-transparent leading-4 rounded-md bg-lavender-dark focus:outline-none transition ease-in-out duration-150"
+                            class="inline-flex m-2 items-center p-2 border border-transparent leading-4 rounded-md bg-skyblue-dark hover:bg-lavender-logo  focus:outline-none transition ease-in-out duration-150"
                         >
                             <svg
-                                class="w-4 fill-white"
+                                class="w-6 fill-white"
                                 xmlns="http://www.w3.org/2000/svg"
                                 viewBox="0 0 448 512"
                             >
@@ -82,13 +82,7 @@ import DropdownLink from "@/Components/breeze_components/DropdownLink.vue";
                 </template>
             </Dropdown>
         </div>
-    </div>
+    </nav>
 </template>
-<style>
 
-.svgChange:hover > svg{
-    fill: #87b3fa;
-}
-
-</style>
 

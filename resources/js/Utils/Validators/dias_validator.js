@@ -1,7 +1,7 @@
-//Funciones para obtener las fechas limite del calendario de dias
-
+//Cantidad de años para añadir a la fecha límite
 const plusYears = 1;
 
+//Funciones para obtener las fechas limite del calendario de dias
 export function getToday() {
     const date = new Date();
     date.setHours(0, 0, 0, 0);

@@ -33,9 +33,8 @@
                             type="number"
                             class="mt-1 block w-full border-lavender-dark bg-blue-100 text-lavender-dark focus:border-lavender-light focus:ring-lavender-light rounded-md shadow-sm"
                             v-model="form.price"
-                            min="0.5"
-                            step="0.5"
-                            @blur="formatDecimals"
+                            step="0.01"
+                            @blur="roundPrice"
                         />
                         <InputError class="mt-2" :message="form.errors.price" />
                     </div>
@@ -43,27 +42,17 @@
                     <!-- Tiempo estimado -->
                     <div class="mt-4">
                         <InputLabel for="time" value="Tiempo Estimado" />
-                        <TextInput
-                            list="timeOptions"
-                            id="time"
-                            type="time"
-                            class="mt-1 block w-full"
+                        <VueTimepicker
                             v-model="form.time"
-                            autocomplete="time"
+                            class="time_picker"
+                            input-class="mt-1 block w-full border-lavender-dark bg-blue-100 text-lavender-dark focus:border-lavender-light focus:ring-lavender-light rounded-md shadow-sm"
+                            :hour-range="hoursRange"
+                            :minute-range="minutesRange"
+                            hide-disabled-items
+                            close-on-complete
+                            auto-scroll
+                            advanced-keyboard
                         />
-                        <datalist id="timeOptions">
-                            <option value="00:30"></option>
-                            <option value="01:00"></option>
-                            <option value="01:30"></option>
-                            <option value="02:00"></option>
-                            <option value="02:30"></option>
-                            <option value="03:00"></option>
-                            <option value="03:30"></option>
-                            <option value="04:00"></option>
-                            <option value="04:30"></option>
-                            <option value="05:00"></option>
-                            <option value="05:30"></option>
-                        </datalist>
                         <InputError class="mt-2" :message="form.errors.time" />
                     </div>
 
@@ -80,6 +69,14 @@
                     </div>
                 </form>
             </div>
+            <div class="flex sm:justify-end justify-center w-full">
+                <ReturnLink
+                    class="text-skyblue-dark font-bold sm:mx-8"
+                    iconColor="#315D66"
+                    :link="route('admin.indexZona')"
+                    value="Volver al menú"
+                />
+            </div>
         </ContentBox>
     </AuthenticatedLayout>
 </template>
@@ -90,11 +87,18 @@ import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import { Head, useForm } from "@inertiajs/vue3";
 import InputError from "@/Components/breeze_components/InputError.vue";
 import InputLabel from "@/Components/breeze_components/InputLabel.vue";
+import VueTimepicker from "vue3-timepicker/src/VueTimepicker.vue";
 import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
 import TextInput from "@/Components/breeze_components/TextInput.vue";
-import { inject } from "vue";
-
-const swal = inject("$swal");
+import ReturnLink from "@/Components/dashboard_components/ReturnLink.vue";
+import { incorrectForm, sendForm } from "@/Utils/alerts";
+import {
+    getHoursRange,
+    getMinutesRange,
+    validateName,
+    validatePrice,
+    validateTime,
+} from "@/Utils/Validators/zonas_validator";
 
 const form = useForm({
     name: "",
@@ -102,98 +106,35 @@ const form = useForm({
     time: "",
 });
 
-//Funcion para redondear (0-5) los decimales del precio
-function formatDecimals() {
-    if (form.price % 1 !== 0) {
-        const parteDecimal = form.price % 1;
-        const redondearADecimalCercano = Math.round(parteDecimal * 2) / 2;
-        const parteEntera = Math.floor(form.price);
-        form.price= parteEntera + redondearADecimalCercano;
+function roundPrice() {
+    // Verifica si el valor existe y es un número
+    if (form.price !== null && !isNaN(form.price)) {
+        // Redondea a 2 decimales
+        form.price = parseFloat(form.price).toFixed(2);
     }
 }
 
+const hoursRange=getHoursRange();
+const minutesRange=getMinutesRange();
+
 function validateForm() {
     const errors = {};
-    const nameRegex =
-        /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+(?:[-'a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]*)$/;
 
-    //Validacion nombre
-    if (!form.name.trim()) {
-        errors.name = "El nombre es obligatorio";
-    } else {
-        if (!nameRegex.test(form.name)) {
-            errors.name = "El nombre sólo puede contener letras y espacios";
-        }
-
-        if (form.name.length > 255) {
-            errors.name = "El nombre no puede superar los 255 carácteres";
-        }
-    }
-
-    //Validar precio
-    if (isNaN(form.price)) {
-        errors.price = "El precio debe ser un número";
-    } else {
-        if (form.price < 0.5) {
-            errors.price = "El precio no puede ser inferior a 0.5€";
-        }
-
-        if (form.price > 10000) {
-            errors.price = "El precio no puede ser superior a 10000€";
-        }
-    }
-
-    //Validación tiempo
-    if (!form.time.trim()) {
-        errors.time = "El tiempo estimado es obligatorio";
-    } else {
-        const minutes = parseInt(form.time.split(":")[1]);
-        const hours = parseInt(form.time.split(":")[0]);
-
-        if (minutes !== 0 && minutes !== 30) {
-            errors.time = "Los minutos únicamente pueden ser 00 o 30";
-        }
-        if (hours < 0 || hours > 5) {
-            errors.time = "Las horas deben estar entre 0 y 5";
-        }
-        if (hours <= 0 && minutes <= 0) {
-            errors.time = "El tiempo estimado mínimo son 30 minutos";
-        }
-    }
+    errors.name = validateName(form.name);
+    errors.price = validatePrice(form.price);
+    errors.time = validateTime(form.time);
 
     form.errors = errors;
-    return Object.keys(errors).length === 0;
+    return Object.keys(errors).every((key) => errors[key] === null);
 }
 
 const submit = () => {
     if (validateForm()) {
-        swal.fire({
-            title: "Confirmar Envío",
-            text: `¿Quieres añadir ${form.name} como nueva zona?`,
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Enviar",
-            cancelButtonText: "Cancelar",
-            confirmButtonColor: "#3A2642",
-            cancelButtonColor: "#d33",
-            background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
-            color: "#3A2642",
-            iconColor: "#3A2642",
-        }).then((result) => {
-            if (result.isConfirmed) {
-                form.post(route("admin.createZona"));
-            }
-        });
+        sendForm(() => {
+            form.post(route("admin.createZona"));
+        }, `¿Quieres añadir ${form.name} como nueva zona?`);
     } else {
-        swal.fire({
-            icon: "error",
-            text: "Completa correctamente el formulario",
-            confirmButtonText: "Aceptar",
-            confirmButtonColor: "#3A2642",
-            background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
-            color: "#3A2642",
-            iconColor: "#3A2642",
-        });
+        incorrectForm();
     }
 };
 </script>

@@ -111,10 +111,12 @@ import ModButton from "@/Components/dashboard_components/ModButton.vue";
 import PaginatedTable from "@/Components/dashboard_components/PaginatedTable.vue";
 import ReturnLink from "@/Components/dashboard_components/ReturnLink.vue";
 import { Head, router, useForm } from "@inertiajs/vue3";
-import { inject, computed, ref } from "vue";
+import { computed, ref } from "vue";
 import InputLabel from "@/Components/breeze_components/InputLabel.vue";
 import Checkbox from "@/Components/breeze_components/Checkbox.vue";
 import ConfirmMessage from "@/Components/dashboard_components/ConfirmMessage.vue";
+import { deleteAlert, modAlert } from "@/Utils/alerts";
+import { getToday } from "@/Utils/Validators/dias_validator";
 
 //Propiedades - datos recibidos del back
 const props = defineProps({
@@ -129,9 +131,7 @@ const form = useForm({
     id: "",
 });
 
-const swal = inject("$swal"); //Constante del sweetalert2
-const today = new Date();
-today.setHours(0, 0, 0, 0);
+const today = getToday();
 const showAllDays = ref(false); //Constante para controlar el mostrado de datos en tabla
 const headers = ["Centro", "Fecha", "Modificar", "Eliminar"]; //Cabeceras de la tabla
 
@@ -152,45 +152,15 @@ const displayedDays = computed(() => {
 //Funcion para confirmar el borrado
 const confirmDelete = (itemId, day, name) => {
     const date = new Date(day).toLocaleDateString();
-    swal.fire({
-        title: `¿Seguro que quieres eliminar la fecha ${date}, asignada a ${name}?`,
-        text: "No podrás revertir esto",
-        icon: "warning",
-        showCancelButton: true,
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Sí, eliminarlo",
-        cancelButtonText: "Cancelar",
-        confirmButtonColor: "#3A2642",
-        background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
-        color: "#3A2642",
-        iconColor: "#3A2642",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            deleteCenter(itemId);
-        }
-    });
+    const text = `¿Seguro que quieres eliminar la fecha ${date}, asignada a ${name}?`
+    deleteAlert(()=>{deleteCenter(itemId)}, text);
 };
 
 //Funcion para confirmar la modificacion
 const confirmMod = (itemId, day, name) => {
     const date = new Date(day).toLocaleDateString();
-    swal.fire({
-        title: `¿Vas a modificar la fecha ${date} asignada al centro ${name}?`,
-        text: "Se mostrará un formulario donde cambiar los datos",
-        icon: "warning",
-        showCancelButton: true,
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Sí, modificar",
-        cancelButtonText: "Cancelar",
-        confirmButtonColor: "#3A2642",
-        background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
-        color: "#3A2642",
-        iconColor: "#3A2642",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            modCenter(itemId);
-        }
-    });
+    const text =  `¿Vas a modificar la fecha ${date} asignada al centro ${name}?`;
+    modAlert(()=>{modCenter(itemId)},text);
 };
 
 //Funcion que manda los datos al back para su borrado

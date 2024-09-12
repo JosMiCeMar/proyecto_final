@@ -73,3 +73,55 @@ export function closeSession() {
         }
     });
 }
+
+export function deleteAlert(executeMethod, text){
+    Swal.fire({
+        title:text,
+        text: "No podrás revertir esto",
+        icon: "warning",
+        showCancelButton: true,
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, eliminarlo",
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "#3A2642",
+        background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
+        color: "#3A2642",
+        iconColor: "#3A2642",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            executeMethod();
+        }
+    });
+}
+
+export function modAlert(executeMethod, text){
+    Swal.fire({
+        title:text,
+        text: "Se mostrará un formulario donde cambiar los datos",
+        icon: "warning",
+        showCancelButton: true,
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, modificarlo",
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "#3A2642",
+        background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
+        color: "#3A2642",
+        iconColor: "#3A2642",
+    }).then((result) => {
+        if (result.isConfirmed) {
+            executeMethod();
+        }
+    });
+}
+
+export function emptySelectionAlert(){
+    Swal.fire({
+        icon: "error",
+        text: "Debes seleccionar una de las opciones",
+        confirmButtonText: "Aceptar",
+        confirmButtonColor: "#3A2642",
+        background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
+        color: "#3A2642",
+        iconColor: "#DC2626",
+    });
+}

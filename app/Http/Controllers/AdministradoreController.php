@@ -35,8 +35,11 @@ class AdministradoreController extends Controller
         $request->user()->nombre=$request->name;
         $request->user()->apellidos=$request->lastname;
         $request->user()->telefono=$request->tel;
+        
         if($request->user()->email!==$request->email){
             $request->user()->email=$request->email;
+            $request->user()->email_verified_at=null;
+            $request->user()->sendEmailVerificationNotification();
         }
 
         $request->user()->save();

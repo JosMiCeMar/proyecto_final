@@ -14,14 +14,14 @@ const props = defineProps({
 
 const classes = computed(() =>
     props.active
-        ? "inline-flex items-center rounded-t-lg text-lavender-dark font-bold bg-gradient-to-b from-lightyellow to-skyblue-vlight transition duration-150 ease-in-out"
-        : "inline-flex items-center rounded-t-lg  text-skyblue-dark font-bold bg-gradient-to-b from-gray-200 to-gray-400 hover:underline transition duration-150 ease-in-out"
+        ? " text-lavender-vlight underline"
+        : " text-white hover:underline hover:text-skyblue-vlight"
 );
 </script>
 
 <template>
-    <Link :href="href" :class="classes">
-        <div class="textura_fondo w-full h-full px-10 py-2 rounded-t-lg flex items-center text-center">
+    <Link :href="href" :class="'inline-flex items-center rounded-md transition-all duration-150 ease-in-out' + classes">
+        <div class="w-full h-full px-2 py-2 rounded-md flex items-center text-center">
             <slot />
         </div>
     </Link>

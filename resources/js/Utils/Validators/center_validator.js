@@ -5,10 +5,14 @@ export function validateName(name) {
 
     if (!name.trim()) {
         return "El nombre es obligatorio";
-    } else {
-        if (!nameRegex.test(name)) {
-            return "El nombre sólo puede contener letras, números y espacios";
-        }
+    }
+
+    if (!nameRegex.test(name)) {
+        return "El nombre sólo puede contener letras, números y espacios";
+    }
+
+    if (name.length > 255) {
+        return "El nombre no puede superar los 255 carácteres";
     }
 
     return null;
@@ -21,10 +25,10 @@ export function validateAddress(address) {
 
     if (!address.trim()) {
         return "La dirección es obligatoria";
-    } else {
-        if (!addressRegex.test(address)) {
-            return "La dirección sólo puede contener letras, números y espacios";
-        }
+    }
+
+    if (!addressRegex.test(address)) {
+        return "La dirección sólo puede contener letras, números y espacios";
     }
 
     return null;
@@ -37,13 +41,10 @@ export function validateLocalization(province, town) {
 
     if (!province.trim() || !town.trim()) {
         return "La comunidad, provincia y localidad son obligatorias";
-    } else {
-        if (
-            !localizationRegex.test(province) ||
-            !localizationRegex.test(town)
-        ) {
-            return "El formato introducido en provincia o localidad no es correcto";
-        }
+    }
+
+    if (!localizationRegex.test(province) || !localizationRegex.test(town)) {
+        return "El formato introducido en provincia o localidad no es correcto";
     }
 
     return null;
@@ -54,10 +55,10 @@ export function validatePhone(phone) {
     const phoneRegex = /^[0-9]{9}$/;
     if (!phone.trim()) {
         return "El teléfono es obligatorio";
-    } else {
-        if (!phoneRegex.test(phone)) {
-            return "El teléfono debe tener 9 dígitos";
-        }
+    }
+    
+    if (!phoneRegex.test(phone)) {
+        return "El teléfono debe tener 9 dígitos";
     }
 
     return null;
