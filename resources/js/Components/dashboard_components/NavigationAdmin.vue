@@ -4,7 +4,7 @@
             :href="route('dashboard')"
             :active="route().current('dashboard')"
         >
-            Tu Perfil
+            Panel de Usuario
         </NavLink>
         <div @click="emitOpen" :class="classes">Gestión de datos</div>
     </div>

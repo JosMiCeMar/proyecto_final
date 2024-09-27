@@ -22,7 +22,7 @@ class ZonaController extends Controller
 
         $request->validate([
             'name' => 'required|string|max:255',
-            'price' => 'required|numeric|decimal:0,2|min:0.5|max:10000',
+            'price' => 'required|numeric|decimal:0,2|min:0|max:1000',
             'time' => 'required||date_format:H:i'
         ]);
 
@@ -56,7 +56,7 @@ class ZonaController extends Controller
         $request->validate([
             'id'=>'required|integer|exists:zonas,id',
             'name' => 'required|string|max:255',
-            'price' => 'required|numeric|decimal:0,2|min:0.5|max:10000',
+            'price' => 'required|numeric|decimal:0,2|min:0|max:1000',
             'time' => 'required||date_format:H:i'
         ]);
 

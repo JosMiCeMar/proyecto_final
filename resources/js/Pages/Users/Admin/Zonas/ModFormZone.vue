@@ -33,8 +33,8 @@
                             type="number"
                             class="mt-1 block w-full border-lavender-dark bg-blue-100 text-lavender-dark focus:border-lavender-light focus:ring-lavender-light rounded-md shadow-sm"
                             v-model="form.price"
-                            min="0.5"
-                            step="0.5"
+                            min="0"
+                            step="0.01"
                             @blur="roundPrice"
                         />
                         <InputError class="mt-2" :message="form.errors.price" />

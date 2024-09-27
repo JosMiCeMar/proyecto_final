@@ -20,7 +20,7 @@ defineProps({
     </template>
     <template v-else>
         <span
-            class="block w-full text-lg sm:text-sm px-4 py-3 sm:py-2 text-start leading-5 text-white hover:bg-skyblue-dark focus:outline-none focus:bg-skyblue-dark transition duration-150 ease-in-out"
+            class="block cursor-pointer w-full text-lg sm:text-sm px-4 py-3 sm:py-2 text-start leading-5 text-white hover:bg-skyblue-dark focus:outline-none focus:bg-skyblue-dark transition duration-150 ease-in-out"
         >
             <slot />
         </span>

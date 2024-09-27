@@ -26,7 +26,9 @@ const verificationLinkSent = computed(
         <Head title="Email de Verificación" />
 
         <div class="mb-4 flex flex-col text-center gap-4 text-skyblue-vlight">
-            <p class="text-white">Hemos enviado un email de verificación a la dirección indicada.</p>
+            <p>
+                Tu perfil aún no se ha verificado
+            </p>
             <p class="text-sm">
                 ¿Aún no has recibido tu correo de verificación?
                 <br />

@@ -1,6 +1,6 @@
 <template>
     <header
-        class="px-10 sm:rounded-md sm:my-2 sm:mx-4 flex flex-col lg:flex-row gap-2 py-3 bg-gradient-to-r from-lavender-dark to-skyblue-dark shadow-md lg:sticky lg:top-0 lg:z-10"
+        class="px-10 flex flex-col lg:flex-row gap-2 py-3 bg-gradient-to-r from-lavender-dark to-skyblue-dark shadow-md lg:sticky lg:top-0 lg:z-10"
     >
         <div class="flex justify-center items-center rounded-md">
             <Link :href="route('home')" class="p-2">

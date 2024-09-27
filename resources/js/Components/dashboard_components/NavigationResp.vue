@@ -4,7 +4,7 @@
             :href="route('dashboard')"
             :active="route().current('dashboard')"
         >
-            Tu Perfil
+            Panel de Usuario
         </NavLink>
         <NavLink :href="route('dashboard')" :active="route().current('home')">
             Responsable
