@@ -6,8 +6,11 @@
         >
             Panel de Usuario
         </NavLink>
-        <NavLink :href="route('dashboard')" :active="route().current('home')">
-            Cliente
+        <NavLink :href="route('client.indexCitas')" :active="route().current('client.indexCitas')">
+            Mis Citas
+        </NavLink>
+        <NavLink :href="route('client.indexTratamientos')" :active="route().current('client.indexTratamientos')">
+            Mis Tratamientos
         </NavLink>
     </div>
 </template>

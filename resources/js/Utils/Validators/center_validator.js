@@ -21,7 +21,7 @@ export function validateName(name) {
 //Validacion direccion
 export function validateAddress(address) {
     const addressRegex =
-        /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ0-9]+(?:[-'a-zA-ZáéíóúÁÉÍÓÚñÑüÜ0-9\s]*)$/;
+        /^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ0-9]+(?:[-/'a-zA-ZáéíóúÁÉÍÓÚñÑüÜ0-9\s]*)$/;
 
     if (!address.trim()) {
         return "La dirección es obligatoria";
@@ -56,7 +56,7 @@ export function validatePhone(phone) {
     if (!phone.trim()) {
         return "El teléfono es obligatorio";
     }
-    
+
     if (!phoneRegex.test(phone)) {
         return "El teléfono debe tener 9 dígitos";
     }

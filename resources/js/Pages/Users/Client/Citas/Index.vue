@@ -1,0 +1,47 @@
+<template>
+    <Head title="Mis Citas" />
+    <AuthenticatedLayout>
+        <ContentBox
+            title="Mis Citas"
+            description="Menú de gestión de tus citas"
+        >
+            <div class="m-5 flex flex-col gap-5">
+                <LinkBox
+                    v-for="box in linksList"
+                    :route="box.route"
+                    :icon="box.icon"
+                    :title="box.title"
+                    :description="box.description"
+                />
+            </div>
+           <!--Contenedor del mensaje a mostrar si se lleva a cabo la accion de eliminar o modificar correctamente-->
+           <ConfirmMessage
+                v-if="$page.props.flash.msg"
+                :message="$page.props.flash.msg"
+            />
+        </ContentBox>
+    </AuthenticatedLayout>
+</template>
+<script setup>
+import AuthenticatedLayout from "@/Layouts/breeze_layouts/AuthenticatedLayout.vue";
+import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
+import { Head } from "@inertiajs/vue3";
+import LinkBox from "@/Components/dashboard_components/LinkBox.vue";
+import ConfirmMessage from "@/Components/dashboard_components/ConfirmMessage.vue";
+
+const linksList = [
+    {
+        route: route("client.createCitas"),
+        icon: "img/icons/plus_lavender.svg",
+        title: "Reservar Cita",
+        description:
+            "Formulario para reservar tu próxima cita",
+    },
+    {
+        route: route("dashboard"),
+        icon: "img/icons/mod_lavender.svg",
+        title: "Modificar o Eliminar Cita",
+        description: "Menú para modificar o eliminar tus citas",
+    },
+];
+</script>

@@ -17,6 +17,9 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Centro;
+use App\Models\Dia;
+use App\Models\Zona;
 
 class ClienteController extends Controller
 {
@@ -105,12 +108,43 @@ class ClienteController extends Controller
         $request->user()->telefono = $request->tel;
         if ($request->user()->email !== $request->email) {
             $request->user()->email = $request->email;
-            $request->user()->email_verified_at=null;
+            $request->user()->email_verified_at = null;
             $request->user()->sendEmailVerificationNotification();
         }
         $request->user()->save();
         Cliente::where('user_id', $request->user()->id)->update(['fecha_nacimiento' => $request->date, 'condicion_especial' => $request->condition]);
 
         return Redirect::route('client.profileEdit');
+    }
+
+    //Métodos para la sección Citas
+    public function indexCitas()
+    {
+        return Inertia::render('Users/Client/Citas/Index');
+    }
+
+    public function createCitas()
+    {
+
+        //Centros disponibles
+        $centros = Centro::select('id', 'nombre', 'localidad')->where('active', 1)->get();
+
+        //Fechas de dias disponibles que aún no han pasado
+        $hoy = Carbon::now()->startOfDay()->format('Y-m-d');
+        $dias = Dia::select('id','fecha', 'centro_id')
+            ->where('active', true)
+            ->where('fecha', '>', $hoy)
+            ->get();
+        
+        //Zonas de tratamiento
+        $zonas= Zona::select('id','nombre','precio')->where('active', 1)->get();
+
+        return Inertia::render('Users/Client/Citas/FormCitation', ['centros' => $centros, 'fechas' => $dias, 'zonas'=>$zonas]);
+    }
+
+    //Métodos para la sección de Tratamientos
+    public function indexTratamientos()
+    {
+        return Inertia::render('Users/Client/Tratamientos/Index');
     }
 }

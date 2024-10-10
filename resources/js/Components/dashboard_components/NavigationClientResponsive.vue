@@ -7,10 +7,16 @@
             Panel de Usuario
         </ResponsiveNavLink>
         <ResponsiveNavLink
-            :href="route('dashboard')"
-            :active="route().current('home')"
+            :href="route('client.indexCitas')"
+            :active="route().current('client.indexCitas')"
         >
-            Cliente
+            Mis Citas
+        </ResponsiveNavLink>
+        <ResponsiveNavLink
+            :href="route('client.indexTratamientos')"
+            :active="route().current('client.indexTratamientos')"
+        >
+            Mis Tratamientos
         </ResponsiveNavLink>
     </div>
 
