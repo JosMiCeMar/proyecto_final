@@ -6,15 +6,25 @@
         >
             Panel de Usuario
         </NavLink>
-        <NavLink :href="route('client.indexCitas')" :active="route().current('client.indexCitas')">
+        <NavLink
+            :href="route('client.indexCitas')"
+            :active="
+                route().current('client.indexCitas') ||
+                route().current('client.createCitas') ||
+                route().current('client.createHoraCitas')||
+                route().current('client.storeHoraCitas')
+            "
+        >
             Mis Citas
         </NavLink>
-        <NavLink :href="route('client.indexTratamientos')" :active="route().current('client.indexTratamientos')">
+        <NavLink
+            :href="route('client.indexTratamientos')"
+            :active="route().current('client.indexTratamientos')"
+        >
             Mis Tratamientos
         </NavLink>
     </div>
 </template>
 <script setup>
-import NavLink from '@/Components/breeze_components/NavLink.vue';
+import NavLink from "@/Components/breeze_components/NavLink.vue";
 </script>
-

@@ -60,7 +60,7 @@
                         <InputLabel for="zone" value="Selecciona la zona de tratamiento:" />
                         <select
                             id="zone"
-                            class="w-full border-lavender-dark bg-blue-100 text-lavender-dark focus:border-lavender-light focus:ring-lavender-light rounded-md shadow-sm"
+                            class="w-full uppercase border-lavender-dark bg-blue-100 text-lavender-dark focus:border-lavender-light focus:ring-lavender-light rounded-md shadow-sm"
                             v-model="form.zone"
                         >
                             <option
@@ -152,7 +152,7 @@ function validateForm() {
 const submit = () => {
     if (validateForm()) {
         sendForm(() => {
-            form.post(route("admin.createDias"));
+            form.post(route("client.createHoraCitas"));
         }, `¿Quieres pasar a seleccionar la hora de la cita?`);
     } else {
         incorrectForm();

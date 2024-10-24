@@ -8,7 +8,7 @@ const titulo = "Trabaja con Nosotros";
 
 <template>
     <Base :titulo="titulo">
-        <img class="w-full h-auto" src="img/recursos/impulsa.jpg" alt="impulsa tu negocio">
+        <img class="w-full h-auto hidden md:block" src="img/recursos/impulsa.jpg" alt="impulsa tu negocio">
         <MainBox>
             <Title
             value="la explotación compartida"

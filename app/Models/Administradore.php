@@ -14,6 +14,9 @@ class Administradore extends Model
         'user_id'
     ];
 
+    public $timestamps = false;
+
+
     public static function isAdmin(){
          
          $userId = Auth::id();

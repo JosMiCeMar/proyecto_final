@@ -50,10 +50,10 @@ class CentroController extends Controller
         $centro->email=$request->email;
         $centro->web = $request->web;
         $centro->ubicacion = $request->location;
-
+        
         $centro->save();
 
-        return redirect(route('admin.indexCenter'))->with('msg','Centro creado correctamente');;
+        return redirect(route('admin.indexCenter'))->with('msg','Centro creado correctamente');
     }
 
     //Vista de la tabla de centros activos para modificar o eliminar, parametro opcional para mostrado de mensaje (se usa en modificar y eliminar)

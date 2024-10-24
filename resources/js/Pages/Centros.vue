@@ -16,7 +16,7 @@ defineProps({
 
 <template>
   <Base titulo="Centros Asociados">
-    <img class="w-full h-auto" src="img/recursos/comienza.jpg" alt="impulsa tu negocio">
+    <img class="w-full h-auto hidden md:block" src="img/recursos/comienza.jpg" alt="impulsa tu negocio">
     <MainBox>
     <Title value="Nuestros Centros Asociados" subText="Estos son los centros que ya pertenecen a la familia de Mímate" />
       <CenterContainer :centros="centros"/>

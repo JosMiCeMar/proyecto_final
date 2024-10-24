@@ -14,10 +14,8 @@ return new class extends Migration
         Schema::create('clientes', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->boolean('consentimiento')->default(false);
             $table->boolean('condicion_especial');
             $table->date('fecha_nacimiento');
-            $table->timestamps();
         });
     }
 

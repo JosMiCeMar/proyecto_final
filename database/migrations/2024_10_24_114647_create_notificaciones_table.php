@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('dias', function (Blueprint $table) {
+        Schema::create('notificaciones', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('centro_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->date('fecha');
+            //Si el usuario destinatario se elimina, la notificacion tambien
+            $table->foreignId('user_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
+            $table->string('mensaje');
+            $table->boolean('leido')->default(false);
             $table->timestamps();
         });
     }
@@ -24,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('dias');
+        Schema::dropIfExists('notificaciones');
     }
 };

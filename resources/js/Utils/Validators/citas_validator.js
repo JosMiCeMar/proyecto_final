@@ -12,3 +12,21 @@ export function validateIdinList(id, array, nameOfData) {
 
     return null;
 }
+
+export function validateTimeInList(time, timeList){
+    const regexFormat = /^([01]\d|2[0-3]):[0-5]\d$/;
+
+    if(!time.trim()){
+        return "Selecciona una hora";
+    }
+
+    if(!regexFormat.test(time)){
+        return "El formato introducido no es correcto";
+    }
+
+    if(!timeList.includes(time)){
+        return "La hora escogida no se encuentra disponible";
+    }
+
+    return null;
+}

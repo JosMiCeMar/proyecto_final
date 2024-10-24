@@ -15,6 +15,8 @@ class Responsable extends Model
         'centro_id'
     ];
 
+    public $timestamps = false;
+
     public static function isRespons(){
          
         $userId = Auth::id();

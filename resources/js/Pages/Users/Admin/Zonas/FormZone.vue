@@ -43,6 +43,7 @@
                     <div class="mt-4">
                         <InputLabel for="time" value="Tiempo Estimado" />
                         <VueTimepicker
+                        id="time"
                             v-model="form.time"
                             class="time_picker"
                             input-class="mt-1 block w-full border-lavender-dark bg-blue-100 text-lavender-dark focus:border-lavender-light focus:ring-lavender-light rounded-md shadow-sm"

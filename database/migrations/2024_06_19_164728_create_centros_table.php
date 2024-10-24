@@ -18,9 +18,9 @@ return new class extends Migration
             $table->integer('telefono');
             $table->string('localidad');
             $table->string('provincia');
-            $table->string('web')->nullable()->default(null);
-            $table->string('email')->nullable()->default(null);
-            $table->longText('ubicacion')->nullable()->default(null);
+            $table->string('web')->nullable()->default(null); //Dato opcional
+            $table->string('email')->nullable()->default(null); //Dato opcional
+            $table->longText('ubicacion')->nullable()->default(null); //Dato opcional
             $table->boolean('active')->default(true);
             $table->timestamps();
         });

@@ -1,6 +1,6 @@
 <template>
     <Base :titulo="titulo">
-        <Carousel class="w-full h-auto" :autoplay="20000" :wrap-around="true">
+        <Carousel class="w-full h-auto hidden md:block" :autoplay="20000" :wrap-around="true">
             <Slide v-for="slide in carouselImages" :key="slide">
                 <div class="carousel__item">
                     <img :src="slide" alt="carousel_image" />

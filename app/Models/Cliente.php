@@ -17,6 +17,8 @@ class Cliente extends Model
         'fecha_nacimiento'
     ];
 
+    public $timestamps = false;
+
     public static function isClient(){
          
         $userId = Auth::id();
