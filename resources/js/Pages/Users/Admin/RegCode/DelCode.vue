@@ -4,6 +4,7 @@
         <ContentBox
             title="Eliminar Códigos de Registro"
             description="Selecciona los códigos de registro que vas a eliminar"
+            :returnLink="route('admin.indexCode')"
         >
             <!--Contenedor del mensaje a mostrar si se lleva a cabo la accion de eliminar o modificar correctamente-->
             <ConfirmMessage
@@ -73,14 +74,6 @@
                     </form>
                 </div>
             </template>
-            <div class="flex sm:justify-end justify-center w-full">
-                <ReturnLink
-                    class="text-skyblue-dark font-bold sm:mx-8"
-                    iconColor="#315D66"
-                    :link="route('admin.indexCode')"
-                    value="Volver al menú"
-                />
-            </div>
         </ContentBox>
     </AuthenticatedLayout>
 </template>

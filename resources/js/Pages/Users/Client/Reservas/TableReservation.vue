@@ -4,9 +4,10 @@
         <ContentBox
             title="Modificar o Eliminar Citas"
             description="Selecciona la opción de la cita"
+            :returnLink="route('client.indexCitas')"
         >
-           <!--Contenedor del mensaje a mostrar si se lleva a cabo la accion de eliminar o modificar correctamente-->
-           <ConfirmMessage
+            <!--Contenedor del mensaje a mostrar si se lleva a cabo la accion de eliminar o modificar correctamente-->
+            <ConfirmMessage
                 v-if="$page.props.flash.msg"
                 :message="$page.props.flash.msg"
                 position="center"
@@ -28,10 +29,7 @@
                 <!--Tabla de datos-->
                 <div>
                     <form @submit.prevent="submit">
-                        <PaginatedTable
-                            :items="props.citas"
-                            :headers="headers"
-                        >
+                        <PaginatedTable :items="props.citas" :headers="headers">
                             <template
                                 #default="{ item }"
                                 class="text-lavender-dark"
@@ -39,7 +37,9 @@
                                 <td
                                     class="px-6 py-4 font-bold whitespace-nowrap"
                                 >
-                                    {{ item.centro_nombre }} ({{ item.centro_localidad }})
+                                    {{ item.centro_nombre }} ({{
+                                        item.centro_localidad
+                                    }})
                                 </td>
                                 <td class="px-6 py-4">
                                     {{
@@ -49,22 +49,35 @@
                                     }}
                                 </td>
                                 <td class="px-6 py-4 uppercase">
-                                    {{item.zona_nombre}}
+                                    {{ item.zona_nombre }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{item.hora_inicio}}
+                                    {{ item.hora_inicio }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{item.hora_fin}}
+                                    {{ item.hora_fin }}
                                 </td>
                                 <td class="px-6 py-4">
                                     <ModButton
-                                        @click.prevent=""
+                                        @click.prevent="
+                                            confirmMod(
+                                                item.id,
+                                                item.fecha,
+                                                item.zona_nombre,
+                                                item.centro_nombre
+                                            )
+                                        "
                                     />
                                 </td>
                                 <td class="px-6 py-4">
                                     <TrashButton
-                                        @click.prevent=""
+                                        @click.prevent="
+                                            confirmDelete(
+                                                item.id,
+                                                item.zona_nombre,
+                                                item.fecha
+                                            )
+                                        "
                                     />
                                 </td>
                             </template>
@@ -75,18 +88,13 @@
                         >
                             <p>{{ form.errors.id }}</p>
                         </div>
+                        <InputError
+                            v-if="$page.props.errors"
+                            :message="$page.props.errors[0]"
+                        />
                     </form>
                 </div>
             </template>
-            <!--Boton de retorno-->
-            <div class="flex sm:justify-end justify-center w-full">
-                <ReturnLink
-                    class="text-skyblue-dark font-bold sm:mx-8"
-                    iconColor="#315D66"
-                    :link="route('client.indexCitas')"
-                    value="Volver al menú"
-                />
-            </div>
         </ContentBox>
     </AuthenticatedLayout>
 </template>
@@ -97,10 +105,10 @@ import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import TrashButton from "@/Components/dashboard_components/TrashButton.vue";
 import ModButton from "@/Components/dashboard_components/ModButton.vue";
 import PaginatedTable from "@/Components/dashboard_components/PaginatedTable.vue";
-import ReturnLink from "@/Components/dashboard_components/ReturnLink.vue";
 import { Head, router, useForm } from "@inertiajs/vue3";
 import ConfirmMessage from "@/Components/dashboard_components/ConfirmMessage.vue";
 import { deleteAlert, modAlert } from "@/Utils/alerts";
+import InputError from "@/Components/breeze_components/InputError.vue";
 
 //Propiedades - datos recibidos del back
 const props = defineProps({
@@ -115,31 +123,42 @@ const form = useForm({
     id: "",
 });
 
-const headers = ["Centro", "Fecha","Zona","Hora Cita","Hora Fin (Estimación)", "Modificar Hora", "Eliminar"]; //Cabeceras de la tabla
-
+const headers = [
+    "Centro",
+    "Fecha",
+    "Zona",
+    "Hora Cita",
+    "Hora Fin (Estimación)",
+    "Modificar Hora",
+    "Eliminar",
+]; //Cabeceras de la tabla
 
 //Funcion para confirmar el borrado
-const confirmDelete = (itemId, day) => {
+const confirmDelete = (itemId, zone, day) => {
     const date = new Date(day).toLocaleDateString();
-    const text = `¿Seguro que quieres eliminar la cita del día ${date}?`
-    deleteAlert(()=>{deleteCenter(itemId)}, text);
+    const text = `¿Seguro que quieres eliminar la cita del tratamiento de ${zone} del día ${date}?`;
+    deleteAlert(() => {
+        deleteCitation(itemId);
+    }, text);
 };
 
 //Funcion para confirmar la modificacion
-const confirmMod = (itemId, day, name) => {
+const confirmMod = (itemId, day, zone, center) => {
     const date = new Date(day).toLocaleDateString();
-    const text =  `¿Vas a modificar la fecha ${date} asignada al centro ${name}?`;
-    modAlert(()=>{modCenter(itemId)},text);
+    const text = `¿Quieres modificar la hora del tratamiento de ${zone} del ${date} en el centro ${center}?`;
+    modAlert(() => {
+        modCitation(itemId);
+    }, text);
 };
 
 //Funcion que manda los datos al back para su borrado
-const deleteCenter = (itemId) => {
+const deleteCitation = (itemId) => {
     form.id = itemId;
-    form.post(route("admin.delDias"));
+    form.post(route("client.delReser"));
 };
 
 //Funcion que manda los datos al back para mostrar el formulario de modificacion
-const modCenter = (itemId) => {
-    router.get(route("admin.modDias", { id: itemId }));
+const modCitation = (itemId) => {
+    router.get(route("client.modReser", { id: itemId }));
 };
 </script>

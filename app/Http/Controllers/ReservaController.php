@@ -17,100 +17,95 @@ use Inertia\Inertia;
 
 class ReservaController extends Controller
 {
+    private const COMIENZO_JORNADA = "9:00";
+    private const INICIO_DESCANSO = "14:00";
+    private const FIN_DESCANSO = "16:00";
+    private const FIN_JORNADA = "19:00";
 
 
     //-------------------FUNCIONES PARA CLIENTES---------------------
     public function indexReservaCliente()
     {
-        return Inertia::render('Users/Client/Citas/Index');
+        return Inertia::render('Users/Client/Reservas/Index');
     }
 
     public function createReservaCliente()
     {
-        //Centros disponibles
-        $centros = Centro::select('id', 'nombre', 'localidad')->where('active', 1)->get();
+        try {
 
-        //Fechas de dias disponibles que aún no han pasado
-        $hoy = Carbon::now()->startOfDay()->format('Y-m-d');
-        $dias = Dia::select('id', 'fecha', 'centro_id')
-            ->where('fecha', '>', $hoy)
-            ->get();
+            //Centros disponibles
+            $centros = Centro::select('id', 'nombre', 'localidad')->where('active', 1)->get();
 
-        //Zonas de tratamiento
-        $zonas = Zona::select('id', 'nombre', 'precio')->where('active', 1)->get();
+            //Fechas de dias disponibles que aún no han pasado
+            $hoy = Carbon::now()->startOfDay()->format('Y-m-d');
+            $dias = Dia::select('id', 'fecha', 'centro_id')
+                ->where('fecha', '>', $hoy)
+                ->get();
 
-        return Inertia::render('Users/Client/Citas/FormCitation', ['centros' => $centros, 'fechas' => $dias, 'zonas' => $zonas]);
+            //Zonas de tratamiento
+            $zonas = Zona::select('id', 'nombre', 'precio')->where('active', 1)->get();
+
+            return Inertia::render('Users/Client/Reservas/FormReservation', ['centros' => $centros, 'fechas' => $dias, 'zonas' => $zonas]);
+        } catch (Exception $er) {
+            return redirect(route('client.indexCitas'))->withErrors('Error: ' . $er->getMessage());
+        }
     }
 
     public function createHoraReservaCliente(Request $request)
     {
+        try {
+            $request->validate([
+                'center' => 'required|integer|exists:centros,id',
+                'date' => 'required|integer|exists:dias,id',
+                'zone' => 'required|integer|exists:zonas,id',
+            ]);
 
-        $request->validate([
-            'center' => 'required|integer|exists:centros,id',
-            'date' => 'required|integer|exists:dias,id',
-            'zone' => 'required|integer|exists:zonas,id',
-        ]);
+            //Instancias de los objetos seleccionados
+            $centro = Centro::select('nombre', 'localidad')->where('id', $request->center)->first();
+            $dia = Dia::find($request->date);
+            $zona = Zona::find($request->zone);
 
-        //Instancias de los objetos seleccionados
-        $centro = Centro::select('nombre', 'localidad')->where('id', $request->center)->first();
-        $dia = Dia::find($request->date);
-        $zona = Zona::find($request->zone);
+            //Reservas del dia seleccionado
+            $reservas = Reserva::select('hora_inicio', 'hora_fin')->where('dia_id', $dia->id)->get();
 
-        //Reservas del dia seleccionado
-        $reservas = Reserva::select('hora_inicio', 'hora_fin')->where('dia_id', $dia->id)->get();
+            $horasDisponibles = [];
 
-        $horasDisponibles = [];
+            if (!$reservas->isEmpty()) {
+                $horasDisponibles = $this->horasDisponibles($zona, $reservas);
 
-        if (!$reservas->isEmpty()) {
-            //Rango de horas de trabajo
-            $horasTrabajo = $this->rangoHorasTrabajo();
-            //Objeto con el intervalo del tiempo estimado en realizar el tratamiento
-            $intervaloTratamiento = CarbonInterval::createFromFormat('H:i:s', $zona->tiempo_estimado);
-
-            foreach ($horasTrabajo as $hora) {
-                $horaObj = Carbon::createFromTimeString($hora);
-
-                // Verificar si la hora está ocupada en alguna reserva
-                $estaOcupada = $reservas->some(function ($reserva) use ($horaObj, $intervaloTratamiento) {
-                    $inicioReservaObj = Carbon::createFromTimeString($reserva->hora_inicio);
-                    $finReservaObj = Carbon::createFromTimeString($reserva->hora_fin);
-                    //Obtencion de la hora SUBSTRAYENDO el tiempo estima del trabajo, para evitar solapamiento de citas
-                    $inicioTiempoRestado = $inicioReservaObj->copy()->sub($intervaloTratamiento);
-
-                    return $horaObj->betweenExcluded($inicioTiempoRestado, $finReservaObj);
-                });
-
-                // Si no está ocupada, agregar a las horas disponibles
-                if (!$estaOcupada) {
-                    $horasDisponibles[] = $horaObj->format('H:i');
-                }
+                //En caso de no haber reservas previas, muestra todas las horas disponibles, evitando el proceso anterior
+            } else {
+                $horasDisponibles = $this->rangoHorasTrabajo($zona->tiempo_estimado);
             }
-        } else {
-            $horasDisponibles = $this->rangoHorasTrabajo();
-        }
 
-        return Inertia::render('Users/Client/Citas/FormHourCitation', ['centro' => $centro, 'dia' => $dia, 'zona' => $zona, 'horasTrabajo' => $horasDisponibles]);
+            return Inertia::render('Users/Client/Reservas/FormHourReservation', ['centro' => $centro, 'dia' => $dia, 'zona' => $zona, 'horasTrabajo' => $horasDisponibles]);
+        } catch (Exception $er) {
+            return redirect(route('client.indexCitas'))->withErrors('Error: ' . $er->getMessage());
+        }
     }
 
     public function storeReservaCliente(Request $request)
     {
-        $request->validate([
-            'date' => 'required|integer|exists:dias,id',
-            'zone' => 'required|integer|exists:zonas,id',
-            'startHour' => 'required|date_format:H:i',
-            'endHour' => 'required|date_format:H:i'
-        ]);
-
-        $cliente_id = Cliente::select('id')->where('user_id', Auth::id())->first();
-
-        $reserva = new Reserva();
-        $reserva->cliente_id = $cliente_id->id;
-        $reserva->zona_id = $request->zone;
-        $reserva->dia_id = $request->date;
-        $reserva->hora_inicio = $request->startHour;
-        $reserva->hora_fin = $request->endHour;
-
         try {
+            $request->validate([
+                'date' => 'required|integer|exists:dias,id',
+                'zone' => 'required|integer|exists:zonas,id',
+                'startHour' => 'required|date_format:H:i',
+                'endHour' => 'required|date_format:H:i'
+            ]);
+
+
+
+            $cliente_id = Cliente::select('id')->where('user_id', Auth::id())->first();
+
+            $reserva = new Reserva();
+            $reserva->cliente_id = $cliente_id->id;
+            $reserva->zona_id = $request->zone;
+            $reserva->dia_id = $request->date;
+            $reserva->hora_inicio = $request->startHour;
+            $reserva->hora_fin = $request->endHour;
+
+
             $reserva->save();
             return redirect(route('client.indexCitas'))->with('msg', 'Cita reservada correctamente');
         } catch (Exception $er) {
@@ -120,47 +115,204 @@ class ReservaController extends Controller
 
     public function listCliente()
     {
+        try {
+            $cliente_id = Cliente::select('id')->where('user_id', Auth::id())->first();
 
-        $cliente_id = Cliente::select('id')->where('user_id', Auth::id())->first();
+            if (!$cliente_id) {
+                return redirect()->back()->withErrors('Cliente no encontrado.');
+            }
 
-        $citas = Reserva::where('cliente_id', $cliente_id->id)
-            ->join('zonas', 'reservas.zona_id', '=', 'zonas.id')
-            ->join('dias', 'reservas.dia_id', '=', 'dias.id')
-            ->join('centros', 'dias.centro_id', '=', 'centros.id')
-            ->select(
-                'zona_id',
-                'zonas.nombre as zona_nombre',
-                'centro_id',
-                'centros.nombre as centro_nombre',
-                'centros.localidad as centro_localidad',
-                'dias.fecha as fecha',
-                'hora_inicio',
-                'hora_fin'
-            )
-            ->where('dias.fecha', '>', Carbon::today())
-            ->get();
 
-        return Inertia::render('Users/Client/Citas/TableCitation', ['citas' => $citas]);
+            $citas = Reserva::where('cliente_id', $cliente_id->id)
+                ->join('zonas', 'reservas.zona_id', '=', 'zonas.id')
+                ->join('dias', 'reservas.dia_id', '=', 'dias.id')
+                ->join('centros', 'dias.centro_id', '=', 'centros.id')
+                ->select(
+                    'reservas.id',
+                    'zona_id',
+                    'zonas.nombre as zona_nombre',
+                    'centro_id',
+                    'centros.nombre as centro_nombre',
+                    'centros.localidad as centro_localidad',
+                    'dias.fecha as fecha',
+                    'hora_inicio',
+                    'hora_fin'
+                )
+                ->where('dias.fecha', '>', Carbon::today())
+                ->get();
+
+
+            return Inertia::render('Users/Client/Reservas/TableReservation', ['citas' => $citas]);
+        } catch (Exception $er) {
+            return redirect(route('client.indexCitas'))->withErrors('Error: ' . $er->getMessage());
+        }
     }
 
-    //Funcion privada para la obtención del rango de horas de trabajo
-    private function rangoHorasTrabajo()
+    public function modReservaCliente($id)
     {
-        $horaInicio = Carbon::createFromTimeString('9:00');
-        $horaDescanso = Carbon::createFromTimeString('13:30');
-        $horaFinDescanso = $horaDescanso->copy()->addHours(2);
-        $horaFin = Carbon::createFromTimeString('19:30');
+        try {
+            $cliente = Cliente::select('id')->where('user_id', Auth::id())->first();
 
-        $rangoHorasTrabajo[] = $horaInicio->format('H:i');
-
-        while ($horaInicio < $horaFin) {
-            $horaInicio->addMinutes(15);
-
-            if (!$horaInicio->betweenExcluded($horaDescanso, $horaFinDescanso)) {
-                $rangoHorasTrabajo[] = $horaInicio->format('H:i');
+            if (!$cliente) {
+                return redirect()->back()->withErrors('Cliente no encontrado.');
             }
+
+            $reservaSeleccionada = Reserva::where('id', $id)
+                ->where('cliente_id', $cliente->id)
+                ->first();
+
+            if (!$reservaSeleccionada) {
+                return redirect()->back()->withErrors('No se encuentra la cita indicada');
+            }
+
+            $datos = Reserva::where('reservas.id', $reservaSeleccionada->id)
+                ->join('zonas', 'reservas.zona_id', '=', 'zonas.id')
+                ->join('dias', 'reservas.dia_id', '=', 'dias.id')
+                ->join('centros', 'dias.centro_id', '=', 'centros.id')
+                ->select(
+                    'reservas.id',
+                    'zonas.nombre as zona_nombre',
+                    'zonas.tiempo_estimado',
+                    'centros.nombre as centro_nombre',
+                    'centros.localidad as centro_localidad',
+                    'dias.fecha as fecha',
+                    'hora_inicio',
+                    'hora_fin'
+                )
+                ->first();
+
+            if (!$datos) {
+                return redirect()->back()->withErrors('Datos de la reserva no encontrados');
+            }
+
+            $zona = Zona::find($reservaSeleccionada->zona_id);
+
+            if (!$zona) {
+                return redirect()->back()->withErrors('Zona no encontrada para la reserva');
+            }
+
+            $reservas = Reserva::select('hora_inicio', 'hora_fin')
+                ->where('dia_id', $reservaSeleccionada->dia_id)
+                ->get();
+
+            $horasDisponibles = $reservas->isEmpty()
+                ? $this->rangoHorasTrabajo($zona->tiempo_estimado)
+                : $this->horasDisponibles($zona, $reservas);
+
+            return Inertia::render('Users/Client/Reservas/ModFormReservation', [
+                'cita' => $datos,
+                'horasDisponibles' => $horasDisponibles
+            ]);
+        } catch (Exception $e) {
+            return redirect(route('client.indexCitas'))->withErrors('Error: ' . $e->getMessage());
+        }
+    }
+
+    public function modHoraCliente(Request $request)
+    {
+        try {
+            $request->validate([
+                'id' => 'required|integer|exists:reservas,id',
+                'startHour' => 'required|date_format:H:i',
+                'endHour' => 'required|date_format:H:i'
+            ]);
+
+
+            $reserva = Reserva::find($request->id);
+
+            if ($reserva) {
+                $reserva->update(['hora_inicio' => $request->startHour, 'hora_fin' => $request->endHour]);
+                return redirect(route('client.tableCitas'))->with('msg', 'Cita modificada correctamente');
+            } else {
+                return redirect()->back()->withErrors('No se encontró la reserva');
+            }
+        } catch (Exception $er) {
+            return redirect(route('client.indexCitas'))->withErrors('No se pudo completar la reserva, error: ' . $er->getMessage());
+        }
+    }
+
+
+    public function deleteReservaCliente(Request $request)
+    {
+        try {
+            $request->validate(['id' => 'required|integer|exists:reservas,id']);
+
+            $clienteId = Cliente::where('user_id', Auth::id())->value('id');
+
+            if (!$clienteId) {
+                return redirect(route('client.indexCitas'))->withErrors('No existe el cliente autenticado');
+            }
+
+            $reservaSeleccionada = Reserva::where('id', $request->id)->where('cliente_id', $clienteId)->first();
+
+            if ($reservaSeleccionada) {
+                $reservaSeleccionada->delete();
+                return redirect()->back()->with('msg', 'Cita eliminada correctamente');
+            } else {
+                return redirect(route('client.tableCitas'))->withErrors('No existe la cita indicada');
+            }
+        } catch (Exception $er) {
+            return redirect(route('client.indexCitas'))->withErrors('Error inesperado: ' . $er->getMessage());
+        }
+    }
+
+
+    //Funcion privada para la obtención del rango de horas de trabajo, se tiene el cuenta el tiempo estimado para los descansos
+    private function rangoHorasTrabajo($tiempo_estimado)
+    {
+        $intervaloTratamiento = CarbonInterval::createFromFormat('H:i:s', $tiempo_estimado);
+        $horaInicio = Carbon::createFromTimeString(self::COMIENZO_JORNADA);
+        $horaDescansoInicio = Carbon::createFromTimeString(self::INICIO_DESCANSO)->sub($intervaloTratamiento);
+        $horaDescansoFin = Carbon::createFromTimeString(self::FIN_DESCANSO);
+        $horaFin = Carbon::createFromTimeString(self::FIN_JORNADA);
+
+        $rangoHorasTrabajo = [];
+        $horaActual = $horaInicio->copy();
+
+        while ($horaActual->lessThanOrEqualTo($horaFin)) {
+            $horaFinTratamiento = $horaActual->copy()->add($intervaloTratamiento);
+
+            if (
+                !$horaActual->betweenExcluded($horaDescansoInicio, $horaDescansoFin) &&
+                $horaFinTratamiento->lessThanOrEqualTo($horaFin)
+            ) {
+                $rangoHorasTrabajo[] = $horaActual->format('H:i');
+            }
+
+            $horaActual->addMinutes(15);
         }
 
         return $rangoHorasTrabajo;
+    }
+
+    private function horasDisponibles($zona, $reservas)
+    {
+        $horasDisponibles = [];
+
+        //Rango de horas de trabajo
+        $horasTrabajo = $this->rangoHorasTrabajo($zona->tiempo_estimado);
+        //Objeto con el intervalo del tiempo estimado en realizar el tratamiento
+        $intervaloTratamiento = CarbonInterval::createFromFormat('H:i:s', $zona->tiempo_estimado);
+
+        foreach ($horasTrabajo as $hora) {
+            $horaObj = Carbon::createFromTimeString($hora);
+
+            // Verificar si la hora está ocupada en alguna reserva
+            $estaOcupada = $reservas->some(function ($reserva) use ($horaObj, $intervaloTratamiento) {
+                $inicioReservaObj = Carbon::createFromTimeString($reserva->hora_inicio);
+                $finReservaObj = Carbon::createFromTimeString($reserva->hora_fin);
+                //Obtencion de la hora SUBSTRAYENDO el tiempo estimado, para evitar solapamiento de citas
+                $inicioTiempoRestado = $inicioReservaObj->copy()->sub($intervaloTratamiento);
+
+                return $horaObj->betweenExcluded($inicioTiempoRestado, $finReservaObj);
+            });
+
+            // Si no está ocupada, agregar a las horas disponibles
+            if (!$estaOcupada) {
+                $horasDisponibles[] = $horaObj->format('H:i');
+            }
+        }
+
+        return $horasDisponibles;
     }
 }

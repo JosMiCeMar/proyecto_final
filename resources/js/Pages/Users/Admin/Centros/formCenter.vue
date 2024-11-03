@@ -4,6 +4,7 @@
         <ContentBox
             title="Añadir centro asociado"
             description="Formulario de creación de centro asociado"
+            :returnLink="route('admin.indexCenter')"
         >
             <div class="flex items-center justify-center w-full">
                 <form
@@ -143,14 +144,6 @@
                         </PrimaryButton>
                     </div>
                 </form>
-            </div>
-            <div class="flex sm:justify-end justify-center w-full">
-                <ReturnLink
-                    class="text-skyblue-dark font-bold sm:mx-8"
-                    iconColor="#315D66"
-                    :link="route('admin.indexCenter')"
-                    value="Volver al menú"
-                />
             </div>
         </ContentBox>
     </AuthenticatedLayout>

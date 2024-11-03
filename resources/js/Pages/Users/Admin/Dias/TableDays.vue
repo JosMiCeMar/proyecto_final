@@ -4,6 +4,7 @@
         <ContentBox
             title="Modificar o Eliminar Días Asignados"
             description="Selecciona la opción del día de trabajo"
+            :returnLink="route('admin.indexDias')"
         >
            <!--Contenedor del mensaje a mostrar si se lleva a cabo la accion de eliminar o modificar correctamente-->
            <ConfirmMessage
@@ -90,15 +91,6 @@
                     </form>
                 </div>
             </template>
-            <!--Boton de retorno-->
-            <div class="flex sm:justify-end justify-center w-full">
-                <ReturnLink
-                    class="text-skyblue-dark font-bold sm:mx-8"
-                    iconColor="#315D66"
-                    :link="route('admin.indexDias')"
-                    value="Volver al menú"
-                />
-            </div>
         </ContentBox>
     </AuthenticatedLayout>
 </template>
@@ -109,7 +101,6 @@ import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import TrashButton from "@/Components/dashboard_components/TrashButton.vue";
 import ModButton from "@/Components/dashboard_components/ModButton.vue";
 import PaginatedTable from "@/Components/dashboard_components/PaginatedTable.vue";
-import ReturnLink from "@/Components/dashboard_components/ReturnLink.vue";
 import { Head, router, useForm } from "@inertiajs/vue3";
 import { computed, ref } from "vue";
 import InputLabel from "@/Components/breeze_components/InputLabel.vue";

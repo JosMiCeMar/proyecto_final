@@ -4,6 +4,7 @@
         <ContentBox
             title="Modificar Zona Tratamiento"
             description="Formulario de modificación de zona de tratamiento"
+            :returnLink="route('admin.indexZona')"
         >
             <div class="flex items-center justify-center w-full">
                 <form
@@ -70,14 +71,6 @@
                     </div>
                 </form>
             </div>
-            <div class="flex sm:justify-end justify-center w-full">
-                <ReturnLink
-                    class="text-skyblue-dark font-bold sm:mx-8"
-                    iconColor="#315D66"
-                    :link="route('admin.indexZona')"
-                    value="Volver al menú"
-                />
-            </div>
         </ContentBox>
     </AuthenticatedLayout>
 </template>
@@ -91,7 +84,6 @@ import InputLabel from "@/Components/breeze_components/InputLabel.vue";
 import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
 import VueTimepicker from "vue3-timepicker/src/VueTimepicker.vue";
 import TextInput from "@/Components/breeze_components/TextInput.vue";
-import ReturnLink from "@/Components/dashboard_components/ReturnLink.vue";
 import { incorrectForm, sendForm } from "@/Utils/alerts";
 import {
     getHoursRange,

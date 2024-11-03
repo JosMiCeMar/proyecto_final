@@ -6,6 +6,7 @@
             title="Generar Código de Usuario"
             description="Formulario para la creación de códigos de registro para nuevos usuarios"
             class="text-center"
+            :returnLink="route('admin.indexCode')"
         >
             <form
                 @submit.prevent="submit"
@@ -58,14 +59,6 @@
                     <Button>Generar Código</Button>
                 </div>
             </form>
-            <div class="flex sm:justify-end justify-center w-full">
-                <ReturnLink
-                    class="text-skyblue-dark font-bold sm:mx-8"
-                    iconColor="#315D66"
-                    :link="route('admin.indexCode')"
-                    value="Volver al menú"
-                />
-            </div>
         </ContentBox>
     </AuthenticatedLayout>
 </template>

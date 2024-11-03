@@ -4,6 +4,7 @@
         <ContentBox
             title="Modificar o Eliminar Centros Asociados"
             description="Selecciona la opción del centro asociado"
+            :returnLink="route('admin.indexCenter')"
         >
             <!--Contenedor del mensaje a mostrar si se lleva a cabo la accion de eliminar o modificar correctamente-->
             <ConfirmMessage
@@ -71,14 +72,6 @@
                     </form>
                 </div>
             </template>
-            <div class="flex sm:justify-end justify-center w-full">
-                <ReturnLink
-                    class="text-skyblue-dark font-bold sm:mx-8"
-                    iconColor="#315D66"
-                    :link="route('admin.indexCenter')"
-                    value="Volver al menú"
-                />
-            </div>
         </ContentBox>
     </AuthenticatedLayout>
 </template>

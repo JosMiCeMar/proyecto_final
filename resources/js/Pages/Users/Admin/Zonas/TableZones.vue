@@ -4,6 +4,7 @@
         <ContentBox
             title="Modificar o Eliminar Zonas Tratamiento"
             description="Selecciona la opción de la zona de tratamiento"
+            :returnLink="route('admin.indexZona')"
         >
             <!--Contenedor del mensaje a mostrar si se lleva a cabo la accion de eliminar o modificar correctamente-->
             <ConfirmMessage
@@ -65,14 +66,6 @@
                     </form>
                 </div>
             </template>
-            <div class="flex sm:justify-end justify-center w-full">
-                <ReturnLink
-                    class="text-skyblue-dark font-bold sm:mx-8"
-                    iconColor="#315D66"
-                    :link="route('admin.indexZona')"
-                    value="Volver al menú"
-                />
-            </div>
         </ContentBox>
     </AuthenticatedLayout>
 </template>

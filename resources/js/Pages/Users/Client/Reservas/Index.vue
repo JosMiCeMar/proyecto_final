@@ -20,7 +20,7 @@
                 :message="$page.props.flash.msg"
             />
             <InputError
-                v-if="$page.props.errors[0]"
+                v-if="$page.props.errors"
                 :message="$page.props.errors[0]"
             />
         </ContentBox>
