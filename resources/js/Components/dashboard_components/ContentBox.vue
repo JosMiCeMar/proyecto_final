@@ -8,7 +8,7 @@
                     <h3 class="text-2xl font-bold text-lavender-dark uppercase">
                         {{ props.title }}
                     </h3>
-                    <p class="font-bold text-skyblue-dark">
+                    <p class="font-bold text-skyblue-dark mb-2">
                         {{ props.description }}
                     </p>
                     <slot />

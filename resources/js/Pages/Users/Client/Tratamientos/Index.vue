@@ -9,6 +9,7 @@
                
             </div>
         </ContentBox>
+        {{ $page.props }}
     </AuthenticatedLayout>
 </template>
 <script setup>
@@ -16,5 +17,12 @@ import AuthenticatedLayout from "@/Layouts/breeze_layouts/AuthenticatedLayout.vu
 import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import { Head } from "@inertiajs/vue3";
 
+//Propiedades - datos recibidos del back
+const props = defineProps({
+    tratamientos: {
+        type: Array,
+        required: true,
+    },
+});
 
 </script>

@@ -20,7 +20,7 @@
                         <CenterSelect
                             id="center"
                             class="w-full"
-                            @change="form.date=''"
+                            @change="form.date = ''"
                             v-model="form.center"
                             :centers="props.centros"
                         />
@@ -51,14 +51,25 @@
                     </div>
 
                     <!--Si el centro seleccionado no dispone de fechas, mostrara un mensaje para indicarlo-->
-                    <div v-if="form.center!==''&&daysSelectedCenter.length===0">
-                        <InputError class="mt-2" message="El centro seleccionado no dispone de días asignados" />
+                    <div
+                        v-if="
+                            form.center !== '' &&
+                            daysSelectedCenter.length === 0
+                        "
+                    >
+                        <InputError
+                            class="mt-2"
+                            message="El centro seleccionado no dispone de días asignados"
+                        />
                     </div>
 
                     <!--Zonas de tratamiento-->
                     <!--Se mostraran si se ha seleccionado una fecha-->
                     <div v-if="form.date !== ''" class="mt-2">
-                        <InputLabel for="zone" value="Selecciona la zona de tratamiento:" />
+                        <InputLabel
+                            for="zone"
+                            value="Selecciona la zona de tratamiento:"
+                        />
                         <select
                             id="zone"
                             class="w-full uppercase border-lavender-dark bg-blue-100 text-lavender-dark focus:border-lavender-light focus:ring-lavender-light rounded-md shadow-sm"
@@ -69,7 +80,7 @@
                                 :key="zone.id"
                                 :value="zone.id"
                             >
-                                {{ zone.nombre}} - Precio: {{zone.precio}}€ 
+                                {{ zone.nombre }} - Precio: {{ zone.precio }}€
                             </option>
                         </select>
                         <InputError class="mt-2" :message="form.errors.zone" />
@@ -86,6 +97,10 @@
                             Seleccionar horario
                         </PrimaryButton>
                     </div>
+                    <InputError
+                        v-if="$page.props.errors"
+                        :message="$page.props.errors[0]"
+                    />
                 </form>
             </div>
         </ContentBox>
@@ -114,15 +129,15 @@ const props = defineProps({
         required: true,
     },
     zonas: {
-        type:Array,
-        required:true
-    }
+        type: Array,
+        required: true,
+    },
 });
 
 const form = useForm({
     center: "",
-    date:"",
-    zone:""
+    date: "",
+    zone: "",
 });
 
 const daysSelectedCenter = computed(() => {
@@ -132,9 +147,9 @@ const daysSelectedCenter = computed(() => {
 function validateForm() {
     const errors = {};
 
-    errors.center=validateIdinList(form.center, props.centros, 'centro');
-    errors.date=validateIdinList(form.date, daysSelectedCenter.value, 'día');
-    errors.zone=validateIdinList(form.zone, props.zonas, 'zona');
+    errors.center = validateIdinList(form.center, props.centros, "centro");
+    errors.date = validateIdinList(form.date, daysSelectedCenter.value, "día");
+    errors.zone = validateIdinList(form.zone, props.zonas, "zona");
 
     form.errors = errors;
     return Object.keys(errors).every((key) => errors[key] === null);

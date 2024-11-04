@@ -17,7 +17,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ProfileUpdateRequest;
-
+use App\Models\Reserva;
 
 class ClienteController extends Controller
 {
@@ -118,6 +118,11 @@ class ClienteController extends Controller
     //Métodos para la sección de Tratamientos
     public function indexTratamientos()
     {
-        return Inertia::render('Users/Client/Tratamientos/Index');
+        $cliente = Cliente::select('id')->where('user_id', Auth::id())->first();
+    
+        $tratamientos = Reserva::where('cliente_id', $cliente->id)->get();
+    
+        return Inertia::render('Users/Client/Tratamientos/Index', ['tratamientos' => $tratamientos]);
     }
+    
 }

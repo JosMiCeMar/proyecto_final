@@ -90,20 +90,27 @@ class ReservaController extends Controller
             $request->validate([
                 'date' => 'required|integer|exists:dias,id',
                 'zone' => 'required|integer|exists:zonas,id',
-                'startHour' => 'required|date_format:H:i',
-                'endHour' => 'required|date_format:H:i'
+                'startHour' => 'required|date_format:H:i'
             ]);
 
 
 
             $cliente_id = Cliente::select('id')->where('user_id', Auth::id())->first();
+            if (!$cliente_id) {
+                return redirect()->back()->withErrors('Cliente no encontrado');
+            }
+
+            $horaFin=$this->setHoraFin($request->startHour, $request->zone);
+            if (!$horaFin) {
+                return redirect()->back()->withErrors('Error al asignar hora final');
+            }
 
             $reserva = new Reserva();
             $reserva->cliente_id = $cliente_id->id;
             $reserva->zona_id = $request->zone;
             $reserva->dia_id = $request->date;
             $reserva->hora_inicio = $request->startHour;
-            $reserva->hora_fin = $request->endHour;
+            $reserva->hora_fin = $horaFin;
 
 
             $reserva->save();
@@ -214,15 +221,21 @@ class ReservaController extends Controller
             $request->validate([
                 'id' => 'required|integer|exists:reservas,id',
                 'startHour' => 'required|date_format:H:i',
-                'endHour' => 'required|date_format:H:i'
             ]);
-
 
             $reserva = Reserva::find($request->id);
 
             if ($reserva) {
-                $reserva->update(['hora_inicio' => $request->startHour, 'hora_fin' => $request->endHour]);
-                return redirect(route('client.tableCitas'))->with('msg', 'Cita modificada correctamente');
+
+                $horaFin=$this->setHoraFin($request->startHour, $reserva->zona_id);
+
+                if($horaFin){
+                    $reserva->update(['hora_inicio' => $request->startHour, 'hora_fin' => $horaFin]);
+                    return redirect(route('client.tableCitas'))->with('msg', 'Cita modificada correctamente');
+                }else{
+                    return redirect()->back()->withErrors('Error al implementar la hora final del tratamiento');
+                }
+                
             } else {
                 return redirect()->back()->withErrors('No se encontró la reserva');
             }
@@ -314,5 +327,20 @@ class ReservaController extends Controller
         }
 
         return $horasDisponibles;
+    }
+
+    private function setHoraFin($horaInicio, $idZona){
+
+        $horaInicioObj=Carbon::createFromTimeString($horaInicio);
+
+        $zona=Zona::find($idZona);
+
+        if($zona){
+            $tiempoEstimado=CarbonInterval::createFromFormat('H:i:s',$zona->tiempo_estimado);
+            return $horaInicioObj->copy()->add($tiempoEstimado)->format('H:i');
+        }else{
+            return false;
+        }
+
     }
 }

@@ -14,7 +14,7 @@ export function validateIdinList(id, array, nameOfData) {
 }
 
 export function validateTimeInList(time, timeList){
-    const regexFormat = /^([01]\d|2[0-3]):[0-5]\d$/;
+    const regexFormat = /^([01]\d|2[0-3]):(00|15|30|45)$/;
 
     if(!time.trim()){
         return "Selecciona una hora";

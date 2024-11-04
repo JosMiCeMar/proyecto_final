@@ -20,3 +20,8 @@ export function addHours(hour1, hour2) {
 
   return `${horasFormateadas}:${minutosFormateados}`;
 }
+
+export function formatHour(hour){
+  const arrayHour = hour.split(":");
+  return `${arrayHour[0]}:${arrayHour[1]}`;
+}

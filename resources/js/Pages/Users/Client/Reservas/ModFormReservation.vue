@@ -63,12 +63,6 @@
                                     type="radio"
                                     :value="hour"
                                     v-model="form.startHour"
-                                    @change="
-                                        setEndHour(
-                                            form.startHour,
-                                            props.cita.tiempo_estimado
-                                        )
-                                    "
                                     class="hidden peer"
                                 />
                                 <span
@@ -118,7 +112,7 @@ import { Head, useForm } from "@inertiajs/vue3";
 import InputError from "@/Components/breeze_components/InputError.vue";
 import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
 import { validateTimeInList } from "@/Utils/Validators/citas_validator";
-import { addHours } from "@/Utils/utilsFunctions";
+import { formatHour } from "@/Utils/utilsFunctions";
 import { incorrectForm, sendForm } from "@/Utils/alerts";
 
 const props = defineProps({
@@ -135,12 +129,9 @@ const props = defineProps({
 const form = useForm({
     id: props.cita.id,
     startHour: "",
-    endHour: "",
 });
 
-function setEndHour(startHour, zoneTime) {
-    form.endHour = addHours(startHour, zoneTime);
-}
+
 
 function validateForm() {
     const errors = {};
@@ -152,10 +143,6 @@ function validateForm() {
     return Object.keys(errors).every((key) => errors[key] === null);
 }
 
-const formatHour = (hour) => {
-    const arrayHour = hour.split(":");
-    return `${arrayHour[0]}:${arrayHour[1]}`;
-};
 
 const submit = () => {
     if (validateForm()) {

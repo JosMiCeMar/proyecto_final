@@ -52,12 +52,6 @@
                                     type="radio"
                                     :value="hour"
                                     v-model="form.startHour"
-                                    @change="
-                                        setEndHour(
-                                            form.startHour,
-                                            props.zona.tiempo_estimado
-                                        )
-                                    "
                                     class="hidden peer"
                                 />
                                 <span
@@ -127,7 +121,6 @@ const form = useForm({
     zone: props.zona.id,
     date: props.dia.id,
     startHour: "",
-    endHour: "",
 });
 
 function setEndHour(startHour, zoneTime) {
