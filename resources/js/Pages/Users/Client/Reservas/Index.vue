@@ -14,7 +14,7 @@
                     :description="box.description"
                 />
             </div>
-           <!--Contenedor del mensaje a mostrar si se lleva a cabo la accion de eliminar o modificar correctamente-->
+          <!--Contenedores de mensaje para confirmaciones o errores-->
            <ConfirmMessage
                 v-if="$page.props.flash.msg"
                 :message="$page.props.flash.msg"

@@ -29,5 +29,10 @@ class DiaSeeder extends Seeder
             'centro_id' => 2,
             'fecha' => $hoy->copy()->addDays(22), 
         ]);
+
+        Dia::create([
+            'centro_id' => 3,
+            'fecha' => $hoy->copy()->subDays(24), 
+        ]);
     }
 }

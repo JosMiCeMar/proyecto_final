@@ -3,7 +3,7 @@
     <AuthenticatedLayout>
         <ContentBox
             title="Reservar Cita"
-            description="Formulario para reservar cita en el centro que elijas"
+            description="Formulario para reservar tu cita"
             :returnLink="route('client.indexCitas')"
         >
             <div class="flex items-center justify-center w-full">
@@ -98,9 +98,15 @@
                         </PrimaryButton>
                     </div>
                     <InputError
+                        class="mt-4"
                         v-if="$page.props.errors"
                         :message="$page.props.errors[0]"
                     />
+                    <p class="text-center text-lavender-light text-xs mt-4">
+                        <span class="font-bold">* Recuerda:</span> Sólo puedes
+                        reservar 3 tratamientos por día. Si necesitas un pack de
+                        zonas personalizado, informa al responsable del centro.
+                    </p>
                 </form>
             </div>
         </ContentBox>

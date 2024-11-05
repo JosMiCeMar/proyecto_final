@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Cliente;
 use App\Models\Responsable;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 
 class ExampleUsersSeeder extends Seeder
@@ -22,7 +23,8 @@ class ExampleUsersSeeder extends Seeder
             'apellidos' => 'Ejemplo',
             'telefono' => '666666666',
             'email' => 'admin@admin.com',
-            'password' => Hash::make('admin1234')
+            'password' => Hash::make('admin1234'),
+            'email_verified_at'=>Carbon::today()
         ]);
 
         Administradore::create([
@@ -36,7 +38,8 @@ class ExampleUsersSeeder extends Seeder
             'apellidos' => 'Ejemplo',
             'telefono' => '666666666',
             'email' => 'responsable@responsable.com',
-            'password' => Hash::make('responsable1234')
+            'password' => Hash::make('responsable1234'),
+            'email_verified_at'=>Carbon::today()
         ]);
 
         Responsable::create([
@@ -51,7 +54,8 @@ class ExampleUsersSeeder extends Seeder
             'apellidos' => 'Ejemplo',
             'telefono' => '666666666',
             'email' => 'cliente@cliente.com',
-            'password' => Hash::make('cliente1234')
+            'password' => Hash::make('cliente1234'),
+            'email_verified_at'=>Carbon::today()
         ]);
 
         Cliente::create([

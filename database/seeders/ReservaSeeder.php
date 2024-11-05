@@ -38,5 +38,21 @@ class ReservaSeeder extends Seeder
             'hora_inicio' => $horaInicio->addHour()->toTimeString(),
             'hora_fin' => $horaFin->addHour()->toTimeString(),
         ]);
+
+        Reserva::create([
+            'cliente_id' => 1,
+            'zona_id' => 8,
+            'dia_id' => 4,
+            'hora_inicio' => $horaInicio->addHour()->toTimeString(),
+            'hora_fin' => $horaFin->addHour()->toTimeString(),
+        ]);
+
+        Reserva::create([
+            'cliente_id' => 1,
+            'zona_id' => 7,
+            'dia_id' => 4,
+            'hora_inicio' => $horaInicio->addHour()->toTimeString(),
+            'hora_fin' => $horaFin->addHour()->toTimeString(),
+        ]);
     }
 }

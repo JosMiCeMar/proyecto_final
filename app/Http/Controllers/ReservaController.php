@@ -21,6 +21,7 @@ class ReservaController extends Controller
     private const INICIO_DESCANSO = "14:00";
     private const FIN_DESCANSO = "16:00";
     private const FIN_JORNADA = "19:00";
+    private const MAX_CITAS_DIA=3;
 
 
     //-------------------FUNCIONES PARA CLIENTES---------------------
@@ -60,13 +61,20 @@ class ReservaController extends Controller
                 'zone' => 'required|integer|exists:zonas,id',
             ]);
 
+            //Id del cliente autenticado
+            $cliente=Cliente::where('user_id', Auth::id())->first();
+
             //Instancias de los objetos seleccionados
             $centro = Centro::select('nombre', 'localidad')->where('id', $request->center)->first();
             $dia = Dia::find($request->date);
             $zona = Zona::find($request->zone);
 
             //Reservas del dia seleccionado
-            $reservas = Reserva::select('hora_inicio', 'hora_fin')->where('dia_id', $dia->id)->get();
+            $reservas = Reserva::where('dia_id', $dia->id)->get();
+
+            if($this->maximoCitas($cliente->id, $reservas)){
+                return redirect()->back()->withErrors('Lo sentimos, ya has reservado el máximo de citas para este día');
+            }
 
             $horasDisponibles = [];
 
@@ -298,6 +306,7 @@ class ReservaController extends Controller
         return $rangoHorasTrabajo;
     }
 
+    //Funcion privada para la obtencion de las horas disponibles
     private function horasDisponibles($zona, $reservas)
     {
         $horasDisponibles = [];
@@ -329,6 +338,7 @@ class ReservaController extends Controller
         return $horasDisponibles;
     }
 
+    //Funcion privada para asignar la hora final del tratamiento
     private function setHoraFin($horaInicio, $idZona){
 
         $horaInicioObj=Carbon::createFromTimeString($horaInicio);
@@ -343,4 +353,18 @@ class ReservaController extends Controller
         }
 
     }
+
+    //Funcion para comprobar si el usuario autenticado ha superado la cantidad de reservas permitidas
+    private function maximoCitas($clienteId, $reservas) {
+        $cantReservas = 0;
+    
+        foreach ($reservas as $reserva) {
+            if ($reserva->cliente_id == $clienteId) {
+                $cantReservas++;
+            }
+        }
+    
+        return $cantReservas >= self::MAX_CITAS_DIA;
+    }
+    
 }

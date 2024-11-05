@@ -119,8 +119,17 @@ class ClienteController extends Controller
     public function indexTratamientos()
     {
         $cliente = Cliente::select('id')->where('user_id', Auth::id())->first();
+        $hoy = Carbon::today();
     
-        $tratamientos = Reserva::where('cliente_id', $cliente->id)->get();
+        $tratamientos = Reserva::where('cliente_id', $cliente->id)
+        ->join('dias','reservas.dia_id','dias.id')
+        ->join('zonas','reservas.zona_id','zonas.id')
+        ->where('dias.fecha','<',$hoy)
+        ->select('zonas.nombre as zona_nombre',
+        'dias.fecha')
+        ->orderBy('dias.fecha','desc')
+        ->limit(5)
+        ->get();
     
         return Inertia::render('Users/Client/Tratamientos/Index', ['tratamientos' => $tratamientos]);
     }

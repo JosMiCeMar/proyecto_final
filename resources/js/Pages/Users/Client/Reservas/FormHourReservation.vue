@@ -37,7 +37,10 @@
                         </p>
                     </div>
 
-                    <div v-if="props.horasTrabajo.length>0" class="mt-4 flex flex-col gap-2 items-center">
+                    <div
+                        v-if="props.horasTrabajo.length > 0"
+                        class="mt-4 flex flex-col gap-2 items-center"
+                    >
                         <p class="text-xl text-white">Horas disponibles:</p>
 
                         <div
@@ -49,6 +52,7 @@
                                 class="flex items-center cursor-pointer group transition-all duration-200"
                             >
                                 <input
+                                    :id="index"
                                     type="radio"
                                     :value="hour"
                                     v-model="form.startHour"
@@ -65,20 +69,23 @@
                             class="mt-2"
                             :message="form.errors.startHour"
                         />
-                    <!-- Botón de Enviar -->
-                    <div class="flex items-center justify-center mt-4">
-                        <PrimaryButton
-                            class="ms-4"
-                            :class="{ 'opacity-25': form.processing }"
-                            :disabled="form.processing"
-                            @click="submit"
-                        >
-                            Reservar
-                        </PrimaryButton>
-                    </div>
+                        <!-- Botón de Enviar -->
+                        <div class="flex items-center justify-center mt-4">
+                            <PrimaryButton
+                                class="ms-4"
+                                :class="{ 'opacity-25': form.processing }"
+                                :disabled="form.processing"
+                                @click="submit"
+                            >
+                                Reservar
+                            </PrimaryButton>
+                        </div>
                     </div>
                     <div v-else class="mt-4 flex flex-col gap-2 items-center">
-                        <p class="text-xl text-white">Lo sentimos, no hay horas disponibles para ese tratamiento.</p>
+                        <p class="text-xl text-white">
+                            Lo sentimos, no hay horas disponibles para ese
+                            tratamiento.
+                        </p>
                     </div>
                 </form>
             </div>
