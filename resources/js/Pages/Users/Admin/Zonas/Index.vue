@@ -33,18 +33,19 @@ import ConfirmMessage from "@/Components/dashboard_components/ConfirmMessage.vue
 import InputError from "@/Components/breeze_components/InputError.vue";
 import { Head } from "@inertiajs/vue3";
 import LinkBox from "@/Components/dashboard_components/LinkBox.vue";
+import { mdiPlusBox, mdiTableEdit } from "@mdi/js";
 
 const linksList = [
     {
         route: route("admin.createZona"),
-        icon: "img/icons/plus_lavender.svg",
+        icon: mdiPlusBox,
         title: "Añadir Zona de Tratamiento",
         description:
             "Formulario de creación para una nueva zona de tratamiento",
     },
     {
         route: route("admin.listZona"),
-        icon: "img/icons/mod_lavender.svg",
+        icon: mdiTableEdit,
         title: "Modificar o Eliminar Zona de Tratamiento",
         description:
             "Menú para modificar zonas de tratamiento en la base de datos",

@@ -1,10 +1,5 @@
-<script setup>
-
-
-
-</script>
 <template>
-    <div class="w-full flex flex-col sm:flex-row justify-around text-lavender-dark">
+    <div class="w-full flex flex-col sm:flex-row justify-around text-lavender-dark text-sm text-center">
         <div class="my-auto">Mímate&copy; 2024 <br>Jose Miguel Cejas Martín </div>
         <div class="my-auto font-bold text-xl hidden sm:block">|</div>
         <div class="my-auto text-2xl block sm:hidden sin-espacios">--------------</div>

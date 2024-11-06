@@ -6,7 +6,6 @@
                     <img :src="slide" alt="carousel_image" />
                 </div>
             </Slide>
-
             <template #addons>
                 <Navigation />
             </template>

@@ -26,20 +26,11 @@
 
             <!--De lo contrario, muestra la tabla-->
             <template v-else>
-                <!--Contenedor checkbox para mostrar dias anteriores al actual-->
-                <div class="flex w-full gap-1 items-center justify-end px-4">
-                    <InputLabel
-                        class="text-skyblue-dark"
-                        for="checkbox"
-                        value="Mostrar días anteriores:"
-                    />
-                    <Checkbox id="checkbox" v-model="showAllDays" />
-                </div>
                 <!--Tabla de datos-->
-                <div>
+                <div class="m-4">
                     <form @submit.prevent="submit">
                         <PaginatedTable
-                            :items="displayedDays"
+                            :items="props.dias"
                             :headers="headers"
                         >
                             <template
@@ -102,12 +93,8 @@ import TrashButton from "@/Components/dashboard_components/TrashButton.vue";
 import ModButton from "@/Components/dashboard_components/ModButton.vue";
 import PaginatedTable from "@/Components/dashboard_components/PaginatedTable.vue";
 import { Head, router, useForm } from "@inertiajs/vue3";
-import { computed, ref } from "vue";
-import InputLabel from "@/Components/breeze_components/InputLabel.vue";
-import Checkbox from "@/Components/breeze_components/Checkbox.vue";
 import ConfirmMessage from "@/Components/dashboard_components/ConfirmMessage.vue";
 import { deleteAlert, modAlert } from "@/Utils/alerts";
-import { getToday } from "@/Utils/Validators/dias_validator";
 
 //Propiedades - datos recibidos del back
 const props = defineProps({
@@ -122,23 +109,8 @@ const form = useForm({
     id: "",
 });
 
-const today = getToday();
-const showAllDays = ref(false); //Constante para controlar el mostrado de datos en tabla
-const headers = ["Centro", "Fecha", "Modificar", "Eliminar"]; //Cabeceras de la tabla
-
-//Array con los dias asignados posteriores o iguales a la fecha actual
-const filteredDays = computed(() => {
-    return props.dias.filter((item) => {
-        const itemDate = new Date(item.fecha);
-        return itemDate >= today;
-    });
-});
-
-//Constante que controla el mostrado de datos de la tabla
-const displayedDays = computed(() => {
-    //Si showAllDays es true, muestra todos dias devueltos por el back, con el false muestra los datos filtrados
-    return showAllDays.value ? props.dias : filteredDays.value;
-});
+//Cabeceras de la tabla
+const headers=['Centro','Fecha','Modificar','Eliminar'];
 
 //Funcion para confirmar el borrado
 const confirmDelete = (itemId, day, name) => {

@@ -18,13 +18,11 @@
                     value="Contraseña Actual"
                 />
 
-                <TextInput
-                    id="current_password"
-                    ref="currentPasswordInput"
+                <PasswordInput
+                    :id="current_password"
                     v-model="form.current_password"
-                    type="password"
                     class="mt-1 block w-full"
-                    autocomplete="current-password"
+                    :autocomplete="'current-password'"
                 />
 
                 <InputError
@@ -40,16 +38,17 @@
                     value="Nueva Contraseña"
                 />
 
-                <TextInput
-                    id="password"
-                    ref="passwordInput"
+                <PasswordInput
+                    :id="password"
                     v-model="form.password"
-                    type="password"
                     class="mt-1 block w-full"
-                    autocomplete="new-password"
+                    :autocomplete="'new-password'"
                 />
-
                 <InputError :message="form.errors.password" class="mt-2" />
+                <p class="text-skyblue-dark text-xs mt-2">
+                    *Recuerda: La contraseña debe tener almenos 8 caracteres, incluyendo
+                    mayúsculas, minúsculas, números y símbolos.
+                </p>
             </div>
 
             <div>
@@ -59,18 +58,18 @@
                     value="Confirmar Contraseña"
                 />
 
-                <TextInput
-                    id="password_confirmation"
+                <PasswordInput
+                    :id="password_confirmation"
                     v-model="form.password_confirmation"
-                    type="password"
                     class="mt-1 block w-full"
-                    autocomplete="new-password"
+                    :autocomplete="'new-password'"
                 />
 
                 <InputError
                     :message="form.errors.password_confirmation"
                     class="mt-2"
                 />
+
             </div>
 
             <div class="flex items-center gap-4">
@@ -101,11 +100,11 @@
 import InputError from "@/Components/breeze_components/InputError.vue";
 import InputLabel from "@/Components/breeze_components/InputLabel.vue";
 import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
-import TextInput from "@/Components/breeze_components/TextInput.vue";
 import { useForm } from "@inertiajs/vue3";
 import { ref } from "vue";
 import { validatePassword, validatePasswordConfirmation } from '@/Utils/Validators/user_validator';
 import { incorrectForm } from '@/Utils/alerts';
+import PasswordInput from "@/Components/breeze_components/PasswordInput.vue";
 
 
 

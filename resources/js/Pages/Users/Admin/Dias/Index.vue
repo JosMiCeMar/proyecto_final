@@ -28,18 +28,19 @@ import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import { Head } from "@inertiajs/vue3";
 import LinkBox from "@/Components/dashboard_components/LinkBox.vue";
 import ConfirmMessage from "@/Components/dashboard_components/ConfirmMessage.vue";
+import { mdiPlusBox, mdiTableEdit } from "@mdi/js";
 
 const linksList = [
     {
         route: route("admin.createDias"),
-        icon: "img/icons/plus_lavender.svg",
+        icon: mdiPlusBox,
         title: "Asignar Día a Centro Asociado",
         description:
             "Formulario de asignación de día de trabajo a un centro asociado",
     },
     {
         route: route("admin.listDias"),
-        icon: "img/icons/mod_lavender.svg",
+        icon: mdiTableEdit,
         title: "Modificar o Eliminar Días Asignados",
         description: "Menú para modificar o eliminar días asignados",
     },

@@ -79,16 +79,16 @@
             <div class="mt-4">
                 <InputLabel for="password" value="Contraseña" />
 
-                <TextInput
-                    id="password"
-                    type="password"
+                <PasswordInput
+                    :id="password"
                     class="mt-1 block w-full"
                     v-model="form.password"
-                    autocomplete="new-password"
-                    placeholder="Introduce la contraseña"
+                    :autocomplete="'new-password'"
+                    :placeholder="'Introduce la contraseña'"
                 />
-                <p class="text-lavender-light text-xs">
-                    *La contraseña debe tener almenos 8 caracteres, incluyendo mayúsculas, minúsculas, números y símbolos.
+                <p class="text-lavender-vlight text-xs">
+                    *La contraseña debe tener almenos 8 caracteres, incluyendo
+                    mayúsculas, minúsculas, números y símbolos.
                 </p>
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>
@@ -99,13 +99,12 @@
                     value="Confirmar Contraseña"
                 />
 
-                <TextInput
-                    id="password_confirmation"
-                    type="password"
+                <PasswordInput
+                    :id="'password_confirmation'"
                     class="mt-1 block w-full"
                     v-model="form.password_confirmation"
-                    autocomplete="new-password"
-                    placeholder="Vuelve a introducir la contraseña"
+                    :placeholder="'Vuelve a introducir la contraseña'"
+                    :autocomplete="'password_confirmation'"
                 />
 
                 <InputError
@@ -133,6 +132,7 @@ import InputLabel from "@/Components/breeze_components/InputLabel.vue";
 import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
 import TextInput from "@/Components/breeze_components/TextInput.vue";
 import CenterSelect from "@/Components/breeze_components/CenterSelect.vue";
+import PasswordInput from "@/Components/breeze_components/PasswordInput.vue";
 import { Head, useForm } from "@inertiajs/vue3";
 import { incorrectForm, sendForm } from "@/Utils/alerts";
 import {

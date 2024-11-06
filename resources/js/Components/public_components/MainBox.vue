@@ -1,5 +1,5 @@
 <template>
-    <main
+    <div
         class="shadow-sm bg-gradient-to-t from-skyblue-vlight to-lightyellow"
     >
         <div class="w-full h-full textura_fondo rounded-lg">
@@ -7,5 +7,5 @@
                 <slot />
             </div>
         </div>
-    </main>
+    </div>
 </template>

@@ -33,18 +33,19 @@ import { Head } from "@inertiajs/vue3";
 import LinkBox from "@/Components/dashboard_components/LinkBox.vue";
 import ConfirmMessage from "@/Components/dashboard_components/ConfirmMessage.vue";
 import InputError from "@/Components/breeze_components/InputError.vue";
+import { mdiPlusBox, mdiTableEdit  } from '@mdi/js';
 
 const linksList = [
     {
         route: route("client.createCitas"),
-        icon: "img/icons/plus_lavender.svg",
+        icon: mdiPlusBox,
         title: "Reservar Cita",
         description:
             "Formulario para reservar tu próxima cita",
     },
     {
         route: route("client.tableCitas"),
-        icon: "img/icons/mod_lavender.svg",
+        icon: mdiTableEdit,
         title: "Modificar o Eliminar Cita",
         description: "Menú para modificar o eliminar tus citas",
     },

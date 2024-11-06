@@ -30,7 +30,10 @@
 import AuthenticatedLayout from "@/Layouts/breeze_layouts/AuthenticatedLayout.vue";
 import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import LinkBox from "@/Components/dashboard_components/LinkBox.vue";
+import ConfirmMessage from "@/Components/dashboard_components/ConfirmMessage.vue";
+import InputError from "@/Components/breeze_components/InputError.vue";
 import { Head } from "@inertiajs/vue3";
+import { mdiFormatListNumbered  } from '@mdi/js';
 
 //Propiedades - datos recibidos del back
 const props = defineProps({
@@ -43,7 +46,7 @@ const props = defineProps({
 const linksList = [
     {
         route: route("dashboard"),
-        icon: "img/icons/plus_lavender.svg",
+        icon: mdiFormatListNumbered ,
         title: "Mostrar ultimos tratamientos",
         description: "Se mostrarán tus últimos 5 tratamientos",
     },

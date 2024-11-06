@@ -61,9 +61,12 @@ class DiaController extends Controller
     //Vista de los dias asignados
     public function list()
     {
+        $hoy = Carbon::today();
         //Dias asignados mas los nombres y localidades de su correspondiente centro
         $dias = Dia::select('dias.id', 'dias.fecha', 'centros.nombre', 'centros.localidad')
-            ->join('centros', 'dias.centro_id', '=', 'centros.id')->orderBy('dias.fecha')
+            ->join('centros', 'dias.centro_id', '=', 'centros.id')
+            ->where('dias.fecha','>',$hoy)
+            ->orderBy('dias.fecha')
             ->get();
 
         return Inertia::render('Users/Admin/Dias/TableDays', ['dias' => $dias]);
@@ -89,7 +92,9 @@ class DiaController extends Controller
     //Obtencion y mostrado de formulario del dia a modificar
     public function mod($id)
     {
-        $dia = Dia::where('id', $id)->first();
+        $hoy = Carbon::today();
+
+        $dia = Dia::where('id', $id)->where('fecha','>',$hoy)->first();
 
         //Si existe el dia, renderiza el formulario con los datos del dia asignado
         if ($dia) {
@@ -100,7 +105,7 @@ class DiaController extends Controller
         }
 
         //Si no existe dicho id, vuelve a la tabla
-        return redirect()->back();
+        return redirect()->route('admin.listDias');
     }
 
     //Actualizacion del dia asignaddo

@@ -3,8 +3,8 @@ import GuestLayout from '@/Layouts/breeze_layouts/GuestLayout.vue';
 import InputError from '@/Components/breeze_components/InputError.vue';
 import InputLabel from '@/Components/breeze_components/InputLabel.vue';
 import PrimaryButton from '@/Components/breeze_components/PrimaryButton.vue';
-import TextInput from '@/Components/breeze_components/TextInput.vue';
 import { Head, useForm, Link } from '@inertiajs/vue3';
+import PasswordInput from '@/Components/breeze_components/PasswordInput.vue';
 
 const form = useForm({
     password: '',
@@ -28,13 +28,12 @@ const submit = () => {
         <form @submit.prevent="submit">
             <div>
                 <InputLabel for="password" value="Password" />
-                <TextInput
-                    id="password"
-                    type="password"
+                <PasswordInput
+                    :id="password"
                     class="mt-1 block w-full"
                     v-model="form.password"
                     required
-                    autocomplete="current-password"
+                    :autocomplete="'current-password'"
                     autofocus
                 />
                 <InputError class="mt-2" :message="form.errors.password" />

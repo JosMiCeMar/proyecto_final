@@ -4,7 +4,7 @@ import InputError from "@/Components/breeze_components/InputError.vue";
 import InputLabel from "@/Components/breeze_components/InputLabel.vue";
 import Modal from "@/Components/breeze_components/Modal.vue";
 import SecondaryButton from "@/Components/breeze_components/SecondaryButton.vue";
-import TextInput from "@/Components/breeze_components/TextInput.vue";
+import PasswordInput from "@/Components/breeze_components/PasswordInput.vue";
 import { useForm } from "@inertiajs/vue3";
 import { nextTick, ref } from "vue";
 
@@ -77,13 +77,11 @@ const closeModal = () => {
                         class="sr-only"
                     />
 
-                    <TextInput
-                        id="password"
-                        ref="passwordInput"
+                    <PasswordInput
+                        :id="password"
                         v-model="form.password"
-                        type="password"
                         class="mt-1 block w-3/4"
-                        placeholder="Contraseña"
+                        :placeholder="'Contraseña'"
                         @keyup.enter="deleteUser"
                     />
 

@@ -7,6 +7,7 @@ import PrimaryButton from '@/Components/breeze_components/PrimaryButton.vue';
 import TextInput from '@/Components/breeze_components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
 import InputCorrect from '@/Components/breeze_components/InputCorrect.vue';
+import PasswordInput from '@/Components/breeze_components/PasswordInput.vue';
 
 defineProps({
     canResetPassword: {
@@ -50,8 +51,7 @@ const submit = () => {
             <div class="mt-4">
                 <InputLabel for="password" value="Contraseña" />
 
-                <TextInput id="password" type="password" class="mt-1 block w-full" v-model="form.password" required
-                    autocomplete="current-password" />
+                <PasswordInput :id="'password'" class="mt-1 block w-full" v-model="form.password" required/>
 
                 <InputError class="mt-2" :message="form.errors.password" />
             </div>

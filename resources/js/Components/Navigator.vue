@@ -2,6 +2,8 @@
 import NavigatorLink from "@/Components/public_components/NavigatorLink.vue";
 import Dropdown from "@/Components/breeze_components/Dropdown.vue";
 import DropdownLink from "@/Components/breeze_components/DropdownLink.vue";
+import IconMdi from "./IconMdi.vue";
+import { mdiHamburger, mdiMenu } from "@mdi/js";
 </script>
 <template>
     <nav class="hidden w-[75%] justify-center gap-5 md:flex mx-6">
@@ -41,17 +43,9 @@ import DropdownLink from "@/Components/breeze_components/DropdownLink.vue";
                     <span class="inline-flex rounded-md">
                         <button
                             type="button"
-                            class="inline-flex m-2 items-center p-2 border border-transparent leading-4 rounded-md bg-skyblue-dark hover:bg-lavender-logo  focus:outline-none transition ease-in-out duration-150"
+                            class="inline-flex m-2 items-center p-2 border border-transparent leading-4 rounded-md bg-skyblue-dark fill-white hover:fill-lavender-dark hover:bg-lavender-logo  focus:outline-none transition ease-in-out duration-150"
                         >
-                            <svg
-                                class="w-6 fill-white"
-                                xmlns="http://www.w3.org/2000/svg"
-                                viewBox="0 0 448 512"
-                            >
-                                <path
-                                    d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"
-                                />
-                            </svg>
+                        <IconMdi :icon="mdiMenu"/>
                         </button>
                     </span>
                 </template>

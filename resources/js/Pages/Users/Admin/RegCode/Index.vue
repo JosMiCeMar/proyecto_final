@@ -15,18 +15,19 @@ import AuthenticatedLayout from "@/Layouts/breeze_layouts/AuthenticatedLayout.vu
 import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import { Head } from "@inertiajs/vue3";
 import LinkBox from "@/Components/dashboard_components/LinkBox.vue";
+import { mdiPlusBox, mdiDeleteSweep } from "@mdi/js";
 
 
 const linksList = [
     {
         route: route('admin.genCode'),
-        icon: 'img/icons/plus_lavender.svg',
+        icon: mdiPlusBox,
         title: "Generar Código de Registro",
         description: "Formulario de creación de código para registrar un nuevo usuario"
     },
     {
         route: route('admin.delCode'),
-        icon: 'img/icons/delete_lavender.svg',
+        icon: mdiDeleteSweep,
         title: "Eliminar Códigos de Registro",
         description: "Menú para eliminar códigos ya creados"
     }

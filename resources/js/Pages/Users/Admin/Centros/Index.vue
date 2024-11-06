@@ -28,17 +28,18 @@ import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import { Head } from "@inertiajs/vue3";
 import LinkBox from "@/Components/dashboard_components/LinkBox.vue";
 import ConfirmMessage from "@/Components/dashboard_components/ConfirmMessage.vue";
+import { mdiPlusBox, mdiTableEdit } from "@mdi/js";
 
 const linksList = [
     {
         route: route("admin.createCenter"),
-        icon: "img/icons/plus_lavender.svg",
+        icon: mdiPlusBox,
         title: "Añadir Centro Asociado",
         description: "Formulario de creación para un nuevo centro asociado",
     },
     {
         route: route("admin.listCenter"),
-        icon: "img/icons/mod_lavender.svg",
+        icon: mdiTableEdit,
         title: "Modificar o Eliminar Centro Asociado",
         description:
             "Menú para modificar centros existentes en la base de datos",

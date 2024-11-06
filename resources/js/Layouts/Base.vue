@@ -14,19 +14,22 @@ const title = defineProps({
         required: true,
     },
 });
-
-
 </script>
 
 <template>
     <Head :title="title.titulo" />
-    <div
-        class="bg-gradient-to-tl from-lavender-vlight via-skyblue-vlight to-white min-h-screen min-w-screen"
+    <body
+        class="grid grid-rows-[auto_1fr_auto] bg-gradient-to-tl from-lavender-vlight via-skyblue-vlight to-white min-h-screen min-w-screen"
     >
-        <Header :authUser="authUser" />
-            <slot/>
-        <footer class="py-8 text-center text-sm text-black dark:text-white/70">
+        <header class="row-1">
+            <Header :authUser="authUser" />
+        </header>
+        <main class="row-2">
+            <slot />
+        </main>
+        <footer class="row-3 py-4">
             <Footer />
         </footer>
-    </div>
+    </body>
 </template>
+
