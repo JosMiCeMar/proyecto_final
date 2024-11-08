@@ -5,7 +5,9 @@
             title="Mis Tratamientos"
             description="Sección donde podrás ver diferente información sobre tus tratamientos realizados"
         >
-            <div class="m-5 flex flex-col gap-5">
+            <div
+                class="m-5 flex flex-wrap gap-6 items-center lg:justify-center"
+            >
                 <LinkBox
                     v-for="box in linksList"
                     :route="box.route"
@@ -13,16 +15,16 @@
                     :title="box.title"
                     :description="box.description"
                 />
-                <!--Contenedores de mensaje para confirmaciones o errores-->
-                <ConfirmMessage
-                    v-if="$page.props.flash.msg"
-                    :message="$page.props.flash.msg"
-                />
-                <InputError
-                    v-if="$page.props.errors"
-                    :message="$page.props.errors[0]"
-                />
             </div>
+            <!--Contenedores de mensaje para confirmaciones o errores-->
+            <ConfirmMessage
+                v-if="$page.props.flash.msg"
+                :message="$page.props.flash.msg"
+            />
+            <InputError
+                v-if="$page.props.errors"
+                :message="$page.props.errors[0]"
+            />
         </ContentBox>
     </AuthenticatedLayout>
 </template>
@@ -33,22 +35,26 @@ import LinkBox from "@/Components/dashboard_components/LinkBox.vue";
 import ConfirmMessage from "@/Components/dashboard_components/ConfirmMessage.vue";
 import InputError from "@/Components/breeze_components/InputError.vue";
 import { Head } from "@inertiajs/vue3";
-import { mdiFormatListNumbered  } from '@mdi/js';
-
-//Propiedades - datos recibidos del back
-const props = defineProps({
-    tratamientos: {
-        type: Array,
-        required: true,
-    },
-});
+import { mdiFileChart, mdiFileEdit, mdiFormatListNumbered } from "@mdi/js";
 
 const linksList = [
     {
+        route: route("client.ultimosTratamientos"),
+        icon: mdiFormatListNumbered,
+        title: "Mostrar Últimos Tratamientos",
+        description: "Detalles de tus últimos tratamientos",
+    },
+    {
         route: route("dashboard"),
-        icon: mdiFormatListNumbered ,
-        title: "Mostrar ultimos tratamientos",
-        description: "Se mostrarán tus últimos 5 tratamientos",
+        icon: mdiFileChart,
+        title: "Informe de Tratamientos",
+        description: "Resumen de todos los tratamientos realizados",
+    },
+    {
+        route: route("dashboard"),
+        icon: mdiFileEdit,
+        title: "Personalizar Informe",
+        description: "Personaliza un informe con los datos que desees",
     },
 ];
 </script>

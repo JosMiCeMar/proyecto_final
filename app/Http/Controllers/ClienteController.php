@@ -18,6 +18,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Reserva;
+use Exception;
 
 class ClienteController extends Controller
 {
@@ -118,20 +119,40 @@ class ClienteController extends Controller
     //Métodos para la sección de Tratamientos
     public function indexTratamientos()
     {
-        $cliente = Cliente::select('id')->where('user_id', Auth::id())->first();
-        $hoy = Carbon::today();
-    
-        $tratamientos = Reserva::where('cliente_id', $cliente->id)
-        ->join('dias','reservas.dia_id','dias.id')
-        ->join('zonas','reservas.zona_id','zonas.id')
-        ->where('dias.fecha','<',$hoy)
-        ->select('zonas.nombre as zona_nombre',
-        'dias.fecha')
-        ->orderBy('dias.fecha','desc')
-        ->limit(5)
-        ->get();
-    
-        return Inertia::render('Users/Client/Tratamientos/Index', ['tratamientos' => $tratamientos]);
+        return Inertia::render('Users/Client/Tratamientos/Index');
     }
-    
+
+    public function ultimosTratamientos()
+    {
+        try {
+            $hoy = Carbon::today();
+
+            $cliente = Cliente::where('user_id', Auth::id())->first();
+
+            if(!$cliente) {
+               return redirect()->route('client.indexTratamientos')->withErrors('No se encontró el identificador de cliente');
+            }
+
+            $tratamientos = Reserva::where('cliente_id', $cliente->id)
+                ->join('dias', 'reservas.dia_id', 'dias.id')
+                ->join('zonas', 'reservas.zona_id', 'zonas.id')
+                ->where('dias.fecha', '<', $hoy)
+                ->select(
+                    'zonas.nombre as zona_nombre',
+                    'dias.fecha'
+                )
+                ->orderBy('dias.fecha', 'desc')
+                ->limit(5)
+                ->get();
+            
+                if(!$tratamientos){
+                    return redirect()->route('client.indexTratamientos')->withErrors('No se encontró ningún tratamiento');
+                }
+
+                return $tratamientos;
+            //return Inertia::render('Users/Client/Tratamientos/LastTreatment', ['tratamientos' => $tratamientos]);
+        } catch (Exception $er) {
+            return redirect()->route('client.indexTratamientos')->withErrors('Error al mostrar los últimos tratamientos: ' . $er->getMessage());
+        }
+    }
 }

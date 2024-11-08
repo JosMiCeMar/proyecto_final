@@ -12,7 +12,10 @@
                 route().current('client.indexCitas') ||
                 route().current('client.createCitas') ||
                 route().current('client.createHoraCitas')||
-                route().current('client.storeHoraCitas')
+                route().current('client.storeHoraCitas')||
+                route().current('client.tableCitas')||
+                route().current('client.modReser')||
+                route().current('client.modHoraReser')
             "
         >
             Mis Citas

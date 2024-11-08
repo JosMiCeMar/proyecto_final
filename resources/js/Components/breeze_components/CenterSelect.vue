@@ -1,3 +1,13 @@
+<template>
+  <select v-model="selectedCenter" @change="updateCenter"
+    class="border-lavender-dark bg-blue-100 text-lavender-dark focus:border-lavender-light focus:ring-lavender-light rounded-md shadow-sm"
+  >
+    <option v-for="center in centers" :key="center.id" :value="center.id">
+      {{ center.nombre }} ({{ center.localidad }})
+    </option>
+  </select>
+</template>
+
 <script setup>
 import { ref, watch } from 'vue';
 
@@ -30,13 +40,3 @@ function updateCenter() {
   emit('update:modelValue', selectedCenter.value);
 }
 </script>
-
-<template>
-  <select v-model="selectedCenter" @change="updateCenter"
-    class="border-lavender-dark bg-blue-100 text-lavender-dark focus:border-lavender-light focus:ring-lavender-light rounded-md shadow-sm"
-  >
-    <option v-for="center in centers" :key="center.id" :value="center.id">
-      {{ center.nombre }} ({{ center.localidad }})
-    </option>
-  </select>
-</template>

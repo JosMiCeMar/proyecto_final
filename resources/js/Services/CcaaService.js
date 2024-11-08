@@ -24,7 +24,7 @@ export default class CcaaService {
       const json = await response.json();
 
       // Asignar el valor a la propiedad reactiva
-      this.#ccaa.value = json; // Asegúrate de que json es un array
+      this.#ccaa.value = json; 
     } catch (error) {
       console.error("Error fetching CCAA data:", error);
     }

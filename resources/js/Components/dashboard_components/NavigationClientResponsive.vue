@@ -8,7 +8,13 @@
         </ResponsiveNavLink>
         <ResponsiveNavLink
             :href="route('client.indexCitas')"
-            :active="route().current('client.indexCitas')"
+            :active="route().current('client.indexCitas') ||
+                route().current('client.createCitas') ||
+                route().current('client.createHoraCitas')||
+                route().current('client.storeHoraCitas')||
+                route().current('client.tableCitas')||
+                route().current('client.modReser')||
+                route().current('client.modHoraReser')"
         >
             Mis Citas
         </ResponsiveNavLink>
@@ -23,7 +29,7 @@
     <!-- Responsive Settings Options -->
     <div class="pt-4 pb-1 border-t border-skyblue-vlight">
         <div class="px-4">
-            <div class="font-medium text-base text-white">
+            <div class="font-medium text-base text-gray-400">
                 {{ $page.props.auth.user.nombre }}
                 {{ $page.props.auth.user.apellidos }}
             </div>
