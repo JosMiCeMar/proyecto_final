@@ -5,6 +5,8 @@
             title="Reservar Cita"
             description="Formulario para reservar tu cita"
             :returnLink="route('client.indexCitas')"
+            :errorVisible="false"
+            :confirmVisible="false"
         >
             <div class="flex items-center justify-center w-full">
                 <form
@@ -102,7 +104,7 @@
                         v-if="$page.props.errors"
                         :message="$page.props.errors[0]"
                     />
-                    <p class="text-center text-lavender-light text-xs mt-4">
+                    <p class="text-center text-lavender-vlight text-xs mt-4">
                         <span class="font-bold">* Recuerda:</span> Sólo puedes
                         reservar 3 tratamientos por día. Si necesitas un pack de
                         zonas personalizado, informa al responsable del centro.

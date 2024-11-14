@@ -5,13 +5,8 @@
             title="Modificar o Eliminar Citas"
             description="Selecciona la opción de la cita"
             :returnLink="route('client.indexCitas')"
+            :messageDown="false"
         >
-            <!--Contenedor del mensaje a mostrar si se lleva a cabo la accion de eliminar o modificar correctamente-->
-            <ConfirmMessage
-                v-if="$page.props.flash.msg"
-                :message="$page.props.flash.msg"
-                position="center"
-            />
             <!--Si el array recibido del back esta vacio, muestra el mensaje-->
             <template v-if="props.citas.length === 0">
                 <div class="m-4 my-20">
@@ -106,7 +101,6 @@ import TrashButton from "@/Components/dashboard_components/TrashButton.vue";
 import ModButton from "@/Components/dashboard_components/ModButton.vue";
 import PaginatedTable from "@/Components/dashboard_components/PaginatedTable.vue";
 import { Head, router, useForm } from "@inertiajs/vue3";
-import ConfirmMessage from "@/Components/dashboard_components/ConfirmMessage.vue";
 import { deleteAlert, modAlert } from "@/Utils/alerts";
 import InputError from "@/Components/breeze_components/InputError.vue";
 
@@ -123,6 +117,7 @@ const form = useForm({
     id: "",
 });
 
+//Cabeceras de la tabla
 const headers = [
     "Centro",
     "Fecha",
@@ -131,7 +126,7 @@ const headers = [
     "Hora Fin (Estimación)",
     "Modificar Hora",
     "Eliminar",
-]; //Cabeceras de la tabla
+]; 
 
 //Funcion para confirmar el borrado
 const confirmDelete = (itemId, zone, day) => {

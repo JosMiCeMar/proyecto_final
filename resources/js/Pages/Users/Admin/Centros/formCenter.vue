@@ -155,7 +155,6 @@ import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import { Head, useForm } from "@inertiajs/vue3";
 import InputError from "@/Components/breeze_components/InputError.vue";
 import InputLabel from "@/Components/breeze_components/InputLabel.vue";
-import ReturnLink from "@/Components/dashboard_components/ReturnLink.vue";
 import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
 import TextInput from "@/Components/breeze_components/TextInput.vue";
 import CcaaSelect from "@/Components/centros_components/CcaaSelect.vue";

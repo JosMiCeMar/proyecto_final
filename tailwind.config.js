@@ -27,7 +27,7 @@ export default {
                 'skyblue-light':'#87b3fa',
                 'lavender-vlight':'#e3b8f5',
                 'skyblue-vlight':'#bdd6ff',
-                'lightyellow':'#FAF8D4',
+                'lightyellow':'#FFFFFF',
                 'almond':'#EBDCCB',
                 'dun':'#C3BAAA'
 

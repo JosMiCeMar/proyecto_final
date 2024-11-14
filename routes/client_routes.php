@@ -26,5 +26,6 @@ Route::middleware([CheckClient::class, 'auth', 'verified'])->group(function () {
   //Rutas Mis Tratamientos
   Route::get('/mis_tratamientos', [ClienteController::class, 'indexTratamientos'])->name('client.indexTratamientos');
   Route::get('/ultimos_tratamientos', [ClienteController::class, 'ultimosTratamientos'])->name('client.ultimosTratamientos');
+  Route::get('/resumen_tratamientos', [ClienteController::class, 'resumenTratamientos'])->name('client.resumenTratamientos');
 
 });

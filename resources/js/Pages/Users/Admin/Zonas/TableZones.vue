@@ -5,13 +5,9 @@
             title="Modificar o Eliminar Zonas Tratamiento"
             description="Selecciona la opción de la zona de tratamiento"
             :returnLink="route('admin.indexZona')"
+            :messageDown="false"
         >
-            <!--Contenedor del mensaje a mostrar si se lleva a cabo la accion de eliminar o modificar correctamente-->
-            <ConfirmMessage
-                v-if="$page.props.flash.msg"
-                :message="$page.props.flash.msg"
-                position="center"
-            />
+        <!--Si el array recibido del back esta vacio, muestra el mensaje-->
             <template v-if="zonas.length === 0">
                 <div class="m-4 my-20">
                     <p class="text-center">

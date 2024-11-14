@@ -1,6 +1,6 @@
 <template>
-    <div class="overflow-y-auto">
-        <table class="w-full text-sm text-left rtl:text-right shadow-md">
+    <div class="overflow-y-auto custom-scrollbar">
+        <table class="w-full lg:text-sm text-xs text-left shadow-md">
             <thead
                 class="text-white font-bold uppercase bg-gradient-to-t from-lavender-dark to-skyblue-dark"
             >
@@ -29,22 +29,14 @@
         </table>
     </div>
     <div
-        class="flex justify-between items-center p-2"
+        :class="`flex justify-between items-center p-2 ${setVisible()}`"
     >
         <button
             @click="previousPage"
             :disabled="currentPage === 1"
-            class="px-4 py-2 bg-lavender-dark fill-white shadow-md enabled:hover:fill-skyblue-light active:shadow-none disabled:bg-neutral-400 rounded"
+            class="p-1 bg-lavender-dark fill-white shadow-md enabled:hover:fill-skyblue-light active:shadow-none disabled:bg-neutral-400 rounded"
         >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 320 512"
-                class="w-4"
-            >
-                <path
-                    d="M41.4 233.4c-12.5 12.5-12.5 32.8 0 45.3l160 160c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3L109.3 256 246.6 118.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-160 160z"
-                />
-            </svg>
+            <IconMdi :icon="mdiMenuLeftOutline" :size="30" class="fill-white"/>
         </button>
         <div class="flex space-x-2">
             <span
@@ -62,23 +54,17 @@
         <button
             @click="nextPage"
             :disabled="currentPage === totalPages || totalPages === 0"
-            class="px-4 py-2 bg-lavender-dark fill-white shadow-md enabled:hover:fill-skyblue-light active:shadow-none disabled:bg-neutral-400 rounded"
+            class="p-1 bg-lavender-dark fill-white shadow-md enabled:hover:fill-skyblue-light active:shadow-none disabled:bg-neutral-400 rounded"
         >
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 320 512"
-                class="w-4"
-            >
-                <path
-                    d="M278.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-160 160c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L210.7 256 73.4 118.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l160 160z"
-                />
-            </svg>
+        <IconMdi :icon="mdiMenuRightOutline" :size="30" class="fill-white"/>
         </button>
     </div>
 </template>
 
 <script setup>
 import { ref, computed } from "vue";
+import IconMdi from "@/Components/IconMdi.vue";
+import { mdiMenuLeftOutline, mdiMenuRightOutline } from "@mdi/js";
 
 const props = defineProps({
     items: {
@@ -93,7 +79,15 @@ const props = defineProps({
         type: Number,
         default: 5,
     },
+    controlsVisible:{
+        type:Boolean,
+        default:true
+    }
 });
+
+const setVisible = ()=>{
+    return props.controlsVisible?'visible':'hidden';
+}
 
 // Estado para paginación
 const currentPage = ref(1);
@@ -120,3 +114,23 @@ const previousPage = () => {
     }
 };
 </script>
+<style scoped>
+/* Estilos para personalizar la barra de scroll de la tabla */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 3px; 
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent; 
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background-color: #3A2642; 
+  border-radius: 100px; 
+  border: 4px solid #f0f0f0; /* Espacio entre la barra y el div */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background-color: #315D66; 
+}
+</style>

@@ -5,13 +5,9 @@
             title="Eliminar Códigos de Registro"
             description="Selecciona los códigos de registro que vas a eliminar"
             :returnLink="route('admin.indexCode')"
+            :messageDown="false"
         >
-            <!--Contenedor del mensaje a mostrar si se lleva a cabo la accion de eliminar o modificar correctamente-->
-            <ConfirmMessage
-                v-if="$page.props.flash.msg"
-                :message="$page.props.flash.msg"
-                position="center"
-            />
+        <!--Si el array recibido del back esta vacio, muestra el mensaje-->
             <template v-if="props.codigos.length === 0">
                 <div class="m-4 my-20">
                     <p class="text-center">

@@ -50,6 +50,24 @@ export function validateLocalization(province, town) {
     return null;
 }
 
+//Validacion para comprobar que un objeto tenga una propiedad con x valor en una lista
+export function validatePropInList(name, prop, list, dataName) {
+
+    if(name===''){
+        return `El campo ${dataName} es obligatorio`;
+    }
+
+    if (!list || typeof list !== "object" || Object.keys(list).length === 0) {
+        return "La lista está vacía o no es válida.";
+    }
+
+    if (list.value.find(item => item && item[prop] === name)) {
+        return null;
+    }
+
+    return `El nombre "${name}" no se encuentra en la lista.`; // Si no se encuentra
+}
+
 //Validacion para pagina telefono
 export function validatePhone(phone) {
     const phoneRegex = /^[0-9]{9}$/;

@@ -5,13 +5,8 @@
             title="Modificar o Eliminar Días Asignados"
             description="Selecciona la opción del día de trabajo"
             :returnLink="route('admin.indexDias')"
+            :messageDown="false"
         >
-           <!--Contenedor del mensaje a mostrar si se lleva a cabo la accion de eliminar o modificar correctamente-->
-           <ConfirmMessage
-                v-if="$page.props.flash.msg"
-                :message="$page.props.flash.msg"
-                position="center"
-            />
             <!--Si el array recibido del back esta vacio, muestra el mensaje-->
             <template v-if="props.dias.length === 0">
                 <div class="m-4 my-20">

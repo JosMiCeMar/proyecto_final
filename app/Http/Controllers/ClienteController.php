@@ -135,11 +135,16 @@ class ClienteController extends Controller
 
             $tratamientos = Reserva::where('cliente_id', $cliente->id)
                 ->join('dias', 'reservas.dia_id', 'dias.id')
+                ->join('centros','centros.id','dias.centro_id')
                 ->join('zonas', 'reservas.zona_id', 'zonas.id')
                 ->where('dias.fecha', '<', $hoy)
                 ->select(
                     'zonas.nombre as zona_nombre',
-                    'dias.fecha'
+                    'zonas.precio as zona_precio',
+                    'dias.fecha',
+                    'centros.nombre as centro_nombre',
+                    'centros.localidad as centro_localidad'
+
                 )
                 ->orderBy('dias.fecha', 'desc')
                 ->limit(5)
@@ -149,10 +154,48 @@ class ClienteController extends Controller
                     return redirect()->route('client.indexTratamientos')->withErrors('No se encontró ningún tratamiento');
                 }
 
-                return $tratamientos;
-            //return Inertia::render('Users/Client/Tratamientos/LastTreatment', ['tratamientos' => $tratamientos]);
+                
+            return Inertia::render('Users/Client/Tratamientos/LastTreatment', ['tratamientos' => $tratamientos]);
         } catch (Exception $er) {
             return redirect()->route('client.indexTratamientos')->withErrors('Error al mostrar los últimos tratamientos: ' . $er->getMessage());
+        }
+    }
+
+    public function resumenTratamientos()
+    {
+        try {
+            $hoy = Carbon::today();
+
+            $cliente = Cliente::where('user_id', Auth::id())->first();
+
+            if(!$cliente) {
+               return redirect()->route('client.indexTratamientos')->withErrors('No se encontró el identificador de cliente');
+            }
+
+            $tratamientos = Reserva::where('cliente_id', $cliente->id)
+                ->join('dias', 'reservas.dia_id', 'dias.id')
+                ->join('centros','centros.id','dias.centro_id')
+                ->join('zonas', 'reservas.zona_id', 'zonas.id')
+                ->where('dias.fecha', '<', $hoy)
+                ->select(
+                    'zonas.nombre as zona_nombre',
+                    'zonas.precio as zona_precio',
+                    'dias.fecha',
+                    'centros.nombre as centro_nombre',
+                    'centros.localidad as centro_localidad'
+
+                )
+                ->orderBy('dias.fecha', 'desc')
+                ->get();
+            
+                if(!$tratamientos){
+                    return redirect()->route('client.indexTratamientos')->withErrors('No se encontró ningún tratamiento');
+                }
+
+                
+            return Inertia::render('Users/Client/Tratamientos/LastTreatment', ['tratamientos' => $tratamientos]);
+        } catch (Exception $er) {
+            return redirect()->route('client.indexTratamientos')->withErrors('Error inesperado: ' . $er->getMessage());
         }
     }
 }

@@ -8082,7 +8082,7 @@
       {
         "parent_code": "04",
         "code": "07",
-        "label": "Balears, Illes",
+        "label": "Islas Baleares",
         "towns": [
           {
             "parent_code": "07",
@@ -8431,7 +8431,7 @@
       {
         "parent_code": "05",
         "code": "35",
-        "label": "Palmas, Las",
+        "label": "Las Palmas",
         "towns": [
           {
             "parent_code": "35",
@@ -8446,7 +8446,7 @@
           {
             "parent_code": "35",
             "code": "6",
-            "label": "Aldea de San Nicolás, La"
+            "label": "Aldea de San Nicolás"
           },
           {
             "parent_code": "35",
@@ -8516,7 +8516,7 @@
           {
             "parent_code": "35",
             "code": "7",
-            "label": "Palmas de Gran Canaria, Las"
+            "label": "Palmas de Gran Canaria"
           },
           {
             "parent_code": "35",
@@ -30133,7 +30133,7 @@
       {
         "parent_code": "10",
         "code": "03",
-        "label": "Alicante/Alacant",
+        "label": "Alicante",
         "towns": [
           {
             "parent_code": "03",
@@ -30845,7 +30845,7 @@
       {
         "parent_code": "10",
         "code": "12",
-        "label": "Castellón/Castelló",
+        "label": "Castellón",
         "towns": [
           {
             "parent_code": "12",
@@ -31527,7 +31527,7 @@
       {
         "parent_code": "10",
         "code": "46",
-        "label": "Valencia/València",
+        "label": "Valencia",
         "towns": [
           {
             "parent_code": "46",
@@ -38954,7 +38954,7 @@
       {
         "parent_code": "16",
         "code": "01",
-        "label": "Araba/Álava",
+        "label": "Álava",
         "towns": [
           {
             "parent_code": "01",

@@ -3,10 +3,10 @@ import NavigatorLink from "@/Components/public_components/NavigatorLink.vue";
 import Dropdown from "@/Components/breeze_components/Dropdown.vue";
 import DropdownLink from "@/Components/breeze_components/DropdownLink.vue";
 import IconMdi from "./IconMdi.vue";
-import { mdiHamburger, mdiMenu } from "@mdi/js";
+import { mdiMenu } from "@mdi/js";
 </script>
 <template>
-    <nav class="hidden w-[75%] justify-center gap-5 md:flex mx-6">
+    <nav class="hidden w-auto justify-center gap-5 md:flex mx-6 flex-wrap">
         <div class="flex">
             <NavigatorLink
                 :href="route('home')"

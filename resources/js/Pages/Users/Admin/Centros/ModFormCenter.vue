@@ -28,10 +28,14 @@
                     <!--Provincia-->
                     <div class="mt-4">
                         <InputLabel for="province" value="Provincia" />
-                        <TextInput
+                        <SelectInput
                             id="province"
-                            type="text"
                             class="mt-1 block w-full"
+                            :optionsArray="provinces"
+                            :optionNameProp="'label'"
+                            :optionValueProp="'label'"
+                            @change="form.town=''"
+                            :selected="props.datos.provincia"
                             v-model="form.province"
                         />
                         <InputError
@@ -43,10 +47,13 @@
                     <!--Localidad-->
                     <div class="mt-4">
                         <InputLabel for="town" value="Localidad" />
-                        <TextInput
+                        <SelectInput
                             id="town"
-                            type="text"
                             class="mt-1 block w-full"
+                            :optionsArray="towns"
+                            :optionNameProp="'label'"
+                            :optionValueProp="'label'"
+                            :selected="props.datos.localidad"
                             v-model="form.town"
                         />
                         <InputError class="mt-2" :message="form.errors.town" />
@@ -117,17 +124,9 @@
                                 <span>Localización</span>
                                 <button
                                     @click.prevent="cleanLocationFormat"
-                                    class="bg-lime-700 rounded-md shadow-md hover:bg-lime-500 p-2"
+                                    class="bg-lime-700 rounded-md shadow-md hover:bg-lime-500 fill-white p-1"
                                 >
-                                    <svg
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 576 512"
-                                        class="fill-white w-4"
-                                    >
-                                        <path
-                                            d="M566.6 54.6c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0l-192 192-34.7-34.7c-4.2-4.2-10-6.6-16-6.6c-12.5 0-22.6 10.1-22.6 22.6l0 29.1L364.3 320l29.1 0c12.5 0 22.6-10.1 22.6-22.6c0-6-2.4-11.8-6.6-16l-34.7-34.7 192-192zM341.1 353.4L222.6 234.9c-42.7-3.7-85.2 11.7-115.8 42.3l-8 8C76.5 307.5 64 337.7 64 369.2c0 6.8 7.1 11.2 13.2 8.2l51.1-25.5c5-2.5 9.5 4.1 5.4 7.9L7.3 473.4C2.7 477.6 0 483.6 0 489.9C0 502.1 9.9 512 22.1 512l173.3 0c38.8 0 75.9-15.4 103.4-42.8c30.6-30.6 45.9-73.1 42.3-115.8z"
-                                        />
-                                    </svg>
+                                    <IconMdi :icon="mdiAutoFix" :size="28" />
                                 </button>
                             </div>
                         </InputLabel>
@@ -170,16 +169,21 @@ import InputError from "@/Components/breeze_components/InputError.vue";
 import InputLabel from "@/Components/breeze_components/InputLabel.vue";
 import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
 import TextInput from "@/Components/breeze_components/TextInput.vue";
+import CcaaService from "@/Services/CcaaService";
 import { incorrectForm, sendForm } from "@/Utils/alerts";
 import {
     validateName,
     validateEmail,
-    validateLocalization,
     validateAddress,
     validatePhone,
     validateUbication,
     validateWeb,
+    validatePropInList,
 } from "@/Utils/Validators/center_validator";
+import SelectInput from "@/Components/breeze_components/SelectInput.vue";
+import { onMounted, computed } from "vue";
+import IconMdi from "@/Components/IconMdi.vue";
+import { mdiAutoFix } from "@mdi/js";
 
 const props = defineProps({
     datos: {
@@ -187,6 +191,20 @@ const props = defineProps({
         required: true,
     },
 });
+
+//Obtención de las pronvincias
+const ccaaService = new CcaaService();
+const provinces = ccaaService.getProvinces();
+
+
+const getAllProvinces = async () => {
+    await ccaaService.fetchAllProvinces();
+};
+
+//Al montar el componente, ejecuta la funcion asíncrona
+onMounted(getAllProvinces);
+
+
 
 const form = useForm({
     id: props.datos.id,
@@ -199,6 +217,16 @@ const form = useForm({
     web: props.datos.web !== null ? props.datos.web : "",
     location: props.datos.ubicacion !== null ? props.datos.ubicacion : "",
 });
+
+const towns = computed(() => {
+  // Encuentra la provincia que coincide con el nombre seleccionado
+  const province = provinces.value.find(p => p.label === form.province);
+  // Retorna los pueblos de la provincia encontrada o un array vacío si no hay coincidencia
+  return province ? province.towns : [];
+});
+
+
+
 
 const cleanLocationFormat = () => {
     if (form.location.trim()) {
@@ -214,7 +242,8 @@ function validateForm() {
 
     errors.name = validateName(form.name);
     errors.address = validateAddress(form.address);
-    errors.town = validateLocalization(form.province, form.town);
+    errors.province=validatePropInList(form.province, 'label', provinces, 'provincia');
+    errors.town = validatePropInList(form.town, 'label', towns, 'localidad')
     errors.email = validateEmail(form.email);
     errors.tel = validatePhone(form.tel);
     errors.web = validateWeb(form.web);

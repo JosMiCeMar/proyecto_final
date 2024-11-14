@@ -1,17 +1,19 @@
 <template>
     <div
-        class="px-10 flex flex-col lg:flex-row gap-2 py-3 bg-gradient-to-r from-lavender-dark to-skyblue-dark shadow-md lg:sticky lg:top-0 lg:z-10"
+        class="px-10 md:flex grid grid-cols-3 grid-rows-2 gap-2 py-3 justify-between bg-gradient-to-r from-lavender-dark to-skyblue-dark shadow-md"
     >
-        <div class="flex justify-center items-center rounded-md">
+        <div class="flex justify-center items-center rounded-md col-span-3">
             <Link :href="route('home')" class="p-2">
                 <LogoMarca
                     class="fill-white stroke-white hover:fill-skyblue-vlight hover:stroke-skyblue-vlight w-40 h-auto"
                 />
             </Link>
         </div>
-        <div class="flex flex-row w-full justify-between items-center">
+        <div class="flex lg:justify-center items-center rounded-md">
             <Navigator />
-            <div class="lg:flex lg:flex-1 sm:justify-center justify-end">
+        </div>
+        <div class="flex justify-center items-center rounded-md col-span-2">
+            <div class="lg:flex lg:flex-1 md:justify-center justify-end">
                 <template v-if="authUser">
                     <div class="flex ml-3 items-center">
                         <div class="ms-3 relative">
@@ -24,7 +26,10 @@
                                         >
                                             {{ authUser.nombre }}
                                             {{ authUser.apellidos }}
-                                            <IconMdi :icon="mdiMenuDown" :size="30"/>
+                                            <IconMdi
+                                                :icon="mdiMenuDown"
+                                                :size="30"
+                                            />
                                         </button>
                                     </span>
                                 </template>
@@ -46,20 +51,20 @@
                 </template>
                 <template v-else>
                     <div
-                        class="flex flex-wrap w-full justify-center items-center gap-4 ml-3 text-lg sm:text-sm"
+                        class="flex flex-wrap justify-center items-center gap-4 ml-3 text-lg sm:text-sm"
                     >
                         <Link
                             :href="route('login')"
                             class="rounded-md flex items-center h-fit px-3 py-2 ring-1 ring-transparent text-white hover:text-lavender-vlight focus-visible:ring-white fill-white hover:fill-lavender-vlight transition-all ease-in-out"
                         >
-                            <IconMdi :icon="mdiLogin" :size="20"/>
+                            <IconMdi :icon="mdiLogin" :size="20" />
                             <span class="ml-1">Acceso</span>
                         </Link>
                         <Link
                             :href="route('cod_registro.check')"
                             class="rounded-md flex items-center h-fit px-3 py-2 ring-1 ring-transparent text-white hover:text-lavender-vlight focus-visible:ring-white fill-white hover:fill-lavender-vlight transition-all ease-in-out"
                         >
-                            <IconMdi :icon="mdiAccountPlus" :size="20"/>
+                            <IconMdi :icon="mdiAccountPlus" :size="20" />
                             <span class="ml-1">Registro</span>
                         </Link>
                     </div>
