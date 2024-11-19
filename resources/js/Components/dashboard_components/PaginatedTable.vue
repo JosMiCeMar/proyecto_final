@@ -28,15 +28,13 @@
             </tbody>
         </table>
     </div>
-    <div
-        :class="`flex justify-between items-center p-2 ${setVisible()}`"
-    >
+    <div :class="`flex justify-between items-center p-2 ${setVisible()}`">
         <button
             @click="previousPage"
             :disabled="currentPage === 1"
             class="p-1 bg-lavender-dark fill-white shadow-md enabled:hover:fill-skyblue-light active:shadow-none disabled:bg-neutral-400 rounded"
         >
-            <IconMdi :icon="mdiMenuLeftOutline" :size="30" class="fill-white"/>
+            <IconMdi :icon="mdiMenuLeftOutline" :size="30" class="fill-white" />
         </button>
         <div class="flex space-x-2">
             <span
@@ -56,7 +54,11 @@
             :disabled="currentPage === totalPages || totalPages === 0"
             class="p-1 bg-lavender-dark fill-white shadow-md enabled:hover:fill-skyblue-light active:shadow-none disabled:bg-neutral-400 rounded"
         >
-        <IconMdi :icon="mdiMenuRightOutline" :size="30" class="fill-white"/>
+            <IconMdi
+                :icon="mdiMenuRightOutline"
+                :size="30"
+                class="fill-white"
+            />
         </button>
     </div>
 </template>
@@ -64,7 +66,11 @@
 <script setup>
 import { ref, computed } from "vue";
 import IconMdi from "@/Components/IconMdi.vue";
-import { mdiMenuLeftOutline, mdiMenuRightOutline } from "@mdi/js";
+import {
+    mdiGestureSwipeHorizontal,
+    mdiMenuLeftOutline,
+    mdiMenuRightOutline,
+} from "@mdi/js";
 
 const props = defineProps({
     items: {
@@ -79,15 +85,15 @@ const props = defineProps({
         type: Number,
         default: 5,
     },
-    controlsVisible:{
-        type:Boolean,
-        default:true
-    }
+    controlsVisible: {
+        type: Boolean,
+        default: true,
+    },
 });
 
-const setVisible = ()=>{
-    return props.controlsVisible?'visible':'hidden';
-}
+const setVisible = () => {
+    return props.controlsVisible ? "visible" : "hidden";
+};
 
 // Estado para paginación
 const currentPage = ref(1);
@@ -117,20 +123,20 @@ const previousPage = () => {
 <style scoped>
 /* Estilos para personalizar la barra de scroll de la tabla */
 .custom-scrollbar::-webkit-scrollbar {
-  width: 3px; 
+    width: 3px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: transparent; 
+    background: transparent;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #3A2642; 
-  border-radius: 100px; 
-  border: 4px solid #f0f0f0; /* Espacio entre la barra y el div */
+    background-color: #3a2642;
+    border-radius: 100px;
+    border: 4px solid #f0f0f0; /* Espacio entre la barra y el div */
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: #315D66; 
+    background-color: #315d66;
 }
 </style>

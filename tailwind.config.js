@@ -23,10 +23,10 @@ export default {
                 'skyblue-logo':'#68C3D6',
                 'lavender-dark':'#3A2642',
                 'skyblue-dark':'#315D66',
-                'lavender-light':'#db99f7',
-                'skyblue-light':'#87b3fa',
-                'lavender-vlight':'#e3b8f5',
-                'skyblue-vlight':'#bdd6ff',
+                'lavender-light':'#DB99F7',
+                'skyblue-light':'#87B3FA',
+                'lavender-vlight':'#E3B8F5',
+                'skyblue-vlight':'#BDD6FF',
                 'lightyellow':'#F4FFFD'
             }
         },

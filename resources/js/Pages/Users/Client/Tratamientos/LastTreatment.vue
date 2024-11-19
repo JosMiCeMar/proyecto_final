@@ -56,6 +56,8 @@
                     </div>
                 </div>
             </template>
+            <div id="chart-container" class="flex justify-center">
+  </div>
         </ContentBox>
         <p class="text-xs text-skyblue-dark ml-4 pb-4 text-center">
             <span class="font-bold">*A tener en cuenta: </span>Esto una tabla
@@ -76,6 +78,7 @@ const props = defineProps({
         required: true,
     },
 });
+
 
 const headers = ["Zona", "Precio", "Centro", "Fecha"];
 

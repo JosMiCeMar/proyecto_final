@@ -25,3 +25,56 @@ export function formatHour(hour){
   const arrayHour = hour.split(":");
   return `${arrayHour[0]}:${arrayHour[1]}`;
 }
+
+function capitalizeFirstChart(string) {
+  if (string.length === 0) return string; // Si la cadena está vacía, devolvemos la cadena tal cual
+  return string.charAt(0).toUpperCase() + string.slice(1);
+}
+
+export function getTotalByColumnName(data, columnName, columnNumber) {
+  const pricesByTreatment = {};
+
+  data.forEach(treatment => {
+      const treatmentName = capitalizeFirstChart(treatment[columnName]);  
+      const price = parseFloat(treatment[columnNumber]); 
+
+      if (pricesByTreatment[treatmentName]) {
+          pricesByTreatment[treatmentName] += price;
+      } else {
+          pricesByTreatment[treatmentName] = price;
+      }
+  });
+
+  const result = Object.keys(pricesByTreatment).map(treatment => ({
+      label: treatment,
+      value: pricesByTreatment[treatment]
+  }));
+
+  return result;
+}
+
+export function getCountByColumnName(data, column_name){
+  const pricesByTreatment = {};
+
+  data.forEach(treatment => {
+      const treatmentName = capitalizeFirstChart(treatment[column_name]);  
+
+      if (pricesByTreatment[treatmentName]) {
+          pricesByTreatment[treatmentName] ++;
+      } else {
+          pricesByTreatment[treatmentName] = 1;
+      }
+  });
+
+  const result = Object.keys(pricesByTreatment).map(treatment => ({
+      label: treatment,
+      value: pricesByTreatment[treatment]
+  }));
+
+  return result;
+};
+
+export function getYears(count) {
+  const currentYear = new Date().getFullYear();
+  return Array.from({ length: count + 1 }, (_, i) => currentYear - i);
+}

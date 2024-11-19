@@ -111,11 +111,11 @@ class CodRegistroController extends Controller
 
             // Crear el código y asegurarse de que sea único
             do {
-                $codigo = $this->crearCodigo();
-            } while (CodRegistro::where('codigo', $codigo)->exists());  // Verificar si el código ya existe
+                $codigoGenerado = $this->crearCodigo();
+            } while (CodRegistro::where('codigo', $codigoGenerado)->exists());
 
             $codigo = new CodRegistro();
-            $codigo->codigo = $codigo;
+            $codigo->codigo = $codigoGenerado;
             $codigo->id_creador = Auth::id();
             $codigo->para_cliente = $request->type;
             $codigo->save();

@@ -75,6 +75,7 @@
             <div class="flex items-center gap-4">
                 <PrimaryButton
                     :disabled="form.processing"
+                    :dark="true"
                     class="bg-lavender-dark text-skyblue-vlight hover:text-lavender-dark hover:border-lavender-dark"
                     >Guardar Cambios</PrimaryButton
                 >

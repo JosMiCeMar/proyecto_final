@@ -193,7 +193,7 @@ class ClienteController extends Controller
                 }
 
                 
-            return Inertia::render('Users/Client/Tratamientos/LastTreatment', ['tratamientos' => $tratamientos]);
+            return Inertia::render('Users/Client/Tratamientos/SummaryTreatment', ['tratamientos' => $tratamientos]);
         } catch (Exception $er) {
             return redirect()->route('client.indexTratamientos')->withErrors('Error inesperado: ' . $er->getMessage());
         }

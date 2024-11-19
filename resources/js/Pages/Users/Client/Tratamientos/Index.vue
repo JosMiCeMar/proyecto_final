@@ -30,7 +30,7 @@ const linksList = [
     {
         route: route("client.ultimosTratamientos"),
         icon: mdiFormatListNumbered,
-        title: "Mostrar Últimos Tratamientos",
+        title: "Últimos Tratamientos",
         description: "Detalles de tus últimos tratamientos",
     },
     {
