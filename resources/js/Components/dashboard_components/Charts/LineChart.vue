@@ -1,20 +1,28 @@
 <template>
     <div>
-      <LineChart :chartData="chartData" :options="options" />
+        <LineChart :chartData="chartData" :options="options" />
     </div>
-  </template>
-  
-  <script setup>
-  import { defineProps } from "vue";
-  import { LineChart } from "vue-chart-3";
-  import { Chart, registerables } from "chart.js";
-  
-  Chart.register(...registerables);
-  
-  const props = defineProps({
-    jsonData: {
+</template>
+
+<script setup>
+import { defineProps } from "vue";
+import { LineChart } from "vue-chart-3";
+import { Chart, registerables } from "chart.js";
+
+Chart.register(...registerables);
+
+const props = defineProps({
+    labels: {
         type: Array,
         required: true,
+    },
+    values: {
+        type: Array,
+        required: true,
+    },
+    displayTitle:{
+        type:Boolean,
+        default:false
     },
     title: {
         type: String,
@@ -26,33 +34,35 @@
     },
     itemColors: {
         type: Array,
-        default:["#58A1C7"]
+        default: ["#58A1C7"],
+    },
+    lineColor: {
+        type: String,
+        default: "#3A2642",
     },
 });
-  
- // Adaptar los datos JSON al formato de Chart.js
+
 const chartData = {
-    labels: props.jsonData.map((item) => item.label),
+    labels: props.labels,
     datasets: [
         {
-            data: props.jsonData.map((item) => item.value),
-            borderColor:"#3A2642",
+            data: props.values,
+            borderColor: props.lineColor,
             backgroundColor: props.itemColors,
-            tension: 0.4,
-            pointRadius:5,
-            pointHoverRadius:7
+            pointRadius: 5,
+            pointHoverRadius: 7,
         },
     ],
 };
 
 const options = {
-    responsive: true,
+    responsive: false,
     plugins: {
-        legend:{
-            display:false
+        legend: {
+            display: false,
         },
         title: {
-            display: true,
+            display: props.displayTitle,
             text: props.title,
             color: props.titleColor,
             font: {
@@ -60,7 +70,13 @@ const options = {
             },
         },
     },
-    cutout: "0%",
+    scales: {
+            y: {
+                beginAtZero: true,
+                ticks:{
+                    stepSize:40
+                }
+            },
+        },
 };
 </script>
-  

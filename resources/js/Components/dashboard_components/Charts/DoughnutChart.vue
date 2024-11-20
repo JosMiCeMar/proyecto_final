@@ -6,16 +6,25 @@
 import { DoughnutChart } from "vue-chart-3";
 import { Chart, registerables } from "chart.js";
 
+
 Chart.register(...registerables);
 
 const props = defineProps({
-    jsonData: {
+    labels: {
+        type: Array,
+        required: true,
+    },
+    values: {
         type: Array,
         required: true,
     },
     legendPosition: {
         type: String,
         default: "bottom",
+    },
+    displayTitle:{
+        type:Boolean,
+        default:false
     },
     title: {
         type: String,
@@ -39,12 +48,11 @@ const props = defineProps({
     },
 });
 
-// Adaptar los datos JSON al formato de Chart.js
 const chartData = {
-    labels: props.jsonData.map((item) => item.label),
+    labels: props.labels,
     datasets: [
         {
-            data: props.jsonData.map((item) => item.value),
+            data: props.values,
             backgroundColor: props.itemColors,
         },
     ],
@@ -63,7 +71,7 @@ const options = {
             },
         },
         title: {
-            display: true,
+            display: props.displayTitle,
             text: props.title,
             color: props.titleColor,
             font: {

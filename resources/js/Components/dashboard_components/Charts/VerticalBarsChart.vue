@@ -9,7 +9,11 @@ import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
 
 const props = defineProps({
-    jsonData: {
+    labels: {
+        type: Array,
+        required: true,
+    },
+    values: {
         type: Array,
         required: true,
     },
@@ -21,6 +25,10 @@ const props = defineProps({
         type: String,
         required: false,
         default: "",
+    },
+    displayTitle:{
+        type:Boolean,
+        default:false
     },
     title: {
         type: String,
@@ -53,23 +61,23 @@ const props = defineProps({
 });
 
 const chartData = {
-    labels: props.jsonData.map((item) => item.label),
+    labels: props.labels,
     datasets: [
         {
-            data: props.jsonData.map((item) => item.value),
+            data: props.values,
             backgroundColor: props.barsColors,
         },
     ],
 };
 
 const options = {
-    responsive: true,
+    responsive: false,
     plugins: {
         legend: {
-            display: false, // Ocultar la leyenda si no se necesita
+            display: false,
         },
         title: {
-            display: true,
+            display: props.displayTitle,
             text: props.title,
             color: props.titleColor,
             font: {
@@ -99,6 +107,7 @@ const options = {
                 },
                 stepSize:props.stepSize
             },
+            max:Math.max(...props.values)+50
         },
     },
 };

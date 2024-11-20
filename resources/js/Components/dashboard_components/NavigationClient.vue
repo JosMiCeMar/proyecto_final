@@ -24,7 +24,7 @@
             :href="route('client.indexTratamientos')"
             :active="route().current('client.indexTratamientos')||
             route().current('client.ultimosTratamientos')||
-            route().current('client.ultimosTratamientos')"
+            route().current('client.resumenTratamientos')"
         >
             Mis Tratamientos
         </NavLink>

@@ -9,43 +9,67 @@
         >
             <!--Si el array recibido del back esta vacio, muestra el mensaje-->
             <template v-if="props.tratamientos.length === 0">
-                <div class="m-4 my-20">
+                <section class="m-4 my-20">
                     <p class="text-center">
                         <span
                             class="text-lavender-dark font-bold sm:text-xl p-2 bg-red-300 rounded-lg"
                             >No tienes tratamientos realizados actualmente</span
                         >
                     </p>
-                </div>
+                </section>
             </template>
 
             <!--De lo contrario, muestra los gráficos-->
             <template v-else>
-                <div
-                    class="my-4 lg:grid lg:grid-cols-2 flex flex-col gap-10 w-auto h-fit"
+                <section
+                    class="my-4 lg:grid lg:grid-cols-2 flex flex-col gap-10"
                 >
-                    <VerticalBarsChart
-                        :jsonData="totalPricesByTreatment"
+                    <ChartContainer
                         title="Gastos Totales por Zona de Tratamiento"
+                        :labels="totalByTreatment[0]"
+                        :values="totalByTreatment[1]"
                         subfix="€"
-                        class="bg-white p-4 shadow-md rounded-md"
-                    />
-                    <DoughnutChart
-                        :jsonData="countTreatment"
-                        title="Cantidad de Tratamientos Realizados por Zona"
-                        class="bg-white p-4 shadow-md rounded-md"
-                    />
-                    <HorizontalBarsChart
-                        :jsonData="countCenter"
-                        title="Tratamientos Realizados por Centro"
-                        class="bg-white p-4 shadow-md rounded-md"
-                    />
-                    <LineChart
-                        :jsonData="lineData"
+                    >
+                        <VerticalBarsChart
+                            :labels="totalByTreatment[0]"
+                            :values="totalByTreatment[1]"
+                            subfix="€"
+                            :stepSize="25"
+                        />
+                    </ChartContainer>
+                    <ChartContainer
                         title="Gastos Totales por Año"
-                        class="bg-white p-4 shadow-md rounded-md"
-                    />
-                </div>
+                        :labels="totalByYear[0]"
+                        :values="totalByYear[1]"
+                        subfix="€"
+                    >
+                        <LineChart
+                            :labels="totalByYear[0]"
+                            :values="totalByYear[1]"
+                        />
+                    </ChartContainer>
+                    <ChartContainer
+                        title="Tratamientos Totales por Zona"
+                        :labels="countTreatment[0]"
+                        :values="countTreatment[1]"
+                    >
+                        <DoughnutChart
+                            :labels="countTreatment[0]"
+                            :values="countTreatment[1]"
+                            legendPosition="left"
+                        />
+                    </ChartContainer>
+                    <ChartContainer
+                        title="Tratamientos Totales por Centro"
+                        :labels="countCenter[0]"
+                        :values="countCenter[1]"
+                    >
+                        <HorizontalBarsChart
+                            :labels="countCenter[0]"
+                            :values="countCenter[1]"
+                        />
+                    </ChartContainer>
+                </section>
             </template>
         </ContentBox>
         <p class="text-xs text-skyblue-dark ml-4 pb-4 text-center">
@@ -62,11 +86,13 @@ import { Head } from "@inertiajs/vue3";
 import {
     getCountByColumnName,
     getTotalByColumnName,
+    getTotalByYears,
 } from "@/Utils/utilsFunctions";
 import DoughnutChart from "@/Components/dashboard_components/Charts/DoughnutChart.vue";
 import VerticalBarsChart from "@/Components/dashboard_components/Charts/VerticalBarsChart.vue";
 import HorizontalBarsChart from "@/Components/dashboard_components/Charts/HorizontalBarsChart.vue";
 import LineChart from "@/Components/dashboard_components/Charts/LineChart.vue";
+import ChartContainer from "@/Components/dashboard_components/Charts/ChartContainer.vue";
 
 const props = defineProps({
     tratamientos: {
@@ -75,22 +101,12 @@ const props = defineProps({
     },
 });
 
-const lineData = [
-    {label:"2020",value:120},
-    {label:"2021",value:200},
-    {label:"2022",value:70},
-    {label:"2023",value:100},
-    {label:"2024",value:120},
-];
-
-
-
-const totalPricesByTreatment = getTotalByColumnName(
+const totalByTreatment = getTotalByColumnName(
     props.tratamientos,
     "zona_nombre",
     "zona_precio"
 );
-
+const totalByYear = getTotalByYears(props.tratamientos, "fecha", "zona_precio");
 const countTreatment = getCountByColumnName(props.tratamientos, "zona_nombre");
 const countCenter = getCountByColumnName(props.tratamientos, "centro_nombre");
 </script>

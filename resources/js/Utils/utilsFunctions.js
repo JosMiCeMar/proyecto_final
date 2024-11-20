@@ -35,46 +35,57 @@ export function getTotalByColumnName(data, columnName, columnNumber) {
   const pricesByTreatment = {};
 
   data.forEach(treatment => {
-      const treatmentName = capitalizeFirstChart(treatment[columnName]);  
-      const price = parseFloat(treatment[columnNumber]); 
+    const treatmentName = capitalizeFirstChart(treatment[columnName]);  
+    const price = parseFloat(treatment[columnNumber]);
 
-      if (pricesByTreatment[treatmentName]) {
-          pricesByTreatment[treatmentName] += price;
-      } else {
-          pricesByTreatment[treatmentName] = price;
-      }
+    if (pricesByTreatment[treatmentName]) {
+      pricesByTreatment[treatmentName] += price;
+    } else {
+      pricesByTreatment[treatmentName] = price;
+    }
   });
 
-  const result = Object.keys(pricesByTreatment).map(treatment => ({
-      label: treatment,
-      value: pricesByTreatment[treatment]
-  }));
+  const labels = Object.keys(pricesByTreatment);
+  const values = labels.map(label => pricesByTreatment[label]);
 
-  return result;
+  return [labels, values];
 }
 
-export function getCountByColumnName(data, column_name){
+export function getTotalByYears(data, columnDateName, columnNumber) {
   const pricesByTreatment = {};
 
   data.forEach(treatment => {
-      const treatmentName = capitalizeFirstChart(treatment[column_name]);  
+    const treatmentName = new Date(treatment[columnDateName]).getFullYear();  
+    const price = parseFloat(treatment[columnNumber]);
 
-      if (pricesByTreatment[treatmentName]) {
-          pricesByTreatment[treatmentName] ++;
-      } else {
-          pricesByTreatment[treatmentName] = 1;
-      }
+    if (pricesByTreatment[treatmentName]) {
+      pricesByTreatment[treatmentName] += price;
+    } else {
+      pricesByTreatment[treatmentName] = price;
+    }
   });
 
-  const result = Object.keys(pricesByTreatment).map(treatment => ({
-      label: treatment,
-      value: pricesByTreatment[treatment]
-  }));
+  const labels = Object.keys(pricesByTreatment);
+  const values = labels.map(label => pricesByTreatment[label]);
 
-  return result;
-};
+  return [labels, values];
+}
 
-export function getYears(count) {
-  const currentYear = new Date().getFullYear();
-  return Array.from({ length: count + 1 }, (_, i) => currentYear - i);
+export function getCountByColumnName(data, column_name) {
+  const pricesByTreatment = {};
+
+  data.forEach(treatment => {
+    const treatmentName = capitalizeFirstChart(treatment[column_name]);  
+
+    if (pricesByTreatment[treatmentName]) {
+      pricesByTreatment[treatmentName]++;
+    } else {
+      pricesByTreatment[treatmentName] = 1;
+    }
+  });
+
+  const labels = Object.keys(pricesByTreatment);
+  const values = labels.map(label => pricesByTreatment[label]);
+
+  return [labels, values];
 }

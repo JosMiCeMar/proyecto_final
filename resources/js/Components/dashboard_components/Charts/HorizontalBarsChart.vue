@@ -9,7 +9,11 @@ import { Chart, registerables } from "chart.js";
 Chart.register(...registerables);
 
 const props = defineProps({
-    jsonData: {
+    labels: {
+        type: Array,
+        required: true,
+    },
+    values: {
         type: Array,
         required: true,
     },
@@ -21,6 +25,10 @@ const props = defineProps({
         type: String,
         required: false,
         default: "",
+    },
+    displayTitle:{
+        type:Boolean,
+        default:false
     },
     title: {
         type: String,
@@ -53,10 +61,10 @@ const props = defineProps({
 });
 
 const chartData = {
-    labels: props.jsonData.map((item) => item.label), // Labels en eje Y
+    labels: props.labels,
     datasets: [
         {
-            data: props.jsonData.map((item) => item.value), // Valores en eje X
+            data: props.values, 
             backgroundColor: props.barsColors,
         },
     ],
@@ -64,13 +72,13 @@ const chartData = {
 
 const options = {
     indexAxis: "y", // Esto hace que el gráfico sea horizontal
-    responsive: true,
+    responsive: false,
     plugins: {
         legend: {
             display: false, // Ocultar la leyenda si no se necesita
         },
         title: {
-            display: true,
+            display: props.displayTitle,
             text: props.title,
             color: props.titleColor,
             font: {
