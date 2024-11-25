@@ -9,14 +9,14 @@
         >
             <!--Si el array recibido del back esta vacio, muestra el mensaje-->
             <template v-if="props.tratamientos.length === 0">
-                <div class="m-4 my-20">
-                    <p class="text-center">
+                <section class="m-4 my-20">
+                    <p class="text-center p-2 bg-red-300 rounded-lg">
                         <span
                             class="text-lavender-dark font-bold sm:text-xl p-2 bg-red-300 rounded-lg"
                             >No tienes tratamientos realizados actualmente</span
                         >
                     </p>
-                </div>
+                </section>
             </template>
 
             <!--De lo contrario, muestra la tabla-->
@@ -32,14 +32,14 @@
                             #default="{ item }"
                             class="text-lavender-dark"
                         >
-                            <td
-                                class="px-6 py-4 font-bold uppercase"
-                            >
+                            <td class="px-6 py-4 font-bold uppercase">
                                 {{ item.zona_nombre }}
                             </td>
                             <td class="px-6 py-4">{{ item.zona_precio }}€</td>
                             <td class="px-6 py-4">
-                                {{ item.centro_nombre }} ({{ item.centro_localidad }})
+                                {{ item.centro_nombre }} ({{
+                                    item.centro_localidad
+                                }})
                             </td>
                             <td class="px-6 py-4">
                                 {{ new Date(item.fecha).toLocaleDateString() }}
@@ -52,12 +52,14 @@
                         >
                             Total:
                         </div>
-                        <div class="w-40 text-center shadow-md text-lavender-dark font-semibold bg-white border-b border-r rounded-br-md border-skyblue-dark py-1 px-2">{{ getTotalPrice() }}€</div>
+                        <div
+                            class="w-40 text-center shadow-md text-lavender-dark font-semibold bg-white border-b border-r rounded-br-md border-skyblue-dark py-1 px-2"
+                        >
+                            {{ amountByColumnName(props.tratamientos, 'zona_precio') }}€
+                        </div>
                     </div>
                 </div>
             </template>
-            <div id="chart-container" class="flex justify-center">
-  </div>
         </ContentBox>
         <p class="text-xs text-skyblue-dark ml-4 pb-4 text-center">
             <span class="font-bold">*A tener en cuenta: </span>Esto una tabla
@@ -67,11 +69,16 @@
     </AuthenticatedLayout>
 </template>
 <script setup>
+//Importaciones de vue
+import { Head } from "@inertiajs/vue3";
+//Componentes
 import AuthenticatedLayout from "@/Layouts/breeze_layouts/AuthenticatedLayout.vue";
 import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import PaginatedTable from "@/Components/dashboard_components/PaginatedTable.vue";
-import { Head } from "@inertiajs/vue3";
+//Utilidades
+import { amountByColumnName } from "@/Utils/utilsFunctions";
 
+//Datos recibidos del backend
 const props = defineProps({
     tratamientos: {
         type: Array,
@@ -79,16 +86,8 @@ const props = defineProps({
     },
 });
 
-
+//Cabeceras de la tabla
 const headers = ["Zona", "Precio", "Centro", "Fecha"];
 
-const getTotalPrice = () => {
-    let totalPrice = 0;
 
-    props.tratamientos.forEach((item) => {
-        totalPrice += parseFloat(item.zona_precio);
-    });
-
-    return totalPrice;
-};
 </script>

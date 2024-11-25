@@ -20,7 +20,11 @@
         </ResponsiveNavLink>
         <ResponsiveNavLink
             :href="route('client.indexTratamientos')"
-            :active="route().current('client.indexTratamientos')"
+            :active="route().current('client.indexTratamientos')||
+            route().current('client.ultimosTratamientos')||
+            route().current('client.informeTratamientos')||
+            route().current('client.personalizarInforme')||
+            route().current('client.mostrarInforme')"
         >
             Mis Tratamientos
         </ResponsiveNavLink>

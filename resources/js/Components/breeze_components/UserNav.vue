@@ -31,7 +31,8 @@
                             <span class="inline-flex rounded-md">
                                 <button
                                     type="button"
-                                    class="inline-flex shadow-md items-center pl-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-skyblue-dark hover:text-lavender-vlight fill-white hover:fill-lavender-vlight focus:outline-none transition ease-in-out duration-150"
+                                    class="inline-flex shadow-md items-center pl-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md text-white bg-skyblue-dark hover:text-lavender-vlight fill-white hover:fill-lavender-vlight transition ease-in-out duration-150 focus:outline focus:outline-white"
+                                    tabindex="0"
                                 >
                                     {{ $page.props.auth.user.nombre }}
                                     {{ $page.props.auth.user.apellidos }}
@@ -68,7 +69,10 @@
                                     Editar Perfil
                                 </DropdownLink>
                             </template>
-                            <DropdownLink @click.prevent="closeSession()">
+                            <DropdownLink
+                                @click.prevent="closeSession()"
+                                tabindex="0"
+                            >
                                 Desconectar
                             </DropdownLink>
                         </template>

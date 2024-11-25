@@ -1,4 +1,4 @@
-//Validacion del centro (id), comprueba que sea un numero entero y que se encuentre en la lista de centros recibida
+//Validacion del (id), comprueba que sea un numero entero y que se encuentre en la lista de ids recibida
 export function validateIdinList(id, array, nameOfData) {
     if (isNaN(parseInt(id))) {
         return `El campo ${nameOfData} es obligatorio`;

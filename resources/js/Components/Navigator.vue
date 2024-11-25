@@ -43,8 +43,9 @@ import { mdiMenu } from "@mdi/js";
                     <span class="inline-flex rounded-md">
                         <button
                             type="button"
-                            class="inline-flex m-2 items-center p-2 border border-transparent leading-4 rounded-md bg-skyblue-dark fill-white hover:fill-lavender-dark hover:bg-lavender-logo  focus:outline-none transition ease-in-out duration-150"
-                        >
+                            class="inline-flex m-2 items-center p-2 border border-transparent leading-4 rounded-md bg-skyblue-dark fill-white hover:fill-lavender-dark hover:bg-lavender-logo  focus:outline transition ease-in-out duration-150"
+                        tabindex="0"
+                            >
                         <IconMdi :icon="mdiMenu"/>
                         </button>
                     </span>

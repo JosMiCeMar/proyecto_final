@@ -22,8 +22,9 @@
                                     <span class="inline-flex rounded-md">
                                         <button
                                             type="button"
-                                            class="inline-flex items-center pl-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md bg-lavender-dark hover:text-skyblue-vlight text-white fill-white hover:fill-skyblue-vlight focus:outline-none transition ease-in-out duration-150"
-                                        >
+                                            class="inline-flex items-center pl-3 py-1 border border-transparent text-sm leading-4 font-medium rounded-md bg-lavender-dark hover:text-skyblue-vlight text-white fill-white hover:fill-skyblue-vlight focus:outline focus:outline-white transition ease-in-out duration-150"
+                                        tabindex="0"
+                                            >
                                             {{ authUser.nombre }}
                                             {{ authUser.apellidos }}
                                             <IconMdi
@@ -42,6 +43,7 @@
                                     <DropdownLink
                                         class="text-lg sm:text-sm"
                                         @click.prevent="closeSession()"
+                                        tabindex="0"
                                         >Desconectar
                                     </DropdownLink>
                                 </template>

@@ -20,12 +20,16 @@
     </AuthenticatedLayout>
 </template>
 <script setup>
+//Importaciones de vue
+import { Head } from "@inertiajs/vue3";
+//Componentes
 import AuthenticatedLayout from "@/Layouts/breeze_layouts/AuthenticatedLayout.vue";
 import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import LinkBox from "@/Components/dashboard_components/LinkBox.vue";
-import { Head } from "@inertiajs/vue3";
+//Iconos
 import { mdiFileChart, mdiFileEdit, mdiFormatListNumbered } from "@mdi/js";
 
+//Información para las tarjetas
 const linksList = [
     {
         route: route("client.ultimosTratamientos"),
@@ -34,13 +38,13 @@ const linksList = [
         description: "Detalles de tus últimos tratamientos",
     },
     {
-        route: route("client.resumenTratamientos"),
+        route: route("client.informeTratamientos"),
         icon: mdiFileChart,
         title: "Informe de Tratamientos",
         description: "Resumen de todos los tratamientos realizados",
     },
     {
-        route: route("dashboard"),
+        route: route("client.personalizarInforme"),
         icon: mdiFileEdit,
         title: "Personalizar Informe",
         description: "Personaliza un informe con los datos que desees",

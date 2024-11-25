@@ -10,7 +10,7 @@
       <!-- Botón para mostrar/ocultar la lista -->
       <button
         @click="showList = !showList"
-        class="bg-gradient-to-b text-sm items-center from-gray-100 to-gray-200 text-lavender-dark fill-lavender-dark hover:outline hover:outline-lavender-vlight w-full flex py-1 justify-center gap-2 rounded-md shadow-md transition-all duration-200"
+        class="bg-gradient-to-b text-sm items-center from-gray-100 to-gray-200 text-lavender-dark fill-lavender-dark hover:outline hover:outline-lavender-dark outline-1 w-full flex py-1 justify-center gap-2 rounded-md shadow-md transition-all duration-200"
       >
         {{ showList ? "Ocultar Lista" : "Mostrar Lista" }}
         <IconMdi :size="20" :icon="showList ? mdiChevronUp : mdiChevronDown" />
@@ -26,7 +26,7 @@
           key="list"
           class="w-full overflow-hidden"
         >
-          <ul class="list-disc list-inside space-y-1 text-lavender-dark">
+          <ul class="list-inside space-y-1 text-lavender-dark">
             <li
               v-for="(item, index) in props.labels"
               :key="index"

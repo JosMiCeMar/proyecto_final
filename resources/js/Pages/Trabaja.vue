@@ -13,8 +13,8 @@
             :class="[
             'my-8 ml-8 text-lavender-dark transition-all duration-700 ease-out transform',
             {
-              'opacity-100 scale-100 blur-0 translate-y-0': visibleSections[index],
-              'opacity-0 scale-90 blur-md translate-y-10': !visibleSections[index]
+              'opacity-100 scale-100 blur-0 translate-x-0': visibleSections[index],
+              'opacity-0 scale-90 blur-md translate-x-10': !visibleSections[index]
             }
           ]"
           >
@@ -36,7 +36,7 @@
   
   const titulo = "Trabaja con Nosotros";
   
-  // Definir el contenido de las secciones
+  // Contenido de las secciones
   const sections = [
     {
       title: "¿Qué es la Explotación Compartida?",
@@ -117,11 +117,11 @@
   .opacity-100 {
     opacity: 1;
   }
-  .translate-y-10 {
-    transform: translateY(2.5rem); /* Sección inicialmente desplazada hacia abajo */
+  .translate-x-10 {
+    transform: translateX(4rem); /* Sección inicialmente desplazada la derecha */
   }
-  .translate-y-0 {
-    transform: translateY(0); /* Sección en posición normal */
+  .translate-x-0 {
+    transform: translateX(0); /* Sección en posición normal */
   }
   </style>
   
