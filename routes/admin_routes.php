@@ -4,6 +4,7 @@ use App\Http\Controllers\AdministradoreController;
 use App\Http\Controllers\CentroController;
 use App\Http\Controllers\CodRegistroController;
 use App\Http\Controllers\DiaController;
+use App\Http\Controllers\InformeController;
 use App\Http\Controllers\ZonaController;
 use App\Http\Middleware\CheckAdmin;
 use Illuminate\Support\Facades\Route;
@@ -47,5 +48,12 @@ Route::middleware([CheckAdmin::class, 'auth', 'verified'])->group(function () {
     Route::get('/admin_mod_dia/{id}',[DiaController::class,'mod'])->name('admin.modDias');
     Route::post('/admin_mod_dia',[DiaController::class,'update'])->name('admin.updateDias');
     Route::post('/admin_del_dia',[DiaController::class,'delete'])->name('admin.delDias');
+
+    //Rutas informes
+    Route::get('/admin_informes', [InformeController::class, 'adminIndexInforme'])->name('admin.indexInforme');
+    Route::get('/admin_informes_ultimo_mes', [InformeController::class, 'adminInformeUltimoMes'])->name('admin.ultimoMesInforme');
+    Route::get('/admin_total_informes', [InformeController::class, 'adminInformeGeneral'])->name('admin.informeGeneral');
+    Route::get('/admin_personalizar_informes', [InformeController::class, 'adminFormularioPersonalizado'])->name('admin.personalizarInforme');
+    Route::post('/informe_personalizado', [InformeController::class, 'adminInformePersonalizado'])->name('admin.mostrarInforme');
     
 });

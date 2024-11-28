@@ -46,8 +46,8 @@
                 />
                 <InputError :message="form.errors.password" class="mt-2" />
                 <p class="text-skyblue-dark text-xs mt-2">
-                    *Recuerda: La contraseña debe tener almenos 8 caracteres, incluyendo
-                    mayúsculas, minúsculas, números y símbolos.
+                    *Recuerda: La contraseña debe tener almenos 8 caracteres,
+                    incluyendo mayúsculas, minúsculas, números y símbolos.
                 </p>
             </div>
 
@@ -69,14 +69,10 @@
                     :message="form.errors.password_confirmation"
                     class="mt-2"
                 />
-
             </div>
 
             <div class="flex items-center gap-4">
-                <PrimaryButton
-                    :disabled="form.processing"
-                    :dark="true"
-                    class="bg-lavender-dark text-skyblue-vlight hover:text-lavender-dark hover:border-lavender-dark"
+                <PrimaryButton :disabled="form.processing" :dark="true"
                     >Guardar Cambios</PrimaryButton
                 >
 
@@ -103,11 +99,12 @@ import InputLabel from "@/Components/breeze_components/InputLabel.vue";
 import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
 import { useForm } from "@inertiajs/vue3";
 import { ref } from "vue";
-import { validatePassword, validatePasswordConfirmation } from '@/Utils/Validators/user_validator';
-import { incorrectForm } from '@/Utils/alerts';
+import {
+    validatePassword,
+    validatePasswordConfirmation,
+} from "@/Utils/Validators/user_validator";
+import { incorrectForm } from "@/Utils/alerts";
 import PasswordInput from "@/Components/breeze_components/PasswordInput.vue";
-
-
 
 const passwordInput = ref(null);
 const currentPasswordInput = ref(null);
@@ -122,11 +119,14 @@ function validateForm() {
     const errors = {};
 
     errors.password = validatePassword(form.password);
-    errors.password_confirmation = validatePasswordConfirmation(form.password, form.password_confirmation);
+    errors.password_confirmation = validatePasswordConfirmation(
+        form.password,
+        form.password_confirmation
+    );
 
     form.errors = errors;
 
-    return Object.keys(errors).every(key => errors[key] === null);
+    return Object.keys(errors).every((key) => errors[key] === null);
 }
 
 const updatePassword = () => {

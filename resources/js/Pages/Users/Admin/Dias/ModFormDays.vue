@@ -18,7 +18,7 @@
                             id="day"
                             v-model="form.day"
                             inputFormat="dd-MM-yyyy"
-                            :lowerLimit="today"
+                            :lowerLimit="tomorrow"
                             :upperLimit="lastDay"
                             :locale="localLanguage"
                             :disabledDates="{ dates: invalidDates }"
@@ -78,11 +78,11 @@ import Datepicker from "vue3-datepicker";
 import { es } from "date-fns/locale";
 import { incorrectForm, sendForm } from "@/Utils/alerts";
 import {
-    getToday,
     getLastDate,
     disabledDates,
     validateDates,
-    validateCenter
+    validateCenter,
+    getTomorrow
 } from "@/Utils/Validators/dias_validator";
 
 
@@ -105,7 +105,7 @@ const props = defineProps({
 const localLanguage = es;
 
 //Obtencion de las fechas limite y deshabilitadas
-const today = getToday();
+const tomorrow = getTomorrow();
 const lastDay = getLastDate();
 const invalidDates = disabledDates(props.fechas);
 
@@ -118,7 +118,7 @@ const form = useForm({
 function validateForm() {
     const errors = {};
 
-    errors.day= validateDates(form.day, today, lastDay, invalidDates);
+    errors.day= validateDates(form.day, tomorrow, lastDay, invalidDates);
 
     errors.center = validateCenter(form.center, props.centros);
 

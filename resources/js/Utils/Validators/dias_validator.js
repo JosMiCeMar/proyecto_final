@@ -9,6 +9,14 @@ export function getToday() {
     return date;
 }
 
+export function getTomorrow() {
+    const date = new Date();
+    date.setHours(0, 0, 0, 0);
+    date.setDate(date.getDate() + 1);
+
+    return date;
+}
+
 export function getLastDate() {
     const date = new Date();
     date.setHours(0, 0, 0, 0);

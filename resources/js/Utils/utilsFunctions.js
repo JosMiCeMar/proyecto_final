@@ -132,3 +132,31 @@ export function getCountByColumnName(data, column_name) {
 
     return [labels, values];
 }
+
+//Suma de tiempo en formato 00:00:00
+export function getSumByHours(data, time_column) {
+    let totalSeconds = 0;
+
+    //Se extraen los tiempos en formato sting, se pasan a numero, se combierten todos a segundos y se suman
+    data.forEach(item => {
+        const timeString = item[time_column]; 
+        const [hours, minutes, seconds] = timeString.split(':').map(Number); 
+        totalSeconds += hours * 3600 + minutes * 60 + seconds; 
+    });
+
+    // Convertimos el total de segundos a horas y minutos
+    const totalHours = Math.floor(totalSeconds / 3600);
+    const totalMinutes = Math.floor((totalSeconds % 3600) / 60);
+
+    return `${totalHours}:${totalMinutes.toString().padStart(2, '0')}`;
+}
+
+//Esta función sirve para retornar el índice del array con el mayor número, útil para el formato retornado en las funciones anteriores
+export function getIndexOfMaxValue(data, indexOfNumbers){
+    //Valida el formato de entrada, array multiple
+    if (!Array.isArray(data) || data.length < 2 || !Array.isArray(data[indexOfNumbers])) {
+        throw new Error("El formato del array no es válido");
+    }
+    // Encontrar el índice del número mayor en el segundo subarray
+    return data[indexOfNumbers].indexOf(Math.max(...data[indexOfNumbers]));
+}

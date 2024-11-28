@@ -116,7 +116,7 @@ class DiaController extends Controller
         $fechaRecibida = Carbon::parse($request->input('day'))->setTimezone(config('app.timezone'))->format('Y/m/d');
 
         //Fechas mínima y máxima en el mismo formato yyyy/MM/dd
-        $fechaMinima = Carbon::now()->startOfDay()->format('Y/m/d');
+        $fechaMinima = Carbon::now()->addDay()->startOfDay()->format('Y/m/d');
         $fechaMaxima = Carbon::now()->addYear()->startOfDay()->format('Y/m/d');
 
         //Se sobrescribe el valor de 'day' en el request

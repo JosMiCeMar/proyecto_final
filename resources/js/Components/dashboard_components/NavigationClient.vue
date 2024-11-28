@@ -26,7 +26,7 @@
             route().current('client.ultimosTratamientos')||
             route().current('client.informeTratamientos')||
             route().current('client.personalizarInforme')||
-            route().current('client.mostrarInforme')"
+            ruta==='/informe_personalizado'"
         >
             Mis Tratamientos
         </NavLink>
@@ -34,4 +34,9 @@
 </template>
 <script setup>
 import NavLink from "@/Components/breeze_components/NavLink.vue";
+import { usePage } from "@inertiajs/vue3";
+
+//Constantes para obtener el nombre de la ruta POST y usarlo para mostrar activo su enlace
+const page=usePage();
+const ruta=page.url;
 </script>

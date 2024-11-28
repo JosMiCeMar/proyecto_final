@@ -17,16 +17,12 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ProfileUpdateRequest;
-use App\Models\Centro;
-use App\Models\Reserva;
-use App\Models\Zona;
-use Exception;
 
 class ClienteController extends Controller
 {
     private const EDAD_MINIMA = 13;
     private const EDAD_MAXIMA = 120;
-    private const FECHA_MINIMA_INFORME = "2015-1-1";
+
 
     public function create()
     {
@@ -121,155 +117,4 @@ class ClienteController extends Controller
         return Redirect::route('client.profileEdit');
     }
 
-    //Funciones para la sección de Tratamientos
-    public function indexTratamientos()
-    {
-        return Inertia::render('Users/Client/Tratamientos/Index');
-    }
-
-    public function ultimosTratamientos()
-    {
-        try {
-            $hoy = Carbon::today();
-
-            $cliente = Cliente::where('user_id', Auth::id())->first();
-
-            if (!$cliente) {
-                return redirect()->route('client.indexTratamientos')->withErrors('No se encontró el identificador de cliente');
-            }
-
-            $tratamientos = Reserva::where('cliente_id', $cliente->id)
-                ->join('dias', 'reservas.dia_id', 'dias.id')
-                ->join('centros', 'centros.id', 'dias.centro_id')
-                ->join('zonas', 'reservas.zona_id', 'zonas.id')
-                ->where('dias.fecha', '<', $hoy)
-                ->select(
-                    'zonas.nombre as zona_nombre',
-                    'zonas.precio as zona_precio',
-                    'dias.fecha',
-                    'centros.nombre as centro_nombre',
-                    'centros.localidad as centro_localidad'
-
-                )
-                ->orderBy('dias.fecha', 'desc')
-                ->limit(5)
-                ->get();
-
-            if (!$tratamientos) {
-                return redirect()->route('client.indexTratamientos')->withErrors('No se encontró ningún tratamiento');
-            }
-
-
-            return Inertia::render('Users/Client/Tratamientos/LastTreatment', ['tratamientos' => $tratamientos]);
-        } catch (Exception $er) {
-            return redirect()->route('client.indexTratamientos')->withErrors('Error al mostrar los últimos tratamientos: ' . $er->getMessage());
-        }
-    }
-
-    public function informeTratamientos()
-    {
-        try {
-            $hoy = Carbon::today();
-
-            $cliente = Cliente::where('user_id', Auth::id())->first();
-
-            if (!$cliente) {
-                return redirect()->route('client.indexTratamientos')->withErrors('No se encontró el identificador de cliente');
-            }
-
-            $tratamientos = Reserva::where('cliente_id', $cliente->id)
-                ->join('dias', 'reservas.dia_id', 'dias.id')
-                ->join('centros', 'centros.id', 'dias.centro_id')
-                ->join('zonas', 'reservas.zona_id', 'zonas.id')
-                ->where('dias.fecha', '<', $hoy)
-                ->select(
-                    'zonas.nombre as zona_nombre',
-                    'zonas.precio as zona_precio',
-                    'dias.fecha',
-                    'centros.nombre as centro_nombre',
-                    'centros.localidad as centro_localidad'
-
-                )
-                ->orderBy('dias.fecha', 'desc')
-                ->get();
-
-            if ($tratamientos->isEmpty()) {
-                return redirect()->route('client.indexTratamientos')->withErrors('No se encontró ningún tratamiento');
-            }
-
-
-            return Inertia::render('Users/Client/Tratamientos/ReportsTreatment', ['tratamientos' => $tratamientos]);
-        } catch (Exception $er) {
-            return redirect()->route('client.indexTratamientos')->withErrors('Error inesperado: ' . $er->getMessage());
-        }
-    }
-
-    public function formularioPersonalizado()
-    {
-        try {
-
-            $zonas = Zona::select("id", "nombre")->where('active', '1')->orderBy("nombre")->get();
-            if (!$zonas) {
-                return redirect(route('client.indexTratamientos'))->withErrors('Error: No se encontraron zonas de tratamiento en la bbdd.');
-            }
-
-            $centros = Centro::select("id", "nombre", "localidad")->where('active', '1')->orderBy("nombre")->get();
-            if (!$centros) {
-                return redirect(route('client.indexTratamientos'))->withErrors('Error: No se encontraron centros asociados en la bbdd.');
-            }
-
-            return Inertia::render('Users/Client/Tratamientos/FormCustomReport', ['zonas' => $zonas, 'centros' => $centros]);
-        } catch (Exception $er) {
-            return redirect(route('client.indexTratamientos'))->withErrors('Error inesperado: ' . $er->getMessage());
-        }
-    }
-
-    public function mostrarInformePersonalizado(Request $request)
-    {
-        try {
-            $fechaMinima = Carbon::create(self::FECHA_MINIMA_INFORME)->startOfDay()->format('Y-m-d');;
-            $hoy = Carbon::today()->startOfDay()->format('Y-m-d');;
-
-            $request->validate([
-                'dateStart' => 'required|date|after_or_equal:' . $fechaMinima . '|before_or_equal:' . $hoy,
-                'dateEnd' => 'required|date|after_or_equal:' . $fechaMinima . '|before_or_equal:' . $hoy,
-                'zones' => 'required|array',
-                'zones.*' => 'integer|exists:zonas,id',
-                'centers' => 'required|array',
-                'centers.*' => 'integer|exists:centros,id',
-                'period' => 'required|boolean'
-            ]);
-
-            $cliente = Cliente::where('user_id', Auth::id())->first();
-
-            if (!$cliente) {
-                return redirect()->route('client.indexTratamientos')->withErrors('No se encontró el identificador de cliente');
-            }
-
-            $tratamientos = Reserva::where('cliente_id', $cliente->id)
-                ->join('dias', 'reservas.dia_id', 'dias.id')
-                ->join('centros', 'centros.id', 'dias.centro_id')
-                ->join('zonas', 'reservas.zona_id', 'zonas.id')
-                ->where('dias.fecha', '<=', $request->dateEnd)
-                ->where('dias.fecha','>=',$request->dateStart)
-                ->whereIn('centros.id',$request->centers)
-                ->whereIn('zonas.id',$request->zones)
-                ->select(
-                    'zonas.nombre as zona_nombre',
-                    'zonas.precio as zona_precio',
-                    'dias.fecha',
-                    'centros.nombre as centro_nombre',
-                    'centros.localidad as centro_localidad'
-                )
-                ->orderBy('dias.fecha', 'desc')
-                ->get();
-        
-            return Inertia::render('Users/Client/Tratamientos/CustomReportsTreatment',['tratamientos'=>$tratamientos,'periodo'=>$request->period]);
-           
-           
-            } catch (Exception $er) {
-            return redirect(route('client.indexTratamientos'))->withErrors('Error inesperado: ' . $er->getMessage());
-        }
-
-    }
 }

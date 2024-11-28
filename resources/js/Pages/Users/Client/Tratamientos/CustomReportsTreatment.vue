@@ -2,8 +2,8 @@
     <Head title="Informe de Tratamientos" />
     <AuthenticatedLayout>
         <ContentBox
-            title="Informe de Tratamientos"
-            :description="`Informe completo de todos los tratamientos realizados`"
+            title="Informe Personalizado"
+            description="Informe con los filtros aplicados en el formulario"
             :returnLink="route('client.indexTratamientos')"
             :messageDown="false"
         >
@@ -108,7 +108,6 @@
             con el tiempo.
         </p>
     </AuthenticatedLayout>
-    {{props.tratamientos}}
 </template>
 <script setup>
 //Importaciones de vue
@@ -150,6 +149,9 @@ const totalByTreatment = getTotalByColumnName(
     "zona_nombre",
     "zona_precio"
 );
+
+
+
 const totalByPeriod =props.periodo?getTotalByMonth(props.tratamientos, "fecha", "zona_precio"):getTotalByYears(props.tratamientos, "fecha", "zona_precio");
 const countTreatment = getCountByColumnName(props.tratamientos, "zona_nombre");
 const countCenter = getCountByColumnName(props.tratamientos, "centro_nombre");

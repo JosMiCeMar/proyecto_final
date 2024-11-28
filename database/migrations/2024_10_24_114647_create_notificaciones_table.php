@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             //Si el usuario destinatario se elimina, la notificacion tambien
             $table->foreignId('user_id')->constrained()->onDelete('cascade')->onUpdate('cascade');
-            $table->string('mensaje');
+            $table->mediumText('mensaje');
             $table->boolean('leido')->default(false);
             $table->timestamps();
         });

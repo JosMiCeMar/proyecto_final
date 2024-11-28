@@ -85,7 +85,9 @@
                     autocomplete="email"
                 />
                 <InputError class="mt-2" :message="form.errors.email" />
-                <p class="text-lavender-dark text-sm">*Recuerda volver a verificar tu email si lo modificas</p>
+                <p class="text-lavender-dark text-sm">
+                    *Recuerda volver a verificar tu email si lo modificas
+                </p>
             </div>
 
             <div>
@@ -127,10 +129,7 @@
             </div>
 
             <div class="flex items-center gap-4">
-                <PrimaryButton
-                    :disabled="form.processing"
-                    :dark="true"
-                    class="bg-lavender-dark text-skyblue-vlight hover:text-lavender-dark hover:border-lavender-dark"
+                <PrimaryButton :disabled="form.processing" :dark="true"
                     >Guardar cambios</PrimaryButton
                 >
 

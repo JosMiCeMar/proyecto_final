@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ClienteController;
+use App\Http\Controllers\InformeController;
 use App\Http\Controllers\ReservaController;
 use App\Http\Middleware\CheckClient;
 use Illuminate\Support\Facades\Route;
@@ -24,10 +25,9 @@ Route::middleware([CheckClient::class, 'auth', 'verified'])->group(function () {
   Route::post('/cita_modificada', [ReservaController::class, 'modHoraCliente'])->name('client.modHoraReser');
 
   //RUTAS MIS TRATAMIENTOS
-  Route::get('/mis_tratamientos', [ClienteController::class, 'indexTratamientos'])->name('client.indexTratamientos');
-  Route::get('/ultimos_tratamientos', [ClienteController::class, 'ultimosTratamientos'])->name('client.ultimosTratamientos');
-  Route::get('/informe_tratamientos', [ClienteController::class, 'informeTratamientos'])->name('client.informeTratamientos');
-  Route::get('/personalizar_informes', [ClienteController::class, 'formularioPersonalizado'])->name('client.personalizarInforme');
-  Route::post('/perzonalizar_informes', [ClienteController::class, 'mostrarInformePersonalizado'])->name('client.mostrarInforme');
-
+  Route::get('/mis_tratamientos', [InformeController::class, 'clienteIndexTratamientos'])->name('client.indexTratamientos');
+  Route::get('/ultimos_tratamientos', [InformeController::class, 'clienteUltimosTratamientos'])->name('client.ultimosTratamientos');
+  Route::get('/informe_tratamientos', [InformeController::class, 'clienteInformeTratamientos'])->name('client.informeTratamientos');
+  Route::get('/personalizar_informes', [InformeController::class, 'clienteFormularioPersonalizado'])->name('client.personalizarInforme');
+  Route::post('/informe_personalizado', [InformeController::class, 'clienteInformePersonalizado'])->name('client.mostrarInforme');
 });
