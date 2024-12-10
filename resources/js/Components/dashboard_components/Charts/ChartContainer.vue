@@ -1,6 +1,6 @@
 <template>
     <section
-        class="bg-gradient-to-tr from-white via-pink-100 to-white lg:p-4 p-2 shadow-md rounded-md flex flex-col gap-4 items-center justify-center"
+        class="bg-white lg:p-4 p-2 shadow-md rounded-md flex flex-col gap-4 items-center justify-center"
     >
         <!-- Título -->
         <h3 class="text-lavender-dark lg:text-xl text-lg font-bold text-center">

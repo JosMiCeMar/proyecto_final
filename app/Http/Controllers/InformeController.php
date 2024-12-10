@@ -92,7 +92,17 @@ class InformeController extends Controller
     {
         try {
 
-            return Inertia::render('Users/Admin/Informes/FormCustomReport');
+            $zonas = Zona::select("id", "nombre")->where('active', '1')->orderBy("nombre")->get();
+            if (!$zonas) {
+                return redirect(route('admin.indexInforme'))->withErrors('Error: No se encontraron zonas de tratamiento en la bbdd.');
+            }
+
+            $centros = Centro::select("id", "nombre", "localidad")->where('active', '1')->orderBy("nombre")->get();
+            if (!$centros) {
+                return redirect(route('admin.indexInforme'))->withErrors('Error: No se encontraron centros asociados en la bbdd.');
+            }
+
+            return Inertia::render('Users/Admin/Informes/FormCustomReport', ['zonas' => $zonas, 'centros' => $centros]);
         } catch (Exception $er) {
             return redirect()->route('admin.indexInforme')->withErrors('Error inesperado: ' . $er->getMessage());
         }
@@ -101,6 +111,39 @@ class InformeController extends Controller
     public function adminInformePersonalizado(Request $request)
     {
         try {
+            $fechaMinima = Carbon::create(self::FECHA_MINIMA_INFORME)->startOfDay()->format('Y-m-d');;
+            $hoy = Carbon::today()->startOfDay()->format('Y-m-d');;
+
+            $request->validate([
+                'dateStart' => 'required|date|after_or_equal:' . $fechaMinima . '|before_or_equal:' . $hoy,
+                'dateEnd' => 'required|date|after_or_equal:' . $fechaMinima . '|before_or_equal:' . $hoy,
+                'zones' => 'required|array',
+                'zones.*' => 'integer|exists:zonas,id',
+                'centers' => 'required|array',
+                'centers.*' => 'integer|exists:centros,id',
+                'period' => 'required|boolean'
+            ]);
+
+            $tratamientos = Reserva::join('dias', 'reservas.dia_id', 'dias.id')
+                ->join('centros', 'centros.id', 'dias.centro_id')
+                ->join('zonas', 'reservas.zona_id', 'zonas.id')
+                ->where('dias.fecha', '<=', $request->dateEnd)
+                ->where('dias.fecha', '>=', $request->dateStart)
+                ->whereIn('centros.id', $request->centers)
+                ->whereIn('zonas.id', $request->zones)
+                ->select(
+                    'zonas.nombre as zona_nombre',
+                    'zonas.precio as zona_precio',
+                    'zonas.tiempo_estimado as zona_tiempo',
+                    'dias.fecha',
+                    'centros.nombre as centro_nombre',
+                    'centros.localidad as centro_localidad'
+                )
+                ->orderBy('dias.fecha', 'desc')
+                ->get();
+
+                return Inertia::render('Users/Admin/Informes/CustomReport', ['tratamientos' => $tratamientos, 'periodo' => $request->period]);
+
         } catch (Exception $er) {
             return redirect()->route('admin.indexInforme')->withErrors('Error inesperado: ' . $er->getMessage());
         }
@@ -203,6 +246,8 @@ class InformeController extends Controller
             if (!$centros) {
                 return redirect(route('client.indexTratamientos'))->withErrors('Error: No se encontraron centros asociados en la bbdd.');
             }
+
+            
 
             return Inertia::render('Users/Client/Tratamientos/FormCustomReport', ['zonas' => $zonas, 'centros' => $centros]);
         } catch (Exception $er) {

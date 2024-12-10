@@ -20,12 +20,17 @@ const props = defineProps({
         type: Array,
         required: true,
     },
-    displayTitle:{
-        type:Boolean,
-        default:false
+    displayTitle: {
+        type: Boolean,
+        default: false,
     },
     title: {
         type: String,
+        default: "",
+    },
+    subfix: {
+        type: String,
+        required: false,
         default: "",
     },
     titleColor: {
@@ -39,6 +44,10 @@ const props = defineProps({
     lineColor: {
         type: String,
         default: "#3A2642",
+    },
+    stepSize: {
+        type: Number,
+        default: 1,
     },
 });
 
@@ -71,12 +80,16 @@ const options = {
         },
     },
     scales: {
-            y: {
-                beginAtZero: true,
-                ticks:{
-                    stepSize:40
-                }
+        y: {
+            beginAtZero: true,
+            ticks: {
+                stepSize: 40,
+                callback: function (value) {
+                    return `${value} ${props.subfix}`;
+                },
+                stepSize:props.stepSize
             },
         },
+    },
 };
 </script>

@@ -1,11 +1,9 @@
 <template>
-    <Head title="Informe Último Mes" />
+    <Head title="Informe de Tratamientos" />
     <AuthenticatedLayout>
         <ContentBox
-            title="Informe Último Mes"
-            :description="`Resumen de ${capitalizeFirstChart(props.mes)} del ${
-                props.anio
-            }`"
+            title="Informe Personalizado"
+            description="Informe con los filtros aplicados en el formulario"
             :returnLink="route('admin.indexInforme')"
             :messageDown="false"
         >
@@ -13,15 +11,22 @@
             <template v-if="props.tratamientos.length === 0">
                 <section class="m-4 my-20">
                     <p class="text-center p-2 bg-red-300 rounded-lg">
-                        <span
-                            class="text-lavender-dark font-bold sm:text-xl p-2 bg-red-300 rounded-lg"
-                            >No hay datos del último mes</span
+                        <span class="text-lavender-dark font-bold sm:text-xl">
+                            No se encontraron tratamientos con los filtros
+                            indicados
+                        </span>
+                    </p>
+                    <p class="text-center mt-2">
+                        <Link
+                            :href="route('admin.personalizarInforme')"
+                            class="text-md font-semibold underline text-lavender-dark hover:text-skyblue-dark"
+                            >Vuelva a intentarlo</Link
                         >
                     </p>
                 </section>
             </template>
 
-            <!--De lo contrario, muestra la información-->
+            <!--De lo contrario, muestra los gráficos-->
             <template v-else>
                 <section
                     class="rounded-md font-semibold text-skyblue-dark bg-white shadow-md p-4 grid grid-cols-1 gap-5 sm:flex sm:flex-col md:grid md:grid-cols-2 md:gap-6 justify-center items-center"
@@ -37,7 +42,7 @@
                         {{
                             amountByColumnName(
                                 props.tratamientos,
-                                "precio_zona"
+                                "zona_precio"
                             )
                         }}€
                     </div>
@@ -98,62 +103,85 @@
                     class="my-4 lg:grid lg:grid-cols-2 flex flex-col gap-10"
                 >
                     <ChartContainer
-                        title="Igresos Totales por Centro Asociado"
-                        :labels="totalTreatmentByCenters[0]"
-                        :values="totalTreatmentByCenters[1]"
+                        title="Ingresos Totales por Zona de Tratamiento"
+                        :labels="totalByTreatment[0]"
+                        :values="totalByTreatment[1]"
                         subfix="€"
                     >
                         <VerticalBarsChart
-                            :labels="totalTreatmentByCenters[0]"
-                            :values="totalTreatmentByCenters[1]"
+                            :labels="totalByTreatment[0]"
+                            :values="totalByTreatment[1]"
                             subfix="€"
-                            :stepSize="50"
+                            :stepSize="25"
                         />
                     </ChartContainer>
                     <ChartContainer
-                        title="Igresos Totales por Zona de Tratamiento"
-                        :labels="totalTreatmentByZone[0]"
-                        :values="totalTreatmentByZone[1]"
+                        :title="`Ingresos Totales por ${
+                            props.periodo ? 'Meses' : 'Años'
+                        }`"
+                        :labels="totalByPeriod[0]"
+                        :values="totalByPeriod[1]"
                         subfix="€"
                     >
-                        <VerticalBarsChart
-                            :labels="totalTreatmentByZone[0]"
-                            :values="totalTreatmentByZone[1]"
+                        <LineChart
+                            :labels="totalByPeriod[0]"
+                            :values="totalByPeriod[1]"
                             subfix="€"
-                            :stepSize="50"
-                        />
-                    </ChartContainer>
-                    <ChartContainer
-                        title="Tratamientos Totales por Centro"
-                        :labels="countTreatmentByCenters[0]"
-                        :values="countTreatmentByCenters[1]"
-                    >
-                        <DoughnutChart
-                            :labels="countTreatmentByCenters[0]"
-                            :values="countTreatmentByCenters[1]"
+                            :stepSize="100"
                         />
                     </ChartContainer>
                     <ChartContainer
                         title="Tratamientos Totales por Zona"
-                        :labels="countTreatmentByZone[0]"
-                        :values="countTreatmentByZone[1]"
+                        :labels="countTreatment[0]"
+                        :values="countTreatment[1]"
                     >
                         <DoughnutChart
-                            :labels="countTreatmentByZone[0]"
-                            :values="countTreatmentByZone[1]"
+                            :labels="countTreatment[0]"
+                            :values="countTreatment[1]"
+                            legendPosition="left"
+                        />
+                    </ChartContainer>
+                    <ChartContainer
+                        title="Tratamientos Totales por Centro"
+                        :labels="countCenter[0]"
+                        :values="countCenter[1]"
+                    >
+                        <HorizontalBarsChart
+                            :labels="countCenter[0]"
+                            :values="countCenter[1]"
                         />
                     </ChartContainer>
                 </section>
             </template>
         </ContentBox>
+        <p class="text-xs text-skyblue-dark ml-4 pb-4 text-center">
+            <span class="font-bold">*A tener en cuenta: </span>Esto una tabla
+            informativa, los precios, zonas y centros pueden verse modificados
+            con el tiempo.
+        </p>
     </AuthenticatedLayout>
 </template>
 <script setup>
 //Importaciones de vue
-import { Head } from "@inertiajs/vue3";
+import { Head, Link } from "@inertiajs/vue3";
 //Componentes
 import AuthenticatedLayout from "@/Layouts/breeze_layouts/AuthenticatedLayout.vue";
 import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
+import DoughnutChart from "@/Components/dashboard_components/Charts/DoughnutChart.vue";
+import VerticalBarsChart from "@/Components/dashboard_components/Charts/VerticalBarsChart.vue";
+import HorizontalBarsChart from "@/Components/dashboard_components/Charts/HorizontalBarsChart.vue";
+import LineChart from "@/Components/dashboard_components/Charts/LineChart.vue";
+import ChartContainer from "@/Components/dashboard_components/Charts/ChartContainer.vue";
+//Utilidades
+import {
+    amountByColumnName,
+    getCountByColumnName,
+    getTotalByColumnName,
+    getTotalByMonth,
+    getTotalByYears,
+    getSumByHours,
+    getIndexOfMaxValue,
+} from "@/Utils/utilsFunctions";
 import IconMdi from "@/Components/IconMdi.vue";
 import {
     mdiBadgeAccount,
@@ -163,60 +191,49 @@ import {
     mdiCounter,
     mdiStorePlus,
 } from "@mdi/js";
-import ChartContainer from "@/Components/dashboard_components/Charts/ChartContainer.vue";
-import VerticalBarsChart from "@/Components/dashboard_components/Charts/VerticalBarsChart.vue";
-import DoughnutChart from "@/Components/dashboard_components/Charts/DoughnutChart.vue";
-//Utilidades
-import {
-    capitalizeFirstChart,
-    amountByColumnName,
-    getCountByColumnName,
-    getIndexOfMaxValue,
-    getTotalByColumnName,
-    getSumByHours,
-} from "@/Utils/utilsFunctions";
 
+//Datos del backend
 const props = defineProps({
-    mes: {
-        type: String,
-        required: true,
-    },
-    anio: {
-        type: Number,
-        required: true,
-    },
     tratamientos: {
         type: Array,
         required: true,
-    }
+    },
+    periodo: {
+        type: Boolean,
+        required: true,
+    },
 });
 
+//Funciones para obtener los datos en formato para las gráficas
+const totalByTreatment = getTotalByColumnName(
+    props.tratamientos,
+    "zona_nombre",
+    "zona_precio"
+);
+
+const totalByPeriod = props.periodo
+    ? getTotalByMonth(props.tratamientos, "fecha", "zona_precio")
+    : getTotalByYears(props.tratamientos, "fecha", "zona_precio");
+const countTreatment = getCountByColumnName(props.tratamientos, "zona_nombre");
+const countCenter = getCountByColumnName(props.tratamientos, "centro_nombre");
 const countTreatmentByCenters = getCountByColumnName(
     props.tratamientos,
-    "nombre_centro"
+    "centro_nombre"
 );
 const totalTreatmentByCenters = getTotalByColumnName(
     props.tratamientos,
-    "nombre_centro",
-    "precio_zona"
+    "centro_nombre",
+    "zona_precio"
 );
 
-const totalTreatmentByZone = getTotalByColumnName(
-    props.tratamientos,
-    "nombre_zona",
-    "precio_zona"
-);
-const countTreatmentByZone = getCountByColumnName(
-    props.tratamientos,
-    "nombre_zona"
-);
+const countTreatmentByDay = getCountByColumnName(props.tratamientos, "fecha");
 
-const countTreatmentByDay= getCountByColumnName(
-    props.tratamientos,
-    "dias"
-);
+//Suma de horas trabajadas (estimación)
+const totalHours = getSumByHours(props.tratamientos, "zona_tiempo");
 
-const totalHours=getSumByHours(props.tratamientos, "tiempo_zona")
+//Índice del Centro con más tratamientos
 const indexMaxTreatment = getIndexOfMaxValue(countTreatmentByCenters, 1);
+
+//Índice del Centro con más beneficios
 const indexMaxBenefits = getIndexOfMaxValue(totalTreatmentByCenters, 1);
 </script>

@@ -54,6 +54,6 @@ Route::middleware([CheckAdmin::class, 'auth', 'verified'])->group(function () {
     Route::get('/admin_informes_ultimo_mes', [InformeController::class, 'adminInformeUltimoMes'])->name('admin.ultimoMesInforme');
     Route::get('/admin_total_informes', [InformeController::class, 'adminInformeGeneral'])->name('admin.informeGeneral');
     Route::get('/admin_personalizar_informes', [InformeController::class, 'adminFormularioPersonalizado'])->name('admin.personalizarInforme');
-    Route::post('/informe_personalizado', [InformeController::class, 'adminInformePersonalizado'])->name('admin.mostrarInforme');
+    Route::post('/admin_informe_personalizado', [InformeController::class, 'adminInformePersonalizado'])->name('admin.mostrarInforme');
     
 });

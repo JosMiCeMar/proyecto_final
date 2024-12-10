@@ -22,7 +22,7 @@
             <!--De lo contrario, muestra la información-->
             <template v-else>
                 <section
-                    class="rounded-md font-semibold text-skyblue-dark bg-gradient-to-b from-white via-blue-100 to-pink-100 shadow-md p-4 grid grid-cols-1 gap-5 sm:flex sm:flex-col md:grid md:grid-cols-2 md:gap-6 justify-center items-center"
+                    class="rounded-md font-semibold text-skyblue-dark bg-white shadow-md p-4 grid grid-cols-1 gap-5 sm:flex sm:flex-col md:grid md:grid-cols-2 md:gap-6 justify-center items-center"
                 >
                     <div class="flex justify-center items-center gap-2">
                         <IconMdi
@@ -109,7 +109,7 @@
                         />
                     </ChartContainer>
                     <ChartContainer
-                        title="Igresos Totales por Zona de Tratamiento"
+                        title="Ingresos Totales por Zona de Tratamiento"
                         :labels="totalTreatmentByZone[0]"
                         :values="totalTreatmentByZone[1]"
                         subfix="€"
@@ -141,6 +141,32 @@
                             :values="countTreatmentByZone[1]"
                         />
                     </ChartContainer>
+                    <ChartContainer
+                        title="Ingresos Totales por Meses"
+                        :labels="totalTreatmentByMonths[0]"
+                        :values="totalTreatmentByMonths[1]"
+                        subfix="€"
+                    >
+                        <LineChart
+                            :labels="totalTreatmentByMonths[0]"
+                            :values="totalTreatmentByMonths[1]"
+                            subfix="€"
+                            :stepSize="150"
+                        />
+                    </ChartContainer>
+                    <ChartContainer
+                        title="Ingresos Totales por Años"
+                        :labels="totalTreatmentByYears[0]"
+                        :values="totalTreatmentByYears[1]"
+                        subfix="€"
+                    >
+                        <LineChart
+                            :labels="totalTreatmentByYears[0]"
+                            :values="totalTreatmentByYears[1]"
+                            subfix="€"
+                            :stepSize="150"
+                        />
+                    </ChartContainer>
                 </section>
             </template>
         </ContentBox>
@@ -164,49 +190,74 @@ import {
 import ChartContainer from "@/Components/dashboard_components/Charts/ChartContainer.vue";
 import VerticalBarsChart from "@/Components/dashboard_components/Charts/VerticalBarsChart.vue";
 import DoughnutChart from "@/Components/dashboard_components/Charts/DoughnutChart.vue";
+import LineChart from "@/Components/dashboard_components/Charts/LineChart.vue";
 //Utilidades
 import {
-    capitalizeFirstChart,
     amountByColumnName,
     getCountByColumnName,
     getIndexOfMaxValue,
     getTotalByColumnName,
     getSumByHours,
+    getTotalByYears,
+    getTotalByMonth,
 } from "@/Utils/utilsFunctions";
 
 const props = defineProps({
     tratamientos: {
         type: Array,
         required: true,
-    }
+    },
 });
 
+//Conteo de tratamientos por centro
 const countTreatmentByCenters = getCountByColumnName(
     props.tratamientos,
     "nombre_centro"
 );
+
+//Ingresos de tratamientos por centro
 const totalTreatmentByCenters = getTotalByColumnName(
     props.tratamientos,
     "nombre_centro",
     "precio_zona"
 );
 
+//Ingresos de tratamientos por zona
 const totalTreatmentByZone = getTotalByColumnName(
     props.tratamientos,
     "nombre_zona",
     "precio_zona"
 );
+
+//Conteo de tratamientos por zona
 const countTreatmentByZone = getCountByColumnName(
     props.tratamientos,
     "nombre_zona"
 );
 
-const countTreatmentByDay= getCountByColumnName(
+//Conteo de dias trabajados
+const countTreatmentByDay = getCountByColumnName(props.tratamientos, "dias");
+
+//Ingresos de tratamientos por años
+const totalTreatmentByYears = getTotalByYears(
     props.tratamientos,
-    "dias"
+    "dias",
+    "precio_zona"
 );
 
-const totalHours=getSumByHours(props.tratamientos, "tiempo_zona")
+//Ingresos de tratamiento por meses
+const totalTreatmentByMonths = getTotalByMonth(
+    props.tratamientos,
+    "dias",
+    "precio_zona"
+);
+
+//Suma de horas trabajadas (estimación)
+const totalHours = getSumByHours(props.tratamientos, "tiempo_zona");
+
+//Índice del Centro con más tratamientos
 const indexMaxTreatment = getIndexOfMaxValue(countTreatmentByCenters, 1);
+
+//Índice del Centro con más beneficios
 const indexMaxBenefits = getIndexOfMaxValue(totalTreatmentByCenters, 1);
 </script>

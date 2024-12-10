@@ -19,7 +19,7 @@
                 />
 
                 <PasswordInput
-                    :id="current_password"
+                    id="current_password"
                     v-model="form.current_password"
                     class="mt-1 block w-full"
                     :autocomplete="'current-password'"
@@ -39,7 +39,7 @@
                 />
 
                 <PasswordInput
-                    :id="password"
+                    id="password"
                     v-model="form.password"
                     class="mt-1 block w-full"
                     :autocomplete="'new-password'"
@@ -59,7 +59,7 @@
                 />
 
                 <PasswordInput
-                    :id="password_confirmation"
+                    id="password_confirmation"
                     v-model="form.password_confirmation"
                     class="mt-1 block w-full"
                     :autocomplete="'new-password'"

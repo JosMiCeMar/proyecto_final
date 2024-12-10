@@ -26,9 +26,9 @@ const props = defineProps({
         required: false,
         default: "",
     },
-    displayTitle:{
-        type:Boolean,
-        default:false
+    displayTitle: {
+        type: Boolean,
+        default: false,
     },
     title: {
         type: String,
@@ -40,19 +40,19 @@ const props = defineProps({
     },
     xLabel: {
         type: String,
-        required: false
+        required: false,
     },
     yLabel: {
         type: String,
-        required: false
+        required: false,
     },
-    labelColor:{
-        type:String,
-        default:"#315D66"
+    labelColor: {
+        type: String,
+        default: "#315D66",
     },
-    stepSize:{
-        type:Number,
-        default:1
+    stepSize: {
+        type: Number,
+        default: 1,
     },
     barsColors: {
         type: Array,
@@ -101,13 +101,13 @@ const options = {
                 text: props.yLabel,
             },
             ticks: {
-                color:props.labelColor, 
+                color: props.labelColor,
                 callback: function (value) {
                     return `${value} ${props.subfix}`;
                 },
-                stepSize:props.stepSize
+                stepSize: props.stepSize,
             },
-            max:Math.max(...props.values)+50
+            max: Math.max(...props.values) + 50,
         },
     },
 };
