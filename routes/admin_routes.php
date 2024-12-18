@@ -5,6 +5,7 @@ use App\Http\Controllers\CentroController;
 use App\Http\Controllers\CodRegistroController;
 use App\Http\Controllers\DiaController;
 use App\Http\Controllers\InformeController;
+use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\ZonaController;
 use App\Http\Middleware\CheckAdmin;
 use Illuminate\Support\Facades\Route;
@@ -55,5 +56,9 @@ Route::middleware([CheckAdmin::class, 'auth', 'verified'])->group(function () {
     Route::get('/admin_total_informes', [InformeController::class, 'adminInformeGeneral'])->name('admin.informeGeneral');
     Route::get('/admin_personalizar_informes', [InformeController::class, 'adminFormularioPersonalizado'])->name('admin.personalizarInforme');
     Route::post('/admin_informe_personalizado', [InformeController::class, 'adminInformePersonalizado'])->name('admin.mostrarInforme');
+    
+    //Rutas gestión reservas
+    Route::get('/admin_reservas', [ReservaController::class, 'indexAdmin'])->name('admin.indexReservas');
+    Route::get('/admin_lista_reservas', [ReservaController::class, 'listAdmin'])->name('admin.listReservas');
     
 });

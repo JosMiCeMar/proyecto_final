@@ -27,6 +27,15 @@
         >
             Informes
         </ResponsiveNavLink>
+        <ResponsiveNavLink
+            :href="route('admin.indexReservas')"
+            :active="
+                route().current('admin.indexReservas') ||
+                route().current('admin.listReservas')
+            "
+        >
+            Gestión de Reservas
+        </ResponsiveNavLink>
     </div>
     <div class="pt-2 pb-3 space-y-1 border-t border-skyblue-vlight">
         <div class="px-4">

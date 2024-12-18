@@ -23,14 +23,23 @@ class ReservaController extends Controller
     private const FIN_JORNADA = "19:00";
     private const MAX_CITAS_DIA=3;
 
+    //-------------------FUNCIONES PARA ADMINISTRADOR-------------------------
+    public function indexAdmin(){
+        return Inertia::render('Users/Admin/Reservas/Index');
+    }
+
+    public function listAdmin(){
+        return Inertia::render('Users/Admin/Reservas/Index');   
+    }
+
 
     //-------------------FUNCIONES PARA CLIENTES---------------------
-    public function indexReservaCliente()
+    public function indexCliente()
     {
         return Inertia::render('Users/Client/Reservas/Index');
     }
 
-    public function createReservaCliente()
+    public function createCliente()
     {
         try {
 
@@ -52,7 +61,7 @@ class ReservaController extends Controller
         }
     }
 
-    public function createHoraReservaCliente(Request $request)
+    public function createHoraCliente(Request $request)
     {
         try {
             $request->validate([
@@ -92,7 +101,7 @@ class ReservaController extends Controller
         }
     }
 
-    public function storeReservaCliente(Request $request)
+    public function storeCliente(Request $request)
     {
         try {
             $request->validate([
@@ -163,7 +172,7 @@ class ReservaController extends Controller
         }
     }
 
-    public function modReservaCliente($id)
+    public function modCliente($id)
     {
         try {
             $cliente = Cliente::select('id')->where('user_id', Auth::id())->first();
@@ -253,7 +262,7 @@ class ReservaController extends Controller
     }
 
 
-    public function deleteReservaCliente(Request $request)
+    public function deleteCliente(Request $request)
     {
         try {
             $request->validate(['id' => 'required|integer|exists:reservas,id']);

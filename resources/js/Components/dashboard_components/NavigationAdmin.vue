@@ -16,6 +16,13 @@
         >
             Informes
         </NavLink>
+        <NavLink
+            :href="route('admin.indexReservas')"
+            :active="route().current('admin.indexReservas')||
+            route().current('admin.listReservas')"
+        >
+            Gestión de Reservas
+        </NavLink>
         <div @click="emitOpen" :class="classes">Gestión de datos <IconMdi v-if="!active" :icon="mdiMenuDown"/><IconMdi v-if="active" :icon="mdiMenuUp"/> </div>
     </div>
 </template>

@@ -14,14 +14,14 @@ Route::middleware([CheckClient::class, 'auth', 'verified'])->group(function () {
 
   //RUTAS MIS CITAS
   //-----Reservar cita
-  Route::get('/mis_citas', [ReservaController::class, 'indexReservaCliente'])->name('client.indexCitas');
-  Route::get('/reservar_cita', [ReservaController::class, 'createReservaCliente'])->name('client.createCitas');
-  Route::post('/reservar_cita',[ReservaController::class, 'createHoraReservaCliente'])->name('client.createHoraCitas');
-  Route::post('/guardar_cita',[ReservaController::class, 'storeReservaCliente'])->name('client.storeHoraCitas');
+  Route::get('/mis_citas', [ReservaController::class, 'indexCliente'])->name('client.indexCitas');
+  Route::get('/reservar_cita', [ReservaController::class, 'createCliente'])->name('client.createCitas');
+  Route::post('/reservar_cita',[ReservaController::class, 'createHoraCliente'])->name('client.createHoraCitas');
+  Route::post('/guardar_cita',[ReservaController::class, 'storeCliente'])->name('client.storeHoraCitas');
   //-----Tabla modificar-eliminar citas
   Route::get('/modificar_eliminar_cita', [ReservaController::class, 'listCliente'])->name('client.tableCitas');
-  Route::post('/modificar_eliminar_cita', [ReservaController::class, 'deleteReservaCliente'])->name('client.delReser');
-  Route::get('/modificar_cita/{id}', [ReservaController::class, 'modReservaCliente'])->name('client.modReser');
+  Route::post('/modificar_eliminar_cita', [ReservaController::class, 'deleteCliente'])->name('client.delReser');
+  Route::get('/modificar_cita/{id}', [ReservaController::class, 'modCliente'])->name('client.modReser');
   Route::post('/cita_modificada', [ReservaController::class, 'modHoraCliente'])->name('client.modHoraReser');
 
   //RUTAS MIS TRATAMIENTOS
