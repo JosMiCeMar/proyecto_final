@@ -1,7 +1,7 @@
 <template>
     <div class="rounded-lg bg-white shadow-md h-fit">
         <div class="flex justify-center items-center">
-            <div v-if="mapLink" class="relative w-80 h-60">
+            <div v-if="mapLink" class="relative w-fit h-fit">
                 <div
                     v-if="isLoading"
                     class="absolute inset-0 flex justify-center items-center"
@@ -29,7 +29,7 @@
                     </svg>
                 </div>
                 <iframe
-                    class="rounded-lg w-full h-full"
+                    class="rounded-lg w-fit h-fit"
                     :src="mapLink"
                     style="border: 0"
                     allowfullscreen=""
@@ -40,7 +40,7 @@
             </div>
             <div
                 v-else
-                class="flex flex-col text-lavender-light font-bold fill-lavender-light justify-center w-80 h-60 items-center text-center px-4 py-10 gap-3"
+                class="flex flex-col text-lavender-light font-bold fill-lavender-light justify-center w-fit h-fit items-center text-center px-4 py-10 gap-3"
             >
                 <IconMdi :size="50" :icon="mdiEmoticonSadOutline" />
                 <span class="">Ubicación no disponible</span>

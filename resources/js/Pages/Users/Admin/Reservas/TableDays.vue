@@ -1,10 +1,10 @@
 <template>
-    <Head title="Modificar o Eliminar Días Asignados" />
+    <Head title="Selección de día" />
     <AuthenticatedLayout>
         <ContentBox
-            title="Modificar o Eliminar Días Asignados"
-            description="Selecciona la opción del día de trabajo"
-            :returnLink="route('admin.indexDias')"
+            title="Selección de día"
+            description="Selecciona el día para modificar o visualizar sus reservas"
+            :returnLink="route('admin.indexReservas')"
             :messageDown="false"
         >
             <!--Si el array recibido del back esta vacio, muestra el mensaje-->
@@ -13,7 +13,7 @@
                     <p class="text-center">
                         <span
                             class="text-lavender-dark font-bold sm:text-xl p-2 bg-red-300 rounded-lg"
-                            >No existen días asignados actualmente</span
+                            >No hay días de trabajo para modificar</span
                         >
                     </p>
                 </div>
@@ -22,12 +22,9 @@
             <!--De lo contrario, muestra la tabla-->
             <template v-else>
                 <!--Tabla de datos-->
-                <div class="m-4">
+                <div>
                     <form @submit.prevent="submit">
-                        <PaginatedTable
-                            :items="props.dias"
-                            :headers="headers"
-                        >
+                        <PaginatedTable :items="props.dias" :headers="headers">
                             <template
                                 #default="{ item }"
                                 class="text-lavender-dark"
@@ -35,7 +32,9 @@
                                 <td
                                     class="px-6 py-4 font-bold whitespace-nowrap"
                                 >
-                                    {{ item.nombre }} ({{ item.localidad }})
+                                    {{ item.centro_nombre }} ({{
+                                        item.centro_localidad
+                                    }})
                                 </td>
                                 <td class="px-6 py-4">
                                     {{
@@ -46,25 +45,20 @@
                                 </td>
                                 <td class="px-6 py-4">
                                     <ModButton
-                                        @click.prevent="
-                                            confirmMod(
-                                                item.id,
-                                                item.fecha,
-                                                item.nombre
-                                            )
-                                        "
+                                        @click="confirmMod(
+                                            item.id,
+                                            item.fecha,
+                                            item.centro_nombre
+                                        )"
                                     />
                                 </td>
-                                <td class="px-6 py-4">
-                                    <TrashButton
-                                        @click.prevent="
-                                            confirmDelete(
-                                                item.id,
-                                                item.fecha,
-                                                item.nombre
-                                            )
-                                        "
-                                    />
+                                <td>
+                                    <EyeButton
+                                    @click="confirmShow(
+                                            item.id,
+                                            item.fecha,
+                                            item.centro_nombre
+                                        )"/>
                                 </td>
                             </template>
                         </PaginatedTable>
@@ -74,6 +68,10 @@
                         >
                             <p>{{ form.errors.id }}</p>
                         </div>
+                        <InputError
+                            v-if="$page.props.errors"
+                            :message="$page.props.errors[0]"
+                        />
                     </form>
                 </div>
             </template>
@@ -84,11 +82,12 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/breeze_layouts/AuthenticatedLayout.vue";
 import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
-import TrashButton from "@/Components/dashboard_components/TrashButton.vue";
 import ModButton from "@/Components/dashboard_components/ModButton.vue";
 import PaginatedTable from "@/Components/dashboard_components/PaginatedTable.vue";
 import { Head, router, useForm } from "@inertiajs/vue3";
-import { deleteAlert, modAlert } from "@/Utils/alerts";
+import { modAlert, showAlert } from "@/Utils/alerts";
+import InputError from "@/Components/breeze_components/InputError.vue";
+import EyeButton from "@/Components/dashboard_components/EyeButton.vue";
 
 //Propiedades - datos recibidos del back
 const props = defineProps({
@@ -104,30 +103,38 @@ const form = useForm({
 });
 
 //Cabeceras de la tabla
-const headers=['Centro','Fecha','Modificar','Eliminar'];
+const headers = [
+    "Centro",
+    "Fecha",
+    "Modificar",
+    "Ver reservas",
+]; 
 
-//Funcion para confirmar el borrado
-const confirmDelete = (itemId, day, name) => {
+//Función para confirmar la selección del día
+const confirmShow = (itemId, day, center) => {
     const date = new Date(day).toLocaleDateString();
-    const text = `¿Seguro que quieres eliminar la fecha ${date}, asignada a ${name}?`
-    deleteAlert(()=>{deleteCenter(itemId)}, text);
+    const text = `¿Quieres mostrar las reservas del ${date} en el centro ${center}?`;
+    showAlert(() => {
+        showDay(itemId);
+    }, text);
 };
 
-//Funcion para confirmar la modificacion
-const confirmMod = (itemId, day, name) => {
+//Función para confirmar la selección del día
+const confirmMod = (itemId, day, center) => {
     const date = new Date(day).toLocaleDateString();
-    const text =  `¿Vas a modificar la fecha ${date} asignada al centro ${name}?`;
-    modAlert(()=>{modCenter(itemId)},text);
-};
-
-//Funcion que manda los datos al back para su borrado
-const deleteCenter = (itemId) => {
-    form.id = itemId;
-    form.post(route("admin.delDias"));
+    const text = `¿Quieres modificar las reservas del ${date} en el centro ${center}?`;
+    modAlert(() => {
+        modDay(itemId);
+    }, text);
 };
 
 //Funcion que manda los datos al back para mostrar el formulario de modificacion
-const modCenter = (itemId) => {
-    router.get(route("admin.modDias", { id: itemId }));
+const modDay = (itemId) => {
+    router.get(route("admin.formReservas", { id: itemId }));
+};
+
+//Funcion que manda los datos al back para mostrar las reservas del día
+const showDay = (itemId) => {
+    router.get(route("admin.showReservas", { id: itemId }));
 };
 </script>

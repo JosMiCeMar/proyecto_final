@@ -21,7 +21,7 @@ const title = defineProps({
     <body
         class="grid grid-rows-[auto_1fr_auto] bg-gradient-to-tl from-lavender-vlight via-skyblue-vlight to-white min-h-screen min-w-screen"
     >
-        <header class="row-1">
+        <header class="row-1 sm:sticky sm:top-0 sm:z-50">
             <Header :authUser="authUser" />
         </header>
         <main class="row-2">
