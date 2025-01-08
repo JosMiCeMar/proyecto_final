@@ -1,8 +1,8 @@
 <template>
-    <Head title="Informe Último Mes" />
+    <Head title="Informe último mes" />
     <AuthenticatedLayout>
         <ContentBox
-            title="Informe Último Mes"
+            title="Informe último mes"
             :description="`Resumen de ${capitalizeFirstChart(props.mes)} del ${
                 props.anio
             }`"
@@ -35,10 +35,10 @@
                             >Ingresos totales:</span
                         >
                         {{
-                            amountByColumnName(
+                            getCompanyProfit(amountByColumnName(
                                 props.tratamientos,
                                 "precio_zona"
-                            )
+                            ))
                         }}€
                     </div>
                     <div class="flex justify-center items-center gap-2">
@@ -146,6 +146,7 @@
                 </section>
             </template>
         </ContentBox>
+        <ReportsAdv/>
     </AuthenticatedLayout>
 </template>
 <script setup>
@@ -166,6 +167,7 @@ import {
 import ChartContainer from "@/Components/dashboard_components/Charts/ChartContainer.vue";
 import VerticalBarsChart from "@/Components/dashboard_components/Charts/VerticalBarsChart.vue";
 import DoughnutChart from "@/Components/dashboard_components/Charts/DoughnutChart.vue";
+import ReportsAdv from "@/Components/dashboard_components/ReportsAdv.vue";
 //Utilidades
 import {
     capitalizeFirstChart,
@@ -174,6 +176,7 @@ import {
     getIndexOfMaxValue,
     getTotalByColumnName,
     getSumByHours,
+    getCompanyProfit
 } from "@/Utils/utilsFunctions";
 
 const props = defineProps({

@@ -23,7 +23,7 @@
                 </template>
             </div>
 
-            <div class="hidden sm:flex sm:items-center sm:ms-6">
+            <div class="hidden md:flex md:items-center md:ms-6">
                 <!-- Desplegable de usuario -->
                 <div class="ms-3 relative">
                     <Dropdown align="right" width="48">
@@ -81,7 +81,7 @@
             </div>
 
             <!-- Menu hamburguesa -->
-            <div class="-me-2 flex items-center sm:hidden">
+            <div class="-me-2 flex items-center md:hidden">
                 <button
                     @click="
                         showingNavigationDropdown = !showingNavigationDropdown
@@ -114,7 +114,7 @@
             block: showingNavigationDropdown,
             hidden: !showingNavigationDropdown,
         }"
-        class="sm:hidden"
+        class="md:hidden"
     >
         <template v-if="$page.props.auth.tipo == 'admin'">
             <NavigationAdminResponsive />

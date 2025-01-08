@@ -1,9 +1,9 @@
 <template>
-    <Head title="Generar Código" />
+    <Head title="Generar código" />
 
     <AuthenticatedLayout>
         <ContentBox
-            title="Generar Código de Usuario"
+            title="Generar código de usuario"
             description="Formulario para la creación de códigos de registro para nuevos usuarios"
             class="text-center"
             :returnLink="route('admin.indexCode')"

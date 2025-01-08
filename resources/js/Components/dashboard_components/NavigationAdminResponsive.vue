@@ -22,19 +22,21 @@
                 route().current('admin.ultimoMesInforme') ||
                 route().current('admin.informeGeneral') ||
                 route().current('admin.personalizarInforme') ||
-                ruta === '/informe_personalizado'
+                ruta === '/admin_informe_personalizado'
             "
         >
             Informes
         </ResponsiveNavLink>
         <ResponsiveNavLink
             :href="route('admin.indexReservas')"
-            :active="
-                route().current('admin.indexReservas') ||
-                route().current('admin.listReservas')
+            :active="route().current('admin.indexReservas')||
+            route().current('admin.listReservas')||
+            route().current('admin.formReservas')||
+            route().current('admin.showReservas')||
+            route().current('admin.modReservas')
             "
         >
-            Gestión de Reservas
+            Reservas
         </ResponsiveNavLink>
     </div>
     <div class="pt-2 pb-3 space-y-1 border-t border-skyblue-vlight">

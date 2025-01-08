@@ -5,7 +5,7 @@
         class="border-lavender-dark bg-blue-100 text-lavender-dark focus:border-lavender-light focus:ring-lavender-light rounded-md shadow-sm"
     >
         <!-- Placeholder -->
-        <option v-if="placeholder" disabled value="">{{ placeholder }}</option>
+        <option v-if="placeholder" :disabled="props.disabledPlaceholder" value="">{{ placeholder }}</option>
 
         <!-- Opciones -->
         <option
@@ -42,6 +42,11 @@ const props = defineProps({
     optionValueProp: {
         type: String,
         required: false,
+    },
+    disabledPlaceholder: {
+        type: Boolean,
+        required: false,
+        default: true,
     },
 });
 

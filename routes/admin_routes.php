@@ -61,8 +61,11 @@ Route::middleware([CheckAdmin::class, 'auth', 'verified'])->group(function () {
     Route::get('/admin_reservas', [ReservaController::class, 'indexAdmin'])->name('admin.indexReservas');
     Route::get('/admin_lista_reservas', [ReservaController::class, 'listAdmin'])->name('admin.listReservas');
     Route::get('/admin_mod_dia_reservas/{id}', [ReservaController::class, 'formAdmin'])->name('admin.formReservas');
-    Route::get('/admin_show_reservas/{id}', [ReservaController::class, 'showAdmin'])->name('admin.showReservas');
-    Route::post('/admin_del_reserva', [ReservaController::class, 'delAdmin'])->name('admin.delReservas');
-    Route::get('/admin_mod_reserva/{id_dia}/{id_reserva}', [ReservaController::class, 'modAdmin'])->name('admin.modReservas');
-    Route::post('/admin_mod_reserva', [ReservaController::class, 'modHourAdmin'])->name('admin.modHourReservas');
+    Route::get('/admin_mostrar_reservas/{id}', [ReservaController::class, 'showAdmin'])->name('admin.showReservas');
+    Route::post('/admin_eliminar_reserva', [ReservaController::class, 'delAdmin'])->name('admin.delReservas');
+    Route::get('/admin_modificar_reserva/{id_dia}/{id_reserva}', [ReservaController::class, 'modAdmin'])->name('admin.modReservas');
+    Route::post('/admin_modificar_reserva', [ReservaController::class, 'modHourAdmin'])->name('admin.modHourReservas');
+    Route::get('/admin_lista_pasadas', [ReservaController::class, 'listPastAdmin'])->name('admin.listPastReservas');
+    Route::get('/admin_mostrar_reservas_pasadas/{id}', [ReservaController::class, 'showPastAdmin'])->name('admin.showPastReservas');
+
 });

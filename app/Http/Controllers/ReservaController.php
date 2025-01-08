@@ -173,7 +173,7 @@ class ReservaController extends Controller
             $cliente = User::select('users.nombre', 'users.apellidos')
                 ->join('clientes', 'users.id', '=', 'clientes.user_id')
                 ->where('clientes.id', $reserva->cliente_id)->first();
-            $reservas = Reserva::where('dia_id', $dia->id)->where('id','!=',$reserva->id)->get();
+            $reservas = Reserva::where('dia_id', $dia->id)->where('id', '!=', $reserva->id)->get();
             $horasDisponibles = $this->horasDisponibles($zona, $reservas);
 
             return Inertia::render('Users/Admin/Reservas/ModReservation', ['centro' => $centro, 'dia' => $dia, 'zona' => $zona, 'reserva' => $reserva, 'cliente' => $cliente, 'horasDisponibles' => $horasDisponibles]);
@@ -182,16 +182,17 @@ class ReservaController extends Controller
         }
     }
 
+    //Funcion para modificar la reserva
     public function modHourAdmin(Request $request)
     {
         try {
             $request->validate([
                 'id' => 'required|integer|exists:reservas,id',
-                'dia'=> 'required|integer|exists:dias,id',
+                'dia' => 'required|integer|exists:dias,id',
                 'startHour' => 'required|date_format:H:i',
             ]);
 
-            $reserva = Reserva::find($request->id);
+            $reserva = Reserva::where('id', $request->id)->where('dia_id', $request->dia)->first();
 
             if (!$reserva) {
                 return redirect(route('admin.indexReservas'))->withErrors('No se encontró la reserva');
@@ -199,13 +200,70 @@ class ReservaController extends Controller
 
             $horaFin = $this->setHoraFin($request->startHour, $reserva->zona_id);
 
-            if ($horaFin) {
-                $reserva->update(['hora_inicio' => $request->startHour, 'hora_fin' => $horaFin]);
-                return redirect(route('admin.formReservas',[$request->dia]))->with('msg', 'Cita modificada correctamente');
-            } else {
+            if (!$horaFin) {
                 return redirect()->back()->withErrors('Error al implementar la hora final del tratamiento');
             }
 
+            $reserva->update(['hora_inicio' => $request->startHour, 'hora_fin' => $horaFin]);
+            return redirect(route('admin.formReservas', [$request->dia]))->with('msg', 'Cita modificada correctamente');
+
+        } catch (Exception $er) {
+            return redirect(route('admin.indexReservas'))->withErrors('Error inesperado: ' . $er->getMessage());
+        }
+    }
+
+    //Funcion para mostrar la tabla de reservas pasadas
+    public function listPastAdmin(){
+        try {
+            $dias = Dia::select('dias.id', 'dias.fecha', 'centros.nombre as centro_nombre', 'centros.localidad as centro_localidad')
+                ->join('centros', 'dias.centro_id', '=', 'centros.id')
+                ->where('fecha', '<', Carbon::now()->startOfDay())
+                ->orderBy('fecha')->get();
+
+            return Inertia::render('Users/Admin/Reservas/TablePastDays', ['dias' => $dias]);
+        } catch (Exception $er) {
+            return redirect(route('admin.indexReservas'))->withErrors('Error inesperado: ' . $er->getMessage());
+        }
+    }
+
+    //Funcion para mostrar la tabla de reservas del día pasado seleccionado
+    public function showPastAdmin($id)
+    {
+        try {
+            //Busca el dia seleccionado y si no lo encuentra redirije al index indicando el error
+            $dia = Dia::where('dias.id', $id)
+                ->where('fecha', '<', Carbon::now()->startOfDay())
+                ->join('centros', 'dias.centro_id', '=', 'centros.id')
+                ->select('dias.id', 'dias.fecha', 'centros.nombre as centro_nombre', 'centros.localidad as centro_localidad')
+                ->first();
+
+            if (!$dia) {
+                return redirect(route('admin.indexReservas'))->withErrors('Día de trabajo no encontrado');
+            }
+
+            //Reservas del dia seleccionado
+            $reservas = Reserva::where('dia_id', $id)
+                ->join('zonas', 'reservas.zona_id', '=', 'zonas.id')
+                ->join('clientes', 'reservas.cliente_id', '=', 'clientes.id')
+                ->join('users', 'clientes.user_id', '=', 'users.id')
+                ->select(
+                    'reservas.id',
+                    'users.nombre as cliente_nombre',
+                    'users.apellidos as cliente_apellidos',
+                    'zonas.nombre as zona_nombre',
+                    'hora_inicio',
+                    'hora_fin'
+                )
+                ->get();
+
+            $funcionReservas = $this->getReservasDia($reservas);
+            $reservasManiana = $funcionReservas['manana'];
+            $reservasTarde = $funcionReservas['tarde'];
+
+            return Inertia::render(
+                'Users/Admin/Reservas/ShowReservations',
+                ['dia' => $dia, 'maniana' => $reservasManiana, 'tarde' => $reservasTarde, 'editable' => false, 'id_dia' => $id]
+            );
         } catch (Exception $er) {
             return redirect(route('admin.indexReservas'))->withErrors('Error inesperado: ' . $er->getMessage());
         }
@@ -404,6 +462,7 @@ class ReservaController extends Controller
 
             $reservas = Reserva::select('hora_inicio', 'hora_fin')
                 ->where('dia_id', $reservaSeleccionada->dia_id)
+                ->where('id', '!=', $reservaSeleccionada->id)
                 ->get();
 
             $horasDisponibles = $reservas->isEmpty()

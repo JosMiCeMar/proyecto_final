@@ -1,9 +1,11 @@
 <template>
-    <Head title="Informe general" />
+    <Head title="Informe último mes" />
     <AuthenticatedLayout>
         <ContentBox
-            title="Informe general"
-            description="Resumen de todos los datos almacenados"
+            title="Informe último mes"
+            :description="`Resumen de ${capitalizeFirstChart(props.mes)} del ${
+                props.anio
+            }`"
             :returnLink="route('admin.indexInforme')"
             :messageDown="false"
         >
@@ -13,7 +15,7 @@
                     <p class="text-center p-2 bg-red-300 rounded-lg">
                         <span
                             class="text-lavender-dark font-bold sm:text-xl p-2 bg-red-300 rounded-lg"
-                            >No hay datos</span
+                            >No hay datos del último mes</span
                         >
                     </p>
                 </section>
@@ -33,12 +35,10 @@
                             >Ingresos totales:</span
                         >
                         {{
-                            getCompanyProfit(
-                                amountByColumnName(
-                                    props.tratamientos,
-                                    "precio_zona"
-                                )
-                            )
+                            getCenterProfit(amountByColumnName(
+                                props.tratamientos,
+                                "precio_zona"
+                            ))
                         }}€
                     </div>
                     <div class="flex justify-center items-center gap-2">
@@ -50,28 +50,6 @@
                             Tratamientos totales:
                         </span>
                         {{ props.tratamientos.length }}
-                    </div>
-                    <div class="flex justify-center items-center gap-2">
-                        <IconMdi
-                            :icon="mdiCashRegister"
-                            class="fill-lavender-dark"
-                        />
-                        <span class="text-lavender-dark">
-                            Centro con más ingresos:
-                        </span>
-                        {{ totalTreatmentByCenters[0][indexMaxBenefits] }} -
-                        {{ totalTreatmentByCenters[1][indexMaxBenefits] }}€
-                    </div>
-                    <div class="flex justify-center items-center gap-2">
-                        <IconMdi
-                            :icon="mdiStorePlus"
-                            class="fill-lavender-dark"
-                        />
-                        <span class="text-lavender-dark">
-                            Centro con más tratamientos:
-                        </span>
-                        {{ countTreatmentByCenters[0][indexMaxTreatment] }} -
-                        {{ countTreatmentByCenters[1][indexMaxTreatment] }}
                     </div>
                     <div class="flex justify-center items-center gap-2">
                         <IconMdi
@@ -98,20 +76,7 @@
                     class="my-4 lg:grid lg:grid-cols-2 flex flex-col gap-10"
                 >
                     <ChartContainer
-                        title="Igresos Totales por Centro Asociado"
-                        :labels="totalTreatmentByCenters[0]"
-                        :values="totalTreatmentByCenters[1]"
-                        subfix="€"
-                    >
-                        <VerticalBarsChart
-                            :labels="totalTreatmentByCenters[0]"
-                            :values="totalTreatmentByCenters[1]"
-                            subfix="€"
-                            :stepSize="50"
-                        />
-                    </ChartContainer>
-                    <ChartContainer
-                        title="Ingresos Totales por Zona de Tratamiento"
+                        title="Igresos Totales por Zona de Tratamiento"
                         :labels="totalTreatmentByZone[0]"
                         :values="totalTreatmentByZone[1]"
                         subfix="€"
@@ -124,16 +89,6 @@
                         />
                     </ChartContainer>
                     <ChartContainer
-                        title="Tratamientos Totales por Centro"
-                        :labels="countTreatmentByCenters[0]"
-                        :values="countTreatmentByCenters[1]"
-                    >
-                        <DoughnutChart
-                            :labels="countTreatmentByCenters[0]"
-                            :values="countTreatmentByCenters[1]"
-                        />
-                    </ChartContainer>
-                    <ChartContainer
                         title="Tratamientos Totales por Zona"
                         :labels="countTreatmentByZone[0]"
                         :values="countTreatmentByZone[1]"
@@ -141,32 +96,6 @@
                         <DoughnutChart
                             :labels="countTreatmentByZone[0]"
                             :values="countTreatmentByZone[1]"
-                        />
-                    </ChartContainer>
-                    <ChartContainer
-                        title="Ingresos Totales por Meses"
-                        :labels="totalTreatmentByMonths[0]"
-                        :values="totalTreatmentByMonths[1]"
-                        subfix="€"
-                    >
-                        <LineChart
-                            :labels="totalTreatmentByMonths[0]"
-                            :values="totalTreatmentByMonths[1]"
-                            subfix="€"
-                            :stepSize="150"
-                        />
-                    </ChartContainer>
-                    <ChartContainer
-                        title="Ingresos Totales por Años"
-                        :labels="totalTreatmentByYears[0]"
-                        :values="totalTreatmentByYears[1]"
-                        subfix="€"
-                    >
-                        <LineChart
-                            :labels="totalTreatmentByYears[0]"
-                            :values="totalTreatmentByYears[1]"
-                            subfix="€"
-                            :stepSize="150"
                         />
                     </ChartContainer>
                 </section>
@@ -185,84 +114,56 @@ import IconMdi from "@/Components/IconMdi.vue";
 import {
     mdiBadgeAccount,
     mdiCashMultiple,
-    mdiCashRegister,
     mdiClipboardTextClock,
     mdiCounter,
-    mdiStorePlus,
 } from "@mdi/js";
 import ChartContainer from "@/Components/dashboard_components/Charts/ChartContainer.vue";
 import VerticalBarsChart from "@/Components/dashboard_components/Charts/VerticalBarsChart.vue";
 import DoughnutChart from "@/Components/dashboard_components/Charts/DoughnutChart.vue";
-import LineChart from "@/Components/dashboard_components/Charts/LineChart.vue";
 import ReportsAdv from "@/Components/dashboard_components/ReportsAdv.vue";
 //Utilidades
 import {
+    capitalizeFirstChart,
     amountByColumnName,
     getCountByColumnName,
-    getIndexOfMaxValue,
     getTotalByColumnName,
     getSumByHours,
-    getTotalByYears,
-    getTotalByMonth,
-    getCompanyProfit
+    getCenterProfit
 } from "@/Utils/utilsFunctions";
 
 const props = defineProps({
+    mes: {
+        type: String,
+        required: true,
+    },
+    anio: {
+        type: Number,
+        required: true,
+    },
     tratamientos: {
         type: Array,
         required: true,
-    },
+    }
 });
 
-//Conteo de tratamientos por centro
-const countTreatmentByCenters = getCountByColumnName(
-    props.tratamientos,
-    "nombre_centro"
-);
-
-//Ingresos de tratamientos por centro
-const totalTreatmentByCenters = getTotalByColumnName(
-    props.tratamientos,
-    "nombre_centro",
-    "precio_zona"
-);
-
-//Ingresos de tratamientos por zona
 const totalTreatmentByZone = getTotalByColumnName(
     props.tratamientos,
     "nombre_zona",
-    "precio_zona"
+    "precio_zona",
+    false
 );
 
-//Conteo de tratamientos por zona
 const countTreatmentByZone = getCountByColumnName(
     props.tratamientos,
     "nombre_zona"
 );
 
-//Conteo de dias trabajados
-const countTreatmentByDay = getCountByColumnName(props.tratamientos, "dias");
-
-//Ingresos de tratamientos por años
-const totalTreatmentByYears = getTotalByYears(
+const countTreatmentByDay= getCountByColumnName(
     props.tratamientos,
-    "dias",
-    "precio_zona"
+    "dias"
 );
 
-//Ingresos de tratamiento por meses
-const totalTreatmentByMonths = getTotalByMonth(
-    props.tratamientos,
-    "dias",
-    "precio_zona"
-);
+const totalHours=getSumByHours(props.tratamientos, "tiempo_zona");
 
-//Suma de horas trabajadas (estimación)
-const totalHours = getSumByHours(props.tratamientos, "tiempo_zona");
 
-//Índice del Centro con más tratamientos
-const indexMaxTreatment = getIndexOfMaxValue(countTreatmentByCenters, 1);
-
-//Índice del Centro con más beneficios
-const indexMaxBenefits = getIndexOfMaxValue(totalTreatmentByCenters, 1);
 </script>

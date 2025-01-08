@@ -1,5 +1,5 @@
 <template>
-    <Head title="Zonas Tratamiento" />
+    <Head title="Zonas tratamiento" />
     <AuthenticatedLayout>
         <ContentBox
             title="Zonas de tratamiento"
@@ -28,14 +28,14 @@ const linksList = [
     {
         route: route("admin.createZona"),
         icon: mdiPlusBox,
-        title: "Añadir Zona de Tratamiento",
+        title: "Añadir zona de tratamiento",
         description:
             "Formulario de creación para una nueva zona de tratamiento",
     },
     {
         route: route("admin.listZona"),
         icon: mdiTableEdit,
-        title: "Modificar o Eliminar Zona de Tratamiento",
+        title: "Modificar o eliminar zona de tratamiento",
         description:
             "Menú para modificar zonas de tratamiento en la base de datos",
     },

@@ -1,8 +1,8 @@
 <template>
-    <Head title="Mis Tratamientos" />
+    <Head title="Mis tratamientos" />
     <AuthenticatedLayout>
         <ContentBox
-            title="Mis Tratamientos"
+            title="Mis tratamientos"
             description="Sección donde podrás ver diferente información sobre tus tratamientos realizados"
         >
             <div
@@ -34,19 +34,19 @@ const linksList = [
     {
         route: route("client.ultimosTratamientos"),
         icon: mdiFormatListNumbered,
-        title: "Últimos Tratamientos",
+        title: "Últimos tratamientos",
         description: "Detalles de tus últimos tratamientos",
     },
     {
         route: route("client.informeTratamientos"),
         icon: mdiFileChart,
-        title: "Informe de Tratamientos",
+        title: "Informe de tratamientos",
         description: "Resumen de todos los tratamientos realizados",
     },
     {
         route: route("client.personalizarInforme"),
         icon: mdiFileEdit,
-        title: "Personalizar Informe",
+        title: "Personalizar informe",
         description: "Personaliza un informe con los datos que desees",
     },
 ];

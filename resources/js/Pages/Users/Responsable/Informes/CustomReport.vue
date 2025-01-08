@@ -18,7 +18,7 @@
                     </p>
                     <p class="text-center mt-2">
                         <Link
-                            :href="route('admin.personalizarInforme')"
+                            :href="route('respon.personalizarInforme')"
                             class="text-md font-semibold underline text-lavender-dark hover:text-skyblue-dark"
                             >Vuelva a intentarlo</Link
                         >
@@ -40,7 +40,7 @@
                             >Ingresos totales:</span
                         >
                         {{
-                            getCompanyProfit(
+                            getCenterProfit(
                                 amountByColumnName(
                                     props.tratamientos,
                                     "zona_precio"
@@ -57,28 +57,6 @@
                             Tratamientos totales:
                         </span>
                         {{ props.tratamientos.length }}
-                    </div>
-                    <div class="flex justify-center items-center gap-2">
-                        <IconMdi
-                            :icon="mdiCashRegister"
-                            class="fill-lavender-dark"
-                        />
-                        <span class="text-lavender-dark">
-                            Centro con más ingresos:
-                        </span>
-                        {{ totalTreatmentByCenters[0][indexMaxBenefits] }} -
-                        {{ totalTreatmentByCenters[1][indexMaxBenefits] }}€
-                    </div>
-                    <div class="flex justify-center items-center gap-2">
-                        <IconMdi
-                            :icon="mdiStorePlus"
-                            class="fill-lavender-dark"
-                        />
-                        <span class="text-lavender-dark">
-                            Centro con más tratamientos:
-                        </span>
-                        {{ countTreatmentByCenters[0][indexMaxTreatment] }} -
-                        {{ countTreatmentByCenters[1][indexMaxTreatment] }}
                     </div>
                     <div class="flex justify-center items-center gap-2">
                         <IconMdi
@@ -143,16 +121,6 @@
                             legendPosition="left"
                         />
                     </ChartContainer>
-                    <ChartContainer
-                        title="Tratamientos Totales por Centro"
-                        :labels="countCenter[0]"
-                        :values="countCenter[1]"
-                    >
-                        <HorizontalBarsChart
-                            :labels="countCenter[0]"
-                            :values="countCenter[1]"
-                        />
-                    </ChartContainer>
                 </section>
             </template>
         </ContentBox>
@@ -167,7 +135,6 @@ import AuthenticatedLayout from "@/Layouts/breeze_layouts/AuthenticatedLayout.vu
 import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import DoughnutChart from "@/Components/dashboard_components/Charts/DoughnutChart.vue";
 import VerticalBarsChart from "@/Components/dashboard_components/Charts/VerticalBarsChart.vue";
-import HorizontalBarsChart from "@/Components/dashboard_components/Charts/HorizontalBarsChart.vue";
 import LineChart from "@/Components/dashboard_components/Charts/LineChart.vue";
 import ChartContainer from "@/Components/dashboard_components/Charts/ChartContainer.vue";
 import ReportsAdv from "@/Components/dashboard_components/ReportsAdv.vue";
@@ -179,17 +146,14 @@ import {
     getTotalByMonth,
     getTotalByYears,
     getSumByHours,
-    getIndexOfMaxValue,
-    getCompanyProfit,
+    getCenterProfit,
 } from "@/Utils/utilsFunctions";
 import IconMdi from "@/Components/IconMdi.vue";
 import {
     mdiBadgeAccount,
     mdiCashMultiple,
-    mdiCashRegister,
     mdiClipboardTextClock,
     mdiCounter,
-    mdiStorePlus,
 } from "@mdi/js";
 
 //Datos del backend
@@ -208,32 +172,17 @@ const props = defineProps({
 const totalByTreatment = getTotalByColumnName(
     props.tratamientos,
     "zona_nombre",
-    "zona_precio"
+    "zona_precio",
+    false
 );
 
 const totalByPeriod = props.periodo
-    ? getTotalByMonth(props.tratamientos, "fecha", "zona_precio")
-    : getTotalByYears(props.tratamientos, "fecha", "zona_precio");
+    ? getTotalByMonth(props.tratamientos, "fecha", "zona_precio",false)
+    : getTotalByYears(props.tratamientos, "fecha", "zona_precio",false);
 const countTreatment = getCountByColumnName(props.tratamientos, "zona_nombre");
-const countCenter = getCountByColumnName(props.tratamientos, "centro_nombre");
-const countTreatmentByCenters = getCountByColumnName(
-    props.tratamientos,
-    "centro_nombre"
-);
-const totalTreatmentByCenters = getTotalByColumnName(
-    props.tratamientos,
-    "centro_nombre",
-    "zona_precio"
-);
-
 const countTreatmentByDay = getCountByColumnName(props.tratamientos, "fecha");
 
 //Suma de horas trabajadas (estimación)
 const totalHours = getSumByHours(props.tratamientos, "zona_tiempo");
 
-//Índice del Centro con más tratamientos
-const indexMaxTreatment = getIndexOfMaxValue(countTreatmentByCenters, 1);
-
-//Índice del Centro con más beneficios
-const indexMaxBenefits = getIndexOfMaxValue(totalTreatmentByCenters, 1);
 </script>

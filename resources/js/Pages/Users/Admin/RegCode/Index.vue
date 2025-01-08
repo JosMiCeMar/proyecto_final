@@ -1,8 +1,8 @@
 <template>
 
-    <Head title="Códigos Registros" />
+    <Head title="Códigos registros" />
     <AuthenticatedLayout>
-        <ContentBox title="Códigos de Registro" description="Menú de gestión de Códigos de Registro">
+        <ContentBox title="Códigos de registro" description="Menú de gestión de códigos de registro">
             <div class="m-5 flex flex-col gap-5">
                 <LinkBox v-for="box in linksList" :route="box.route" :icon="box.icon" :title="box.title"
                     :description="box.description" />
@@ -22,13 +22,13 @@ const linksList = [
     {
         route: route('admin.genCode'),
         icon: mdiPlusBox,
-        title: "Generar Código de Registro",
+        title: "Generar código de registro",
         description: "Formulario de creación de código para registrar un nuevo usuario"
     },
     {
         route: route('admin.delCode'),
         icon: mdiDeleteSweep,
-        title: "Eliminar Códigos de Registro",
+        title: "Eliminar códigos de registro",
         description: "Menú para eliminar códigos ya creados"
     }
 ]

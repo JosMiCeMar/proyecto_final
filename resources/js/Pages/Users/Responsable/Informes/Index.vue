@@ -32,19 +32,19 @@ import { mdiCalendarText, mdiFileChart, mdiFileEdit } from "@mdi/js";
 //Información para las tarjetas
 const linksList = [
     {
-        route: route("admin.ultimoMesInforme"),
+        route: route("respon.ultimoMesInforme"),
         icon: mdiCalendarText,
         title: "Informe último mes",
         description: "Datos y estadísticas del mes anterior",
     },
     {
-        route: route("admin.informeGeneral"),
+        route: route("respon.informeGeneral"),
         icon: mdiFileChart,
         title: "Informe general",
         description: "Datos y estadísticas de toda la información almacenada",
     },
     {
-        route: route("admin.personalizarInforme"),
+        route: route("respon.personalizarInforme"),
         icon: mdiFileEdit,
         title: "Personalizar informe",
         description: "Personaliza un informe con los datos que desees",

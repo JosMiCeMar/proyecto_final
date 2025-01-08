@@ -1,9 +1,9 @@
 <template>
-    <Head title="Días Asignados" />
+    <Head title="Días asignados" />
     <AuthenticatedLayout>
         <ContentBox
-            title="Días Asignados"
-            description="Menú de gestión de Asignación de Días"
+            title="Días asignados"
+            description="Menú de gestión de asignación de días"
         >
             <div class="m-5 flex flex-col gap-5">
                 <LinkBox
@@ -28,14 +28,14 @@ const linksList = [
     {
         route: route("admin.createDias"),
         icon: mdiPlusBox,
-        title: "Asignar Día a Centro Asociado",
+        title: "Asignar día a centro asociado",
         description:
             "Formulario de asignación de día de trabajo a un centro asociado",
     },
     {
         route: route("admin.listDias"),
         icon: mdiTableEdit,
-        title: "Modificar o Eliminar Días Asignados",
+        title: "Modificar o eliminar días asignados",
         description: "Menú para modificar o eliminar días asignados",
     },
 ];

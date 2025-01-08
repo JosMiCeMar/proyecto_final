@@ -1,5 +1,5 @@
 <template>
-    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+    <div class="hidden space-x-8 md:-my-px md:ms-10 md:flex">
         <NavLink
             :href="route('dashboard')"
             :active="route().current('dashboard')"
@@ -8,22 +8,35 @@
         </NavLink>
         <NavLink
             :href="route('admin.indexInforme')"
-            :active="route().current('admin.indexInforme')||
-            route().current('admin.ultimoMesInforme')||
-            route().current('admin.informeGeneral')||
-            route().current('admin.personalizarInforme')||
-            ruta==='/informe_personalizado'"
+            :active="
+                route().current('admin.indexInforme') ||
+                route().current('admin.ultimoMesInforme') ||
+                route().current('admin.informeGeneral') ||
+                route().current('admin.personalizarInforme') ||
+                ruta === '/informe_personalizado'
+            "
         >
             Informes
         </NavLink>
         <NavLink
             :href="route('admin.indexReservas')"
-            :active="route().current('admin.indexReservas')||
-            route().current('admin.listReservas')"
+            :active="
+                route().current('admin.indexReservas') ||
+                route().current('admin.listReservas') ||
+                route().current('admin.formReservas') ||
+                route().current('admin.showReservas') ||
+                route().current('admin.modReservas')
+            "
         >
-            Gestión de Reservas
+            Reservas
         </NavLink>
-        <div @click="emitOpen" :class="classes">Gestión de datos <IconMdi v-if="!active" :icon="mdiMenuDown"/><IconMdi v-if="active" :icon="mdiMenuUp"/> </div>
+        <div @click="emitOpen" @keydown.enter="emitOpen" :class="classes" tabindex="0">
+            Gestión de datos
+            <IconMdi v-if="!active" :icon="mdiMenuDown" /><IconMdi
+                v-if="active"
+                :icon="mdiMenuUp"
+            />
+        </div>
     </div>
 </template>
 <script setup>
@@ -44,13 +57,11 @@ function emitOpen() {
 
 const classes = computed(() =>
     active.value
-        ? "inline-flex items-center p-2 cursor-pointer fill-lavender-vlight bg-gradient-to-b from-skyblue-dark text-sm font-medium leading-5 text-lavender-vlight focus:outline-lavender-vlight focus:text-skyblue-vlight transition duration-150 ease-in-out"
-        : "inline-flex items-center p-2 cursor-pointer fill-white hover:fill-skyblue-vlight bg-transparent text-sm font-medium leading-5 text-white hover:text-skyblue-vlight hover:border-gray-700 focus:outline-lavender-vlight focus:text-skyblue-vlight focus:border-gray-700 transition duration-150 ease-in-out"
+        ? "inline-flex items-center p-2 cursor-pointer fill-lavender-vlight bg-gradient-to-b from-skyblue-dark text-sm font-medium leading-5 text-lavender-vlight focus:fill-skyblue-vlight focus:outline-lavender-vlight focus:text-skyblue-vlight transition duration-150 ease-in-out"
+        : "inline-flex items-center p-2 cursor-pointer fill-white hover:fill-skyblue-vlight bg-transparent text-sm font-medium leading-5 text-white hover:text-skyblue-vlight focus:fill-skyblue-vlight hover:border-gray-700 focus:outline-lavender-vlight focus:text-skyblue-vlight focus:border-gray-700 transition duration-150 ease-in-out"
 );
 
-
 //Constantes para obtener el nombre de la ruta POST y usarlo para mostrar activo su enlace
-const page=usePage();
-const ruta=page.url;
-
+const page = usePage();
+const ruta = page.url;
 </script>

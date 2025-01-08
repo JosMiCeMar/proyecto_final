@@ -1,8 +1,8 @@
 <template>
-    <Head title="Mis Citas" />
+    <Head title="Mis citas" />
     <AuthenticatedLayout>
         <ContentBox
-            title="Mis Citas"
+            title="Mis citas"
             description="Menú de gestión de tus citas"
         >
             <div class="m-5 flex flex-col gap-5">
@@ -28,14 +28,14 @@ const linksList = [
     {
         route: route("client.createCitas"),
         icon: mdiPlusBox,
-        title: "Reservar Cita",
+        title: "Reservar cita",
         description:
             "Formulario para reservar tu próxima cita",
     },
     {
         route: route("client.tableCitas"),
         icon: mdiTableEdit,
-        title: "Modificar o Eliminar Cita",
+        title: "Modificar o eliminar cita",
         description: "Menú para modificar o eliminar tus citas",
     },
 ];

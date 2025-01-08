@@ -10,6 +10,7 @@ use Inertia\Inertia;
 use App\Models\Centro;
 use App\Models\Dia;
 use App\Models\Reserva;
+use App\Models\Responsable;
 use App\Models\Zona;
 use Exception;
 use Illuminate\Support\Facades\DB;
@@ -49,9 +50,9 @@ class InformeController extends Controller
                 ->where('dias.fecha', '>=', $primerDiaMesAnterior)
                 ->where('dias.fecha', '<=', $ultimoDiaMesAnterior)
                 ->get();
-            
 
-        
+
+
 
             return Inertia::render('Users/Admin/Informes/LastMonthReport', ['mes' => $mes, 'anio' => $anio, 'tratamientos' => $tratamientos]);
         } catch (Exception $er) {
@@ -78,9 +79,9 @@ class InformeController extends Controller
                 ->join('centros', 'dias.centro_id', 'centros.id')
                 ->where('dias.fecha', '<', $hoy)
                 ->get();
-            
 
-        
+
+
 
             return Inertia::render('Users/Admin/Informes/GeneralReport', ['tratamientos' => $tratamientos]);
         } catch (Exception $er) {
@@ -142,10 +143,146 @@ class InformeController extends Controller
                 ->orderBy('dias.fecha', 'desc')
                 ->get();
 
-                return Inertia::render('Users/Admin/Informes/CustomReport', ['tratamientos' => $tratamientos, 'periodo' => $request->period]);
-
+            return Inertia::render('Users/Admin/Informes/CustomReport', ['tratamientos' => $tratamientos, 'periodo' => $request->period]);
         } catch (Exception $er) {
             return redirect()->route('admin.indexInforme')->withErrors('Error inesperado: ' . $er->getMessage());
+        }
+    }
+
+    //---------CONTROLADORES RESPONSABLE------------
+    public function responIndexInforme()
+    {
+        return Inertia::render('Users/Responsable/Informes/Index');
+    }
+
+    public function responInformeUltimoMes()
+    {
+        try {
+            //Obtener el id del centro asociado del responsable
+            $id_centro = Responsable::where('user_id', Auth::id())->first()->centro_id;
+
+            if (!$id_centro) {
+                return redirect()->route('respon.indexInforme')->withErrors('No se encontró el identificador del centro');
+            }
+
+
+            // Obtener la fecha actual, primer y último día del mes, nombre del mes y año del mes anterior
+            $hoy = Carbon::now();
+            $primerDiaMesAnterior = $hoy->copy()->subMonth()->startOfMonth();
+            $ultimoDiaMesAnterior = $hoy->copy()->subMonth()->endOfMonth();
+            $mes = $primerDiaMesAnterior->copy()->isoFormat('MMMM');
+            $anio = $primerDiaMesAnterior->copy()->year;
+
+            // Obtener todos datos necesarios para el informe
+            $tratamientos = Dia::select(
+                'zonas.nombre as nombre_zona',
+                'zonas.precio as precio_zona',
+                'zonas.tiempo_estimado as tiempo_zona',
+                'dias.fecha as dias'
+            )
+                ->join('reservas', 'dias.id', 'reservas.dia_id')
+                ->join('zonas', 'reservas.zona_id', 'zonas.id')
+                ->where('dias.fecha', '>=', $primerDiaMesAnterior)
+                ->where('dias.fecha', '<=', $ultimoDiaMesAnterior)
+                ->where('dias.centro_id', $id_centro)
+                ->get();
+
+            return Inertia::render('Users/Responsable/Informes/LastMonthReport', ['mes' => $mes, 'anio' => $anio, 'tratamientos' => $tratamientos]);
+        } catch (Exception $er) {
+            return redirect()->route('respon.indexInforme')->withErrors('Error inesperado: ' . $er->getMessage());
+        }
+    }
+
+    public function responInformeGeneral()
+    {
+        try {
+            //Obtener el id del centro asociado del responsable
+            $id_centro = Responsable::where('user_id', Auth::id())->first()->centro_id;
+
+            if (!$id_centro) {
+                return redirect()->route('respon.indexInforme')->withErrors('No se encontró el identificador del centro');
+            }
+
+            // Obtener la fecha actual
+            $hoy = Carbon::today();
+
+            // Obtener todos datos necesarios para el informe
+            $tratamientos = Dia::select(
+                'centros.nombre as nombre_centro',
+                'zonas.nombre as nombre_zona',
+                'zonas.precio as precio_zona',
+                'zonas.tiempo_estimado as tiempo_zona',
+                'dias.fecha as dias'
+            )
+                ->join('reservas', 'dias.id', 'reservas.dia_id')
+                ->join('zonas', 'reservas.zona_id', 'zonas.id')
+                ->join('centros', 'dias.centro_id', 'centros.id')
+                ->where('dias.fecha', '<', $hoy)
+                ->where('dias.centro_id', $id_centro)
+                ->get();
+
+            return Inertia::render('Users/Responsable/Informes/GeneralReport', ['tratamientos' => $tratamientos]);
+        } catch (Exception $er) {
+            return redirect()->route('respon.indexInforme')->withErrors('Error inesperado: ' . $er->getMessage());
+        }
+    }
+
+    public function responFormularioPersonalizado()
+    {
+        try {
+            $zonas = Zona::select("id", "nombre")->where('active', '1')->orderBy("nombre")->get();
+            if (!$zonas) {
+                return redirect(route('admin.indexInforme'))->withErrors('Error: No se encontraron zonas de tratamiento en la bbdd.');
+            }
+
+            return Inertia::render('Users/Responsable/Informes/FormCustomReport', ['zonas' => $zonas]);
+        } catch (Exception $er) {
+            return redirect()->route('respon.indexInforme')->withErrors('Error inesperado: ' . $er->getMessage());
+        }
+    }
+
+    public function responInformePersonalizado(Request $request)
+    {
+        try {
+             //Obtener el id del centro asociado del responsable
+             $id_centro = Responsable::where('user_id', Auth::id())->first()->centro_id;
+
+             if (!$id_centro) {
+                 return redirect()->route('respon.indexInforme')->withErrors('No se encontró el identificador del centro');
+             }
+
+            $fechaMinima = Carbon::create(self::FECHA_MINIMA_INFORME)->startOfDay()->format('Y-m-d');;
+            $hoy = Carbon::today()->startOfDay()->format('Y-m-d');;
+
+            $request->validate([
+                'dateStart' => 'required|date|after_or_equal:' . $fechaMinima . '|before_or_equal:' . $hoy,
+                'dateEnd' => 'required|date|after_or_equal:' . $fechaMinima . '|before_or_equal:' . $hoy,
+                'zones' => 'required|array',
+                'zones.*' => 'integer|exists:zonas,id',
+                'period' => 'required|boolean'
+            ]);
+
+            $tratamientos = Reserva::join('dias', 'reservas.dia_id', 'dias.id')
+                ->join('centros', 'centros.id', 'dias.centro_id')
+                ->join('zonas', 'reservas.zona_id', 'zonas.id')
+                ->where('dias.fecha', '<=', $request->dateEnd)
+                ->where('dias.fecha', '>=', $request->dateStart)
+                ->where('centros.id', $id_centro)
+                ->whereIn('zonas.id', $request->zones)
+                ->select(
+                    'zonas.nombre as zona_nombre',
+                    'zonas.precio as zona_precio',
+                    'zonas.tiempo_estimado as zona_tiempo',
+                    'dias.fecha',
+                    'centros.nombre as centro_nombre',
+                    'centros.localidad as centro_localidad'
+                )
+                ->orderBy('dias.fecha', 'desc')
+                ->get();
+
+            return Inertia::render('Users/Responsable/Informes/CustomReport', ['tratamientos' => $tratamientos, 'periodo' => $request->period]);
+        } catch (Exception $er) {
+            return redirect()->route('respon.indexInforme')->withErrors('Error inesperado: ' . $er->getMessage());
         }
     }
 
@@ -247,7 +384,7 @@ class InformeController extends Controller
                 return redirect(route('client.indexTratamientos'))->withErrors('Error: No se encontraron centros asociados en la bbdd.');
             }
 
-            
+
 
             return Inertia::render('Users/Client/Tratamientos/FormCustomReport', ['zonas' => $zonas, 'centros' => $centros]);
         } catch (Exception $er) {

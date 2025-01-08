@@ -104,60 +104,6 @@
                             />
                         </div>
                     </div>
-                    <!--Selector de centros asociados-->
-                    <div class="mt-3">
-                        <p class="text-white flex justify-between">
-                            <span>Centros Asociados</span>
-                            <button
-                                @click="toggleAllCenters"
-                                type="button"
-                                class="cursor-pointer text-xs text-lavender-vlight underline hover:text-skyblue-vlight transition"
-                            >
-                                {{
-                                    areAllCentersSelected
-                                        ? "Desmarcar todos"
-                                        : "Marcar todos"
-                                }}
-                            </button>
-                        </p>
-                        <div class="w-full h-1 rounded-xl bg-skyblue-logo" />
-                        <div class="flex flex-wrap justify-center gap-3 p-4">
-                            <label
-                                v-for="(center, index) in props.centros"
-                                :key="index"
-                                class="flex text-center items-center justify-center cursor-pointer group transition-all duration-200"
-                            >
-                                <input
-                                    :id="'c' + index"
-                                    type="checkbox"
-                                    :value="center.id"
-                                    v-model="form.centers"
-                                    class="hidden peer"
-                                />
-                                <span
-                                    class="w-full h-full px-2 py-1 text-sm border-2 border-lavender-dark rounded-md text-lavender-dark bg-blue-100 peer-checked:bg-lavender-light peer-checked:border-lavender-light shadow-sm transition-all duration-300 hover:bg-skyblue-light hover:border-lavender-light"
-                                >
-                                    <span class="font-bold">{{
-                                        center.nombre
-                                    }}</span
-                                    >&nbsp;<span>({{ center.localidad }})</span>
-                                </span>
-                            </label>
-                        </div>
-                        <div class="flex justify-center items-center">
-                            <InputError :message="form.errors.centers" />
-                            <!--Este InputError muestra los posibles errores en la validación del back-->
-                            <InputError
-                                v-for="(messages, field) in form.errors"
-                                :key="field"
-                                :message="
-                                    field.startsWith('centers.')
-                                        ? messages
-                                        : null
-                                "
-                            />
-                        </div>
-                    </div>
                     <!--Selector de resumen por tiempo-->
                     <div class="mt-3">
                         <p class="text-white">Mostrar por periodos de tiempo</p>
@@ -249,11 +195,7 @@ const props = defineProps({
     zonas: {
         type: Array,
         required: true,
-    },
-    centros: {
-        type: Array,
-        required: true,
-    },
+    }
 });
 
 //Campos del formulario
@@ -261,7 +203,6 @@ const form = useForm({
     dateStart: null,
     dateEnd: null,
     zones: [],
-    centers: [],
     period: null,
 });
 
@@ -269,7 +210,6 @@ const form = useForm({
 function validateForm() {
     const errors = {};
     errors.zones = validateIdsInList(form.zones, props.zonas, "zona");
-    errors.centers = validateIdsInList(form.centers, props.centros, "centro");
     errors.period = validatePeriod(form.period, "periodo de tiempo");
     errors.dates = validateDateRange(form.dateStart, form.dateEnd);
     form.errors = errors;
@@ -280,7 +220,7 @@ function validateForm() {
 const submit = () => {
     if (validateForm()) {
         sendForm(() => {
-            form.post(route("admin.mostrarInforme"));
+            form.post(route("respon.mostrarInforme"));
         }, `¿Quieres mostrar el informe personalizado?`);
     } else {
         incorrectForm();
@@ -291,9 +231,7 @@ const submit = () => {
 const areAllZonesSelected = computed(
     () => form.zones.length === props.zonas.length
 );
-const areAllCentersSelected = computed(
-    () => form.centers.length === props.centros.length
-);
+
 const toggleAllZones = () => {
     if (areAllZonesSelected.value) {
         form.zones = [];
@@ -301,11 +239,5 @@ const toggleAllZones = () => {
         form.zones = props.zonas.map((zone) => zone.id);
     }
 };
-const toggleAllCenters = () => {
-    if (areAllCentersSelected.value) {
-        form.centers = [];
-    } else {
-        form.centers = props.centros.map((center) => center.id);
-    }
-};
+
 </script>

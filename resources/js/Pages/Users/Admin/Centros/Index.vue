@@ -1,9 +1,9 @@
 <template>
-    <Head title="Centros Asociados" />
+    <Head title="Centros asociados" />
     <AuthenticatedLayout>
         <ContentBox
-            title="Centros Asociados"
-            description="Menú de gestión de Centros Asociados"
+            title="Centros asociados"
+            description="Menú de gestión de centros asociados"
         >
             <div class="m-5 flex flex-col gap-5">
                 <LinkBox
@@ -28,13 +28,13 @@ const linksList = [
     {
         route: route("admin.createCenter"),
         icon: mdiPlusBox,
-        title: "Añadir Centro Asociado",
+        title: "Añadir centro asociado",
         description: "Formulario de creación para un nuevo centro asociado",
     },
     {
         route: route("admin.listCenter"),
         icon: mdiTableEdit,
-        title: "Modificar o Eliminar Centro Asociado",
+        title: "Modificar o eliminar centro asociado",
         description:
             "Menú para modificar centros existentes en la base de datos",
     },
