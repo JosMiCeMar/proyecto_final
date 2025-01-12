@@ -3,8 +3,8 @@
     <AuthenticatedLayout>
         <ContentBox
             title="Mostrado de Reservas"
-            :description="`Reservas del día ${new Date(props.dia.fecha).toLocaleDateString()} en ${props.dia.centro_nombre} (${props.dia.centro_localidad})`"
-            :returnLink="route('admin.indexReservas')"
+            :description="`Reservas del día ${new Date(props.dia.fecha).toLocaleDateString()}`"
+            :returnLink="route('respon.indexReservas')"
             :messageDown="false"
         >
             <TableDays
@@ -12,8 +12,8 @@
                 :afternoonData="props.tarde"
                 :editable="props.editable"
                 :idDay="parseInt(props.id_dia)"
-                routeMod="admin.modReservas"
-                routeDel="admin.delReservas"
+                routeMod="respon.modReservas"
+                routeDel="respon.delReservas"
             />
         </ContentBox>
     </AuthenticatedLayout>

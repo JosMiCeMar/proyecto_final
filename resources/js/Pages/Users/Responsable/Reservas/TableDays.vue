@@ -4,7 +4,7 @@
         <ContentBox
             title="Selección de día"
             description="Selecciona el día para modificar o visualizar sus reservas"
-            :returnLink="route('admin.indexReservas')"
+            :returnLink="route('respon.indexReservas')"
             :messageDown="false"
         >
             <!--Si el array recibido del back esta vacio, muestra el mensaje-->
@@ -29,14 +29,7 @@
                                 #default="{ item }"
                                 class="text-lavender-dark"
                             >
-                                <td
-                                    class="px-6 py-4 font-bold whitespace-nowrap"
-                                >
-                                    {{ item.centro_nombre }} ({{
-                                        item.centro_localidad
-                                    }})
-                                </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 font-bold">
                                     {{
                                         new Date(
                                             item.fecha
@@ -47,8 +40,7 @@
                                     <ModButton
                                         @click="confirmMod(
                                             item.id,
-                                            item.fecha,
-                                            item.centro_nombre
+                                            item.fecha
                                         )"
                                     />
                                 </td>
@@ -56,8 +48,7 @@
                                     <EyeButton
                                     @click="confirmShow(
                                             item.id,
-                                            item.fecha,
-                                            item.centro_nombre
+                                            item.fecha
                                         )"/>
                                 </td>
                             </template>
@@ -104,25 +95,24 @@ const form = useForm({
 
 //Cabeceras de la tabla
 const headers = [
-    "Centro",
     "Fecha",
     "Modificar",
     "Mostrar",
 ]; 
 
 //Función para confirmar la selección del día
-const confirmShow = (itemId, day, center) => {
+const confirmShow = (itemId, day) => {
     const date = new Date(day).toLocaleDateString();
-    const text = `¿Quieres mostrar las reservas del ${date} en el centro ${center}?`;
+    const text = `¿Quieres mostrar las reservas del ${date}?`;
     showAlert(() => {
         showDay(itemId);
     }, text);
 };
 
 //Función para confirmar la selección del día
-const confirmMod = (itemId, day, center) => {
+const confirmMod = (itemId, day) => {
     const date = new Date(day).toLocaleDateString();
-    const text = `¿Quieres modificar las reservas del ${date} en el centro ${center}?`;
+    const text = `¿Quieres modificar las reservas del ${date}?`;
     modAlert(() => {
         modDay(itemId);
     }, text);
@@ -130,11 +120,11 @@ const confirmMod = (itemId, day, center) => {
 
 //Funcion que manda los datos al back para mostrar el formulario de modificacion
 const modDay = (itemId) => {
-    router.get(route("admin.formReservas", { id: itemId }));
+    router.get(route("respon.formReservas", { id: itemId }));
 };
 
 //Funcion que manda los datos al back para mostrar las reservas del día
 const showDay = (itemId) => {
-    router.get(route("admin.showReservas", { id: itemId }));
+    router.get(route("respon.showReservas", { id: itemId }));
 };
 </script>

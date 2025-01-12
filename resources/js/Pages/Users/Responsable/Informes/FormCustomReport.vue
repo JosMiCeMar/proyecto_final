@@ -4,7 +4,7 @@
         <ContentBox
             title="Formulario informe personalizado"
             description="Personaliza el informe con los datos que necesites"
-            :returnLink="route('admin.indexInforme')"
+            :returnLink="route('respon.indexInforme')"
             :messageDown="false"
         >
             <div class="my-4 flex flex-col justify-center items-center">

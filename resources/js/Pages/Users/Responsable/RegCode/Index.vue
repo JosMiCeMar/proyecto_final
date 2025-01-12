@@ -1,8 +1,8 @@
 <template>
 
-    <Head title="Reservas" />
+    <Head title="Códigos registros" />
     <AuthenticatedLayout>
-        <ContentBox title="Reservas" description="Menú de gestión de reservas">
+        <ContentBox title="Códigos de registro" description="Menú de gestión de códigos de registro">
             <div class="m-5 flex flex-col gap-5">
                 <LinkBox v-for="box in linksList" :route="box.route" :icon="box.icon" :title="box.title"
                     :description="box.description" />
@@ -15,21 +15,21 @@ import AuthenticatedLayout from "@/Layouts/breeze_layouts/AuthenticatedLayout.vu
 import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import { Head } from "@inertiajs/vue3";
 import LinkBox from "@/Components/dashboard_components/LinkBox.vue";
-import { mdiArchiveEye, mdiHumanQueue } from "@mdi/js";
+import { mdiPlusBox, mdiTableEye } from "@mdi/js";
 
 
 const linksList = [
     {
-        route: route('respon.listReservas'),
-        icon: mdiHumanQueue,
-        title: "Mostrar y gestionar reservas",
-        description: "Visualiza y gestiona las reservas actuales"
+        route: route('admin.genCode'),
+        icon: mdiPlusBox,
+        title: "Generar código de registro",
+        description: "Formulario de creación de código para registrar un nuevo cliente"
     },
     {
-        route: route('respon.listPastReservas'),
-        icon: mdiArchiveEye,
-        title: "Mostrar reservas pasadas",
-        description: "Visualiza las reservas pasadas"
+        route: route('admin.delCode'),
+        icon: mdiTableEye,
+        title: "Visualizar códigos de registro",
+        description: "Menú para visualizar códigos ya creados"
     }
 ]
 </script>

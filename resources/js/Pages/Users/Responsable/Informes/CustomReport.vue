@@ -4,7 +4,7 @@
         <ContentBox
             title="Informe personalizado"
             description="Informe con los filtros aplicados en el formulario"
-            :returnLink="route('admin.indexInforme')"
+            :returnLink="route('respon.indexInforme')"
             :messageDown="false"
         >
             <!--Si el array recibido del back esta vacio, muestra el mensaje-->

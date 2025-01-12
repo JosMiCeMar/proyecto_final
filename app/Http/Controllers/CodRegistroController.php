@@ -51,6 +51,7 @@ class CodRegistroController extends Controller
         }
     }
 
+    //-------------------FUNCIONES PARA ADMNISTRADOR-------------------------
     //Menu de gestion del administrador
     public function indexCodeAdmin()
     {
@@ -129,6 +130,14 @@ class CodRegistroController extends Controller
         }
     }
 
+    //-------------------FUNCIONES PARA RESPONSABLES-------------------------
+    public function indexCodeRespon()
+    {
+        return Inertia::render('Users/Responsable/RegCode/Index');
+    }
+
+
+    //-------------------FUNCIONES PRIVADAS-------------------------
     //Funcion estatica para generar el codigo aleatorio
     private static function crearCodigo()
     {

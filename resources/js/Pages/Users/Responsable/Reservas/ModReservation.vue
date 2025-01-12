@@ -4,7 +4,7 @@
         <ContentBox
             title="Modificar Reserva"
             description="Selecciona la hora para modificar la reserva seleccionada"
-            :returnLink="route('admin.indexReservas')"
+            :returnLink="route('respon.indexReservas')"
         >
             <div class="flex items-center justify-center w-full">
                 <form
@@ -159,7 +159,7 @@ function validateForm() {
 const submit = () => {
     if (validateForm()) {
         sendForm(() => {
-            form.post(route("admin.modHourReservas"));
+            form.post(route("respon.modHourReservas"));
         }, `¿Quieres modificar la reserva de ${props.cliente.nombre} a las ${form.startHour} para el tratamiento de ${props.zona.nombre}?`);
     } else {
         incorrectForm();

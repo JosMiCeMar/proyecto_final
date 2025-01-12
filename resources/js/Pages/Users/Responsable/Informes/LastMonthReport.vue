@@ -6,7 +6,7 @@
             :description="`Resumen de ${capitalizeFirstChart(props.mes)} del ${
                 props.anio
             }`"
-            :returnLink="route('admin.indexInforme')"
+            :returnLink="route('respon.indexInforme')"
             :messageDown="false"
         >
             <!--Si el array recibido del back esta vacio, muestra el mensaje-->

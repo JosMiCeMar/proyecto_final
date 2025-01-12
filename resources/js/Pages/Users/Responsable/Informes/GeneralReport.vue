@@ -4,7 +4,7 @@
         <ContentBox
             title="Informe general"
             description="Resumen de todos los datos almacenados"
-            :returnLink="route('admin.indexInforme')"
+            :returnLink="route('respon.indexInforme')"
             :messageDown="false"
         >
             <!--Si el array recibido del back esta vacio, muestra el mensaje-->

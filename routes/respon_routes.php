@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CodRegistroController;
 use App\Http\Controllers\InformeController;
 use App\Http\Controllers\ReservaController;
 use App\Http\Controllers\ResponsableController;
@@ -11,6 +12,9 @@ Route::middleware([CheckResp::class, 'auth', 'verified'])->group(function () {
       //Rutas editar perfil
       Route::get('/perfil_responsable', [ResponsableController::class, 'edit'])->name('resp.profileEdit');
       Route::patch('/perfil_responsable', [ResponsableController::class, 'update'])->name('resp.profileUpdate');
+
+      //Rutas de codigos de registro
+      Route::get('/respon_codigo_registro', [CodRegistroController::class, 'indexCodeRespon'])->name('respon.indexCode');
 
       //Rutas de informes
       Route::get('/respon_informes', [InformeController::class, 'responIndexInforme'])->name('respon.indexInforme');

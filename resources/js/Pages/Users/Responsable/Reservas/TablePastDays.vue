@@ -4,7 +4,7 @@
         <ContentBox
             title="Selección de día"
             description="Selecciona el día para visualizar sus reservas"
-            :returnLink="route('admin.indexReservas')"
+            :returnLink="route('respon.indexReservas')"
             :messageDown="false"
         >
             <!-- Filtros -->
@@ -21,22 +21,6 @@
                         v-model="selectedYear"
                         class="text-sm w-fit py-1"
                         :optionsArray="availableYears"
-                        placeholder="Todos"
-                        :disabledPlaceholder="false"
-                    />
-                </div>
-                <div class="w-full md:w-fit flex justify-end gap-2 items-center">
-                    <label
-                        for="centerFilter"
-                        class="text-lavender-dark font-bold"
-                    >
-                        Filtrar por centro
-                    </label>
-                    <SelectInput
-                        id="centerFilter"
-                        v-model="selectedCenter"
-                        class="text-sm w-fit py-1"
-                        :optionsArray="availableCenters"
                         placeholder="Todos"
                         :disabledPlaceholder="false"
                     />
@@ -68,14 +52,7 @@
                                 #default="{ item }"
                                 class="text-lavender-dark"
                             >
-                                <td
-                                    class="px-6 py-4 font-bold whitespace-nowrap"
-                                >
-                                    {{ item.centro_nombre }} (
-                                    {{ item.centro_localidad }}
-                                    )
-                                </td>
-                                <td class="px-6 py-4">
+                                <td class="px-6 py-4 font-bold">
                                     {{
                                         new Date(
                                             item.fecha
@@ -137,11 +114,10 @@ const form = useForm({
 });
 
 // Cabeceras de la tabla
-const headers = ["Centro", "Fecha", "Mostrar"];
+const headers = ["Fecha", "Mostrar"];
 
 // Estado para los filtros
 const selectedYear = ref("");
-const selectedCenter = ref("");
 
 // Función para obtener los años disponibles
 const availableYears = computed(() => {
@@ -149,11 +125,7 @@ const availableYears = computed(() => {
     return [...new Set(years)].sort((a, b) => b - a); // Orden descendente
 });
 
-// Función para obtener los centros disponibles
-const availableCenters = computed(() => {
-    const centers = props.dias.map((dia) => dia.centro_nombre);
-    return [...new Set(centers)].sort();
-});
+
 
 // Filtrar los días según el año y el centro seleccionados
 const filteredDias = computed(() => {
@@ -166,18 +138,14 @@ const filteredDias = computed(() => {
             !selectedYear.value ||
             String(diaYear) === String(selectedYear.value);
 
-        // Filtrar por centro si se seleccionó uno
-        const matchesCenter =
-            !selectedCenter.value || dia.centro_nombre === selectedCenter.value;
-
-        return matchesYear && matchesCenter;
+        return matchesYear;
     });
 });
 
 // Función para confirmar la selección del día
 const confirmShow = (itemId, day, center) => {
     const date = new Date(day).toLocaleDateString();
-    const text = `¿Quieres mostrar las reservas del ${date} en el centro ${center}?`;
+    const text = `¿Quieres mostrar las reservas del ${date}?`;
     showAlert(() => {
         showDay(itemId);
     }, text);
@@ -185,6 +153,6 @@ const confirmShow = (itemId, day, center) => {
 
 // Función que manda los datos al back para mostrar las reservas del día
 const showDay = (itemId) => {
-    router.get(route("admin.showPastReservas", { id: itemId }));
+    router.get(route("respon.showPastReservas", { id: itemId }));
 };
 </script>
