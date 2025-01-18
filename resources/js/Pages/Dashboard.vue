@@ -1,13 +1,3 @@
-<script setup>
-import AuthenticatedLayout from "@/Layouts/breeze_layouts/AuthenticatedLayout.vue";
-import { Head, usePage, Link } from "@inertiajs/vue3";
-import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
-
-
-const user = usePage().props.auth.user;
-const verified = user.email_verified_at !== null;
-</script>
-
 <template>
     <Head title="Panel de Usuario" />
 
@@ -30,8 +20,26 @@ const verified = user.email_verified_at !== null;
                 >
             </p>
 
+            <p v-if="props.notificaciones">{{ props.notificaciones }}</p>
+
         </ContentBox>
 
         {{ $page.props }}
     </AuthenticatedLayout>
 </template>
+<script setup>
+import AuthenticatedLayout from "@/Layouts/breeze_layouts/AuthenticatedLayout.vue";
+import { Head, usePage, Link } from "@inertiajs/vue3";
+import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
+
+
+const user = usePage().props.auth.user;
+const verified = user.email_verified_at !== null;
+
+const props=defineProps({
+    notificaciones:{
+        type:Array,
+        required:false
+    }
+})
+</script>

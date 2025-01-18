@@ -47,29 +47,40 @@ class User extends Authenticatable implements MustVerifyEmail
             'password' => 'hashed',
         ];
     }
-
+    
+    // Relacion con clientes 1-1
     public function cliente()
     {
         return $this->hasOne(Cliente::class);
     }
 
+    // Relacion con responsables 1-1
     public function responsable()
     {
         return $this->hasOne(Responsable::class);
     }
 
+    // Relacion con administradores 1-1
     public function administradore()
     {
         return $this->hasOne(Administradore::class);
     }
 
+    // Relaciones con codigos de registro 1 - N
     public function cod_registro()
     {
         return $this->hasMany(CodRegistro::class);
     }
 
-    public function notificacione()
+    // Relaciones con las notificaciones enviadas 1 - N
+    public function notificacionesEnviadas()
     {
-        return $this->hasMany(Notificacione::class);
+        return $this->hasMany(Notificacione::class, 'user_id_origen');
+    }
+
+    // Relaciones con las notificaciones recibidas 1 - N
+    public function notificacionesRecibidas()
+    {
+        return $this->hasMany(Notificacione::class, 'user_id_destino');
     }
 }

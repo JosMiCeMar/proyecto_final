@@ -11,7 +11,6 @@ use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use Inertia\Inertia;
 
 Route::middleware('guest')->group(function () {
 
@@ -38,6 +37,13 @@ Route::middleware('guest')->group(function () {
 });
 
 Route::middleware('auth')->group(function () {
+
+    //Ruta panel de control
+    Route::get('/panel_control', [ProfileController::class, 'dashboard'])->name('dashboard');
+
+    //Rutas actualizar / eliminar perfil
+    Route::delete('/perfil', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
     Route::get('verify-email', EmailVerificationPromptController::class)
         ->name('verification.notice');
 
@@ -58,13 +64,4 @@ Route::middleware('auth')->group(function () {
 
     Route::get('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
-
-
-    //Rutas actualizar / eliminar perfil
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
-
-//Ruta panel de control
-Route::get('/panel_control', function () {
-    return Inertia::render('Dashboard');
-})->middleware(['auth'])->name('dashboard');

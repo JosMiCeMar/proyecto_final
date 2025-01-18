@@ -9,9 +9,16 @@ class Notificacione extends Model
 {
     use HasFactory;
 
-    public function user()
-{
-    return $this->belongsTo(User::class);
-}
+    //Relación con el usuario que crea la notificación
+    public function origen()
+    {
+        return $this->belongsTo(User::class, 'user_id_origen');
+    }
+
+    // Relación con el usuario que recibe la notificación
+    public function destino()
+    {
+        return $this->belongsTo(User::class, 'user_id_destino');
+    }
 
 }

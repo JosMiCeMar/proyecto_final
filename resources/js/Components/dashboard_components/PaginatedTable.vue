@@ -31,6 +31,7 @@
     <div :class="`flex justify-between items-center p-2 ${setVisible()}`">
         <button
             @click="previousPage"
+            type="button"
             :disabled="currentPage === 1"
             class="p-1 bg-lavender-dark fill-white shadow-md enabled:hover:fill-skyblue-light active:shadow-none disabled:bg-neutral-400 rounded"
         >
@@ -51,6 +52,7 @@
         </div>
         <button
             @click="nextPage"
+            type="button"
             :disabled="currentPage === totalPages || totalPages === 0"
             class="p-1 bg-lavender-dark fill-white shadow-md enabled:hover:fill-skyblue-light active:shadow-none disabled:bg-neutral-400 rounded"
         >
@@ -67,7 +69,6 @@
 import { ref, computed } from "vue";
 import IconMdi from "@/Components/IconMdi.vue";
 import {
-    mdiGestureSwipeHorizontal,
     mdiMenuLeftOutline,
     mdiMenuRightOutline,
 } from "@mdi/js";

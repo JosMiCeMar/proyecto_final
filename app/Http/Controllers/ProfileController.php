@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\ProfileUpdateRequest;
+use App\Models\Notificacione;
+use Exception;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -13,6 +15,19 @@ use Inertia\Response;
 
 class ProfileController extends Controller
 {
+
+    public function dashboard(){
+        try{
+             
+        $notificaciones = Notificacione::where('user_id_dest', Auth::id())->get();
+
+        return Inertia::render('Dashboard',['notificaciones'=>$notificaciones]);
+
+        }catch(Exception $er){
+            return Inertia::render('Dashboard')->withErrors('Error inesperado: '.$er->getMessage());
+        }
+    }
+
     /**
      * Display the user's profile form.
      */

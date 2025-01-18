@@ -15,8 +15,9 @@ Route::middleware([CheckResp::class, 'auth', 'verified'])->group(function () {
 
       //Rutas de codigos de registro
       Route::get('/respon_codigo_registro', [CodRegistroController::class, 'indexCodeRespon'])->name('respon.indexCode');
-      Route::get('/respon_gen_codigo_registro', [CodRegistroController::class, 'indexCodeRespon'])->name('respon.genCode');
-      Route::get('/respon_show_codigo_registro', [CodRegistroController::class, 'indexCodeRespon'])->name('respon.showCode');
+      Route::get('/respon_gen_codigo_registro', [CodRegistroController::class, 'createCodeRespon'])->name('respon.createCode');
+      Route::post('/respon_gen_codigo_registro', [CodRegistroController::class, 'storeCodeRespon'])->name('respon.storeCode');
+      Route::get('/respon_lista_codigo_registro', [CodRegistroController::class, 'listCodeRespon'])->name('respon.listCode');
 
       //Rutas de informes
       Route::get('/respon_informes', [InformeController::class, 'responIndexInforme'])->name('respon.indexInforme');

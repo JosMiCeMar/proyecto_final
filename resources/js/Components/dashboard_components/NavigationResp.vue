@@ -4,7 +4,18 @@
             :href="route('dashboard')"
             :active="route().current('dashboard')"
         >
-            Panel de Usuario
+            Panel de usuario
+        </NavLink>
+        <NavLink
+            :href="route('respon.indexCode')"
+            :active="
+                route().current('respon.indexCode') ||
+                route().current('respon.createCode') ||
+                route().current('respon.listCode')||
+                ruta==='/respon_gen_codigo_registro'
+            "
+        >
+            Códigos de registro
         </NavLink>
         <NavLink
             :href="route('respon.indexInforme')"

@@ -20,13 +20,13 @@ import { mdiPlusBox, mdiTableEye } from "@mdi/js";
 
 const linksList = [
     {
-        route: route('respon.genCode'),
+        route: route('respon.createCode'),
         icon: mdiPlusBox,
         title: "Generar código de registro",
         description: "Formulario de creación de código para registrar un nuevo cliente"
     },
     {
-        route: route('respon.showCode'),
+        route: route('respon.listCode'),
         icon: mdiTableEye,
         title: "Visualizar códigos de registro",
         description: "Menú para visualizar códigos ya creados"

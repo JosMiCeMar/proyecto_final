@@ -16,6 +16,17 @@
             Panel de Usuario
         </ResponsiveNavLink>
         <ResponsiveNavLink
+            :href="route('respon.indexCode')"
+            :active="
+                route().current('respon.indexCode') ||
+                route().current('respon.createCode') ||
+                route().current('respon.listCode')||
+                ruta==='/respon_gen_codigo_registro'
+            "
+        >
+            Códigos de registro
+        </ResponsiveNavLink>
+        <ResponsiveNavLink
             :href="route('respon.indexInforme')"
             :active="
                 route().current('respon.indexInforme') ||

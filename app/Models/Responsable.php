@@ -17,13 +17,12 @@ class Responsable extends Model
 
     public $timestamps = false;
 
-    public static function isRespons(){
-         
+    public static function isRespons(){  
         $userId = Auth::id();
         return self::where('user_id', $userId)->exists();
    }
 
-   public function centroAsignado(){
+   public function getCentroAsignado(){
     return Centro::find($this->centro_id);
    }
 

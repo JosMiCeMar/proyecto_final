@@ -69,10 +69,7 @@ import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import { Head, useForm } from "@inertiajs/vue3";
 import Button from "@/Components/dashboard_components/Button.vue";
 import InputError from "@/Components/breeze_components/InputError.vue";
-import ReturnLink from "@/Components/dashboard_components/ReturnLink.vue";
-import { inject } from "vue";
 import { emptySelectionAlert } from "@/Utils/alerts";
-const swal = inject("$swal");
 
 const form = useForm({
     type: "",

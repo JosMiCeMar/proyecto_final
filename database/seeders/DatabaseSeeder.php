@@ -19,7 +19,8 @@ class DatabaseSeeder extends Seeder
             ZonasSeeder::class,
             CodRegistroSeeder::class,
             DiaSeeder::class,
-            ReservaSeeder::class
+            ReservaSeeder::class,
+            NotificacioneSeeder::class
         ]);
     }
 }

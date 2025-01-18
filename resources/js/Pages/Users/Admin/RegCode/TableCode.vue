@@ -7,7 +7,7 @@
             :returnLink="route('admin.indexCode')"
             :messageDown="false"
         >
-        <!--Si el array recibido del back esta vacio, muestra el mensaje-->
+            <!--Si el array recibido del back esta vacio, muestra el mensaje-->
             <template v-if="props.codigos.length === 0">
                 <div class="m-4 my-20">
                     <p class="text-center">
@@ -33,7 +33,7 @@
                                     >Eliminar todos los códigos usados</span
                                 >
                                 <TrashButton
-                                    @click.prevent="confirmDelete(0)"
+                                    @click.prevent="confirmDelete(0, true)"
                                 />
                             </div>
                         </div>
@@ -58,11 +58,14 @@
                                     <span v-else>NO</span>
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ formatDate(item.created_at) }}
+                                    {{ item.nombre }} {{ item.apellidos }}
+                                </td>
+                                <td class="px-6 py-4">
+                                    {{ formatDateTime(item.created_at) }}
                                 </td>
                                 <td class="px-6 py-4">
                                     <TrashButton
-                                        @click.prevent="confirmDelete(item.id)"
+                                        @click.prevent="confirmDelete(item.id, false)"
                                     />
                                 </td>
                             </template>
@@ -80,9 +83,8 @@ import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import TrashButton from "@/Components/dashboard_components/TrashButton.vue";
 import PaginatedTable from "@/Components/dashboard_components/PaginatedTable.vue";
 import { Head, useForm } from "@inertiajs/vue3";
-import { inject } from "vue";
-
-const swal = inject("$swal");
+import { formatDateTime } from "@/Utils/utilsFunctions";
+import { deleteAlert } from "@/Utils/alerts";
 
 const props = defineProps({
     codigos: {
@@ -99,32 +101,21 @@ const form = useForm({
     id: "",
 });
 
-const headers = ["Código", "Rol", "Usado", "Fecha Generado", "Eliminar"];
+const headers = [
+    "Código",
+    "Rol",
+    "Usado",
+    "Creador",
+    "Fecha Generado",
+    "Eliminar",
+];
 
-const formatDate = (fecha) => {
-    const fechaRecibida = fecha.split("T")[0];
-    const objDate = new Date(fechaRecibida);
-    return objDate.toLocaleDateString();
-};
-
-const confirmDelete = (itemId) => {
-    swal.fire({
-        title: "¿Estás seguro?",
-        text: "No podrás revertir esto",
-        icon: "warning",
-        showCancelButton: true,
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Sí, eliminarlo",
-        cancelButtonText: "Cancelar",
-        confirmButtonColor: "#3A2642",
-        background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
-        color: "#3A2642",
-        iconColor: "#3A2642",
-    }).then((result) => {
-        if (result.isConfirmed) {
-            submit(itemId);
-        }
-    });
+const confirmDelete = (itemId, allUsed) => {
+    const textOne = "¿Seguro que quieres eliminar este código de registro?";
+    const textAll = "¿Seguro que quieres eliminar todos los códigos de registro usados?"
+    deleteAlert(() => {
+        submit(itemId);
+    }, allUsed?textAll:textOne);
 };
 
 const submit = (itemId) => {

@@ -152,3 +152,31 @@ export function emptySelectionAlert(){
         iconColor: "#DC2626",
     });
 }
+//Funcion para copiar texto al portapapeles y mostrar una alerta
+export function copyText(event){
+    const texto = event.target.innerText;
+    navigator.clipboard
+        .writeText(texto)
+        .then(() => {
+            swal({
+                icon: "success",
+                text: "Código copiado al portapapeles.",
+                confirmButtonText: "Aceptar",
+                confirmButtonColor: "#3A2642",
+                background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
+                color: "#3A2642",
+                iconColor: "#3A2642",
+            });
+        })
+        .catch((err) => {
+            swal({
+                icon: "error",
+                text: "El código no puedo ser copiado al portapapeles: " + err,
+                confirmButtonText: "Aceptar",
+                confirmButtonColor: "#3A2642",
+                background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
+                color: "#3A2642",
+                iconColor: "#3A2642",
+            });
+        });
+};

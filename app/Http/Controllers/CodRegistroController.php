@@ -14,6 +14,10 @@ class CodRegistroController extends Controller
     //Constante para definir el tamaño del código
     private const LONGITUD_CODIGO = 8;
 
+    //Máximo de códigos que puede generar un responsable
+    private const MAX_CODIGOS_RESPONSABLE = 10;
+
+    //-----------------FUNCIONES PARA EL REGISTRO DE USUARIOS----------------------
     public function insertCode()
     {
         if (session()->has('cod') && session()->has('client')) {
@@ -64,10 +68,13 @@ class CodRegistroController extends Controller
         try {
             $usados = CodRegistro::where('usado', true)->exists();
 
-            $codigos = CodRegistro::orderByDesc('usado')->orderBy('para_cliente')->orderBy('created_at')->get();
+            $codigos = CodRegistro::join('users', 'cod_registros.id_creador', '=', 'users.id')
+                ->select('cod_registros.*', 'users.nombre', 'users.apellidos')
+                ->orderBy('cod_registros.created_at')
+                ->get();
 
 
-            return Inertia::render('Users/Admin/RegCode/DelCode', ['codigos' => $codigos, 'usados' => $usados]);
+            return Inertia::render('Users/Admin/RegCode/TableCode', ['codigos' => $codigos, 'usados' => $usados]);
         } catch (Exception $er) {
             return redirect()->route('admin.indexCode')->withErrors('Error al generar el código de registro: ' . $er->getMessage());
         }
@@ -122,7 +129,7 @@ class CodRegistroController extends Controller
             $codigo->save();
 
             return Inertia::render('Users/Admin/RegCode/ShowCode', [
-                'codigo' => $codigo,
+                'codigo' => $codigoGenerado,
                 'tipo' => boolval($request->type)
             ]);
         } catch (Exception $er) {
@@ -134,6 +141,53 @@ class CodRegistroController extends Controller
     public function indexCodeRespon()
     {
         return Inertia::render('Users/Responsable/RegCode/Index');
+    }
+
+    public function createCodeRespon()
+    {
+        return Inertia::render('Users/Responsable/RegCode/GenCode');
+    }
+
+    public function storeCodeRespon()
+    {
+        try {
+            //Comprueba si el responsable autenticado ha generado la cantidad maxima de codigos
+            if (
+                CodRegistro::where('id_creador', Auth::id())
+                ->where('usado', false)
+                ->count() >= self::MAX_CODIGOS_RESPONSABLE
+            ) {
+                return redirect()->route('respon.indexCode')->withErrors('Has alcanzado el límite de códigos generados');
+            }
+
+            // Crear el código y asegurarse de que sea único
+            do {
+                $codigoGenerado = $this->crearCodigo();
+            } while (CodRegistro::where('codigo', $codigoGenerado)->exists());
+
+            $codigo = new CodRegistro();
+            $codigo->codigo = $codigoGenerado;
+            $codigo->id_creador = Auth::id();
+            $codigo->para_cliente = true;
+            $codigo->save();
+
+            return Inertia::render('Users/Responsable/RegCode/ShowCode', [
+                'codigo' => $codigoGenerado
+            ]);
+        } catch (Exception $er) {
+            return redirect()->route('respon.indexCode')->withErrors('Error inesperado: ' . $er->getMessage());
+        }
+    }
+
+    public function listCodeRespon()
+    {
+        try {
+            $codigos=CodRegistro::where('id_creador', Auth::id())->get();
+
+            return Inertia::render('Users/Responsable/RegCode/TableCode',['codigos'=>$codigos]);
+        } catch (Exception $er) {
+            return redirect()->route('respon.indexCode')->withErrors('Error inesperado: ' . $er->getMessage());
+        }
     }
 
 

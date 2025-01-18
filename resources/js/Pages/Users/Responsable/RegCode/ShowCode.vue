@@ -3,8 +3,8 @@
     <AuthenticatedLayout>
         <ContentBox
             title="Generar Código de Registro"
-            description="Este es el código generado para el registro del nuevo usuario"
-            :returnLink="route('admin.indexCode')"
+            description="Este es el código generado para el registro del nuevo cliente"
+            :returnLink="route('respon.indexCode')"
             class="text-center"
         >
             <div>
@@ -19,11 +19,6 @@
                 </p>
                 <p class="text-xs text-lavender-dark mb-3">
                     *Haz click en el código para copiarlo al portapapeles
-                </p>
-                <p class="text-lavender-dark text-center">
-                    Recuerda, este código es para un nuevo
-                    <span v-if="tipo" class="uppercase font-bold">cliente</span>
-                    <span v-else class="uppercase font-bold">responsable</span>
                 </p>
             </div>
         </ContentBox>
@@ -42,11 +37,7 @@ const props = defineProps({
     codigo: {
         type: String,
         required: true,
-    },
-    tipo: {
-        type: Boolean,
-        required: true,
-    },
+    }
 });
 
 const copyText = (event) => {

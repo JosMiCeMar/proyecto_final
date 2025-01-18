@@ -34,6 +34,13 @@ export function capitalizeFirstChart(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
+//Formate el formato del tipo de dato DateTime(0000-00-00T00:00:00) y lo devuelve en formato local
+export function formatDateTime(dateTime){
+    const fechaRecibida = dateTime.split("T")[0];
+    const objDate = new Date(fechaRecibida);
+    return objDate.toLocaleDateString();
+}
+
 //---------------------------FUNCIONES DE LOS INFORMES------------------------------------
 /*
 Salvo las funciones getIndexMaxValue, getSumByHours, getCenterProfit y getCompanyProfit, las demás devuelven un array 
