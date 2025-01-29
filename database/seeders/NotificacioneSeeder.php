@@ -33,5 +33,57 @@ class NotificacioneSeeder extends Seeder
             'user_id_dest' => 1,
             'mensaje' => 'Hola Usuario 1, soy el Usuario 3.',
         ]);
+
+        Notificacione::create([
+            'user_id_orig' => 3,
+            'user_id_dest' => 1,
+            'mensaje' => 'Notificacion 2',
+        ]);
+
+        Notificacione::create([
+            'user_id_orig' => 3,
+            'user_id_dest' => 1,
+            'mensaje' => 'Notificación 3',
+        ]);
+
+        Notificacione::create([
+            'user_id_orig' => 3,
+            'user_id_dest' => 1,
+            'mensaje' => 'Notificación 4',
+        ]);
+        Notificacione::create([
+            'user_id_orig' => 3,
+            'user_id_dest' => 1,
+            'mensaje' => 'Notificacion 2',
+        ]);
+
+        Notificacione::create([
+            'user_id_orig' => 3,
+            'user_id_dest' => 1,
+            'mensaje' => 'Notificación 3',
+        ]);
+
+        Notificacione::create([
+            'user_id_orig' => 3,
+            'user_id_dest' => 1,
+            'mensaje' => 'Notificación 4',
+        ]);
+        Notificacione::create([
+            'user_id_orig' => 3,
+            'user_id_dest' => 1,
+            'mensaje' => 'Notificacion 2',
+        ]);
+
+        Notificacione::create([
+            'user_id_orig' => 3,
+            'user_id_dest' => 1,
+            'mensaje' => 'Notificación 3',
+        ]);
+
+        Notificacione::create([
+            'user_id_orig' => 3,
+            'user_id_dest' => 1,
+            'mensaje' => 'Notificación 4',
+        ]);
     }
 }

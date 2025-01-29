@@ -9,6 +9,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -19,7 +20,13 @@ class ProfileController extends Controller
     public function dashboard(){
         try{
              
-        $notificaciones = Notificacione::where('user_id_dest', Auth::id())->get();
+            $notificaciones = Notificacione::where('user_id_dest', Auth::id())
+            ->join('users', 'notificaciones.user_id_orig', '=', 'users.id')
+            ->select(
+                'notificaciones.*',
+                DB::raw("CONCAT(users.nombre, ' ', users.apellidos) as origen")
+            )
+            ->get();
 
         return Inertia::render('Dashboard',['notificaciones'=>$notificaciones]);
 

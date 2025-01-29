@@ -20,11 +20,11 @@ const props = defineProps({
     },
     position: {
         type: String,
-        default: 'start'  // valor por defecto
+        default: 'start'  
     },
     duration: {
         type: Number,
-        default: 3000  // Tiempo en milisegundos (3 segundos por defecto)
+        default: 3000  
     }
 });
 

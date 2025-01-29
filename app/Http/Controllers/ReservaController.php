@@ -72,6 +72,7 @@ class ReservaController extends Controller
                     'reservas.id',
                     'users.nombre as cliente_nombre',
                     'users.apellidos as cliente_apellidos',
+                    'users.telefono as cliente_telefono',
                     'zonas.nombre as zona_nombre',
                     'hora_inicio',
                     'hora_fin'
@@ -113,6 +114,7 @@ class ReservaController extends Controller
                     'reservas.id',
                     'users.nombre as cliente_nombre',
                     'users.apellidos as cliente_apellidos',
+                    'users.telefono as cliente_telefono',
                     'zonas.nombre as zona_nombre',
                     'hora_inicio',
                     'hora_fin'
@@ -250,6 +252,7 @@ class ReservaController extends Controller
                     'reservas.id',
                     'users.nombre as cliente_nombre',
                     'users.apellidos as cliente_apellidos',
+                    'users.telefono as cliente_telefono',
                     'zonas.nombre as zona_nombre',
                     'hora_inicio',
                     'hora_fin'
@@ -330,6 +333,7 @@ class ReservaController extends Controller
                     'reservas.id',
                     'users.nombre as cliente_nombre',
                     'users.apellidos as cliente_apellidos',
+                    'users.telefono as cliente_telefono',
                     'zonas.nombre as zona_nombre',
                     'hora_inicio',
                     'hora_fin'
@@ -375,6 +379,7 @@ class ReservaController extends Controller
                     'reservas.id',
                     'users.nombre as cliente_nombre',
                     'users.apellidos as cliente_apellidos',
+                    'users.telefono as cliente_telefono',
                     'zonas.nombre as zona_nombre',
                     'hora_inicio',
                     'hora_fin'

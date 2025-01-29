@@ -6,7 +6,7 @@
             description="Sección donde podrás ver diferente información sobre tus tratamientos realizados"
         >
             <div
-                class="m-5 flex flex-wrap gap-6 items-center lg:justify-center"
+                class="m-5 flex flex-col gap-6 justify-center"
             >
                 <LinkBox
                     v-for="box in linksList"

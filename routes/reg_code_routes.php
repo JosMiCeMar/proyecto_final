@@ -6,7 +6,7 @@ use App\Http\Middleware\CheckCode;
 use Illuminate\Support\Facades\Route;
 
 
-Route::middleware(CheckCode::class)->group(function(){
+Route::middleware([CheckCode::class,'throttle:web'])->group(function(){
     Route::get('/cliente_registro',[ClienteController::class,'create'])->name('cliente.create');
     Route::post('/cliente_registro',[ClienteController::class,'store']);
 

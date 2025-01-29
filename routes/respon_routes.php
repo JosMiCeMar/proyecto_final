@@ -7,7 +7,7 @@ use App\Http\Controllers\ResponsableController;
 use App\Http\Middleware\CheckResp;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware([CheckResp::class, 'auth', 'verified'])->group(function () {
+Route::middleware([CheckResp::class, 'auth', 'verified','throttle:user-actions'])->group(function () {
 
       //Rutas editar perfil
       Route::get('/perfil_responsable', [ResponsableController::class, 'edit'])->name('resp.profileEdit');

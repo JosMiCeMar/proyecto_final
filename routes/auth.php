@@ -9,10 +9,11 @@ use App\Http\Controllers\Auth\PasswordController;
 use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\VerifyEmailController;
+use App\Http\Controllers\NotificacioneController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware('guest')->group(function () {
+Route::middleware(['guest','throttle:web'])->group(function () {
 
     Route::get('register', [RegisteredUserController::class, 'create'])->name('register');
 
@@ -36,7 +37,7 @@ Route::middleware('guest')->group(function () {
         ->name('password.store');
 });
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth','throttle:user-actions'])->group(function () {
 
     //Ruta panel de control
     Route::get('/panel_control', [ProfileController::class, 'dashboard'])->name('dashboard');
@@ -64,4 +65,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');
+
+    //Ruta para eliminar las notificaciones
+    Route::post('notificaciones', [NotificacioneController::class, 'eliminarNotificaciones'])->name('notificaciones.eliminar');
 });

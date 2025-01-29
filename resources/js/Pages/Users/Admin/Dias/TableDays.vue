@@ -88,7 +88,7 @@ import TrashButton from "@/Components/dashboard_components/TrashButton.vue";
 import ModButton from "@/Components/dashboard_components/ModButton.vue";
 import PaginatedTable from "@/Components/dashboard_components/PaginatedTable.vue";
 import { Head, router, useForm } from "@inertiajs/vue3";
-import { deleteAlert, modAlert } from "@/Utils/alerts";
+import { deleteWithNotificationsAlert, modAlert } from "@/Utils/alerts";
 
 //Propiedades - datos recibidos del back
 const props = defineProps({
@@ -101,6 +101,7 @@ const props = defineProps({
 //Datos formulario
 const form = useForm({
     id: "",
+    notifications: false,
 });
 
 //Cabeceras de la tabla
@@ -109,8 +110,12 @@ const headers=['Centro','Fecha','Modificar','Eliminar'];
 //Funcion para confirmar el borrado
 const confirmDelete = (itemId, day, name) => {
     const date = new Date(day).toLocaleDateString();
-    const text = `¿Seguro que quieres eliminar la fecha ${date}, asignada a ${name}?`
-    deleteAlert(()=>{deleteCenter(itemId)}, text);
+    const text = `¿Seguro que quieres eliminar la fecha ${date}, asignada a ${name}?`;
+
+    deleteWithNotificationsAlert((sendNotifications) => {
+        form.notifications = sendNotifications; // Actualiza form.notifications
+        deleteCenter(itemId);
+    }, text);
 };
 
 //Funcion para confirmar la modificacion

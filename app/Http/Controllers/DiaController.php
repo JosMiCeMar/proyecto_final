@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Centro;
 use App\Models\Dia;
+use App\Models\Reserva;
+use App\Models\Responsable;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -42,7 +44,7 @@ class DiaController extends Controller
         $request->merge(['day' => $fechaRecibida]);
 
         $request->validate([
-            'day' => 'required|date_format:Y-m-d|before:' . $fechaMaxima . '|after_or_equal:' . $fechaMinima ,
+            'day' => 'required|date_format:Y-m-d|before:' . $fechaMaxima . '|after_or_equal:' . $fechaMinima,
             'center' => 'required|exists:centros,id'
         ]);
 
@@ -52,7 +54,7 @@ class DiaController extends Controller
             $dia->fecha = $request->day;
             $dia->save();
             //Se redirije con el mensaje indicativo
-            return redirect(route('admin.indexDias'))->with('msg','Día asignado correctamente');
+            return redirect(route('admin.indexDias'))->with('msg', 'Día asignado correctamente');
         } catch (Exception $er) {
             return redirect(route('admin.indexDias'))->withErrors($er->getMessage(), 'msg');
         }
@@ -65,7 +67,7 @@ class DiaController extends Controller
         //Dias asignados mas los nombres y localidades de su correspondiente centro
         $dias = Dia::select('dias.id', 'dias.fecha', 'centros.nombre', 'centros.localidad')
             ->join('centros', 'dias.centro_id', '=', 'centros.id')
-            ->where('dias.fecha','>',$hoy)
+            ->where('dias.fecha', '>', $hoy)
             ->orderBy('dias.fecha')
             ->get();
 
@@ -77,16 +79,53 @@ class DiaController extends Controller
     {
 
         $request->validate([
-            'id' => 'required|exists:dias,id'
+            'id' => 'required|exists:dias,id',
+            'notifications' => 'required|boolean'
         ]);
 
         $dia = Dia::find($request->id);
 
         if ($dia) {
+            //Si se ha marcado la casilla de notificaciones, manda las notificaciones correspondientes
+            if ($request->notifications) {
+
+                $fechaFormateada = Carbon::parse($dia->fecha)->format('d/m/Y');
+
+                //Se obtiene el responsable del centro al que pertenece el dia y se manda la notificación
+                $responsableCentro = Responsable::where('centro_id', $dia->centro_id)
+                    ->join('centros', 'centro_id', '=', 'centros.id')
+                    ->select('user_id', 'centros.nombre as nombre_centro')
+                    ->first();
+
+                if ($responsableCentro) {
+                    $msjRespon = 'El día asignado a fecha ' . $fechaFormateada . ' ha sido eliminado';
+                    NotificacioneController::enviarNotificacion($responsableCentro->user_id, $msjRespon, 'admin.listDias');
+                }
+
+                //Se obtienen los clientes afectados por la eliminación del dia y se les manda la notificación
+                $clientesAfectados = Reserva::where('dia_id', $dia->id)
+                    ->join('clientes', 'reservas.cliente_id', '=', 'clientes.id')
+                    ->join('users', 'clientes.user_id', '=', 'users.id')
+                    ->select('users.id')
+                    ->distinct()
+                    ->get();
+
+            
+
+                if ($clientesAfectados->count() > 0) {
+                    $msjClientes = 'El día ' . $fechaFormateada . ' donde tenía una reserva en el centro ' . $responsableCentro->nombre_centro . ', ha sido eliminado.' ;
+                    foreach ($clientesAfectados as $cliente) {
+                        NotificacioneController::enviarNotificacion($cliente->id, $msjClientes, 'admin.listDias');
+                    }
+                }
+            }
+
+            //Se elimina el dia
             $dia->delete();
-            return redirect(route('admin.listDias'))->with('msg','Día eliminado correctamente');
+
+            return redirect(route('admin.listDias'))->with('msg', 'Día eliminado correctamente');
         }
-        return redirect()->back();
+        return redirect(route('admin.indexDias'))->with('msg', 'Día eliminado correctamente');
     }
 
     //Obtencion y mostrado de formulario del dia a modificar
@@ -94,7 +133,7 @@ class DiaController extends Controller
     {
         $hoy = Carbon::today();
 
-        $dia = Dia::where('id', $id)->where('fecha','>',$hoy)->first();
+        $dia = Dia::where('id', $id)->where('fecha', '>', $hoy)->first();
 
         //Si existe el dia, renderiza el formulario con los datos del dia asignado
         if ($dia) {
@@ -135,7 +174,7 @@ class DiaController extends Controller
             $dia->centro_id = $request->center;
             $dia->save();
 
-            return redirect(route('admin.listDias'))->with('msg','Día modificado correctamente');
+            return redirect(route('admin.listDias'))->with('msg', 'Día modificado correctamente');
         }
 
         return redirect()->back();

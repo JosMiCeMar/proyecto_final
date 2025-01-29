@@ -3,8 +3,8 @@
 
     <AuthenticatedLayout>
         <ContentBox
-            :title="'Bienvenid@ ' + user.nombre"
-            description="Estos son los datos a tener en cuenta hoy"
+            title="Panel de usuario"
+            :description="`Bienvenid@ ${user.nombre}`"
         >
             <p
                 v-show="!verified"
@@ -19,9 +19,9 @@
                     >AQUÍ</Link
                 >
             </p>
-
-            <p v-if="props.notificaciones">{{ props.notificaciones }}</p>
-
+            <section v-show="verified">
+                <NotificationTable :items="props.notificaciones" />
+            </section>
         </ContentBox>
 
         {{ $page.props }}
@@ -31,15 +31,15 @@
 import AuthenticatedLayout from "@/Layouts/breeze_layouts/AuthenticatedLayout.vue";
 import { Head, usePage, Link } from "@inertiajs/vue3";
 import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
-
+import NotificationTable from "@/Components/dashboard_components/NotificationTable.vue";
 
 const user = usePage().props.auth.user;
 const verified = user.email_verified_at !== null;
 
-const props=defineProps({
-    notificaciones:{
-        type:Array,
-        required:false
-    }
-})
+const props = defineProps({
+    notificaciones: {
+        type: Array,
+        required: false,
+    },
+});
 </script>

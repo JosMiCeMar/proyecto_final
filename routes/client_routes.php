@@ -6,7 +6,7 @@ use App\Http\Controllers\ReservaController;
 use App\Http\Middleware\CheckClient;
 use Illuminate\Support\Facades\Route;
 
-Route::middleware([CheckClient::class, 'auth', 'verified'])->group(function () {
+Route::middleware([CheckClient::class, 'auth', 'verified','throttle:user-actions'])->group(function () {
   
   //RUTAS EDITAR PERFIL
   Route::get('/perfil_cliente', [ClienteController::class, 'edit'])->name('client.profileEdit');

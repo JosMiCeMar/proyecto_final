@@ -78,9 +78,9 @@ export function closeSession() {
     });
 }
 
-export function showAlert(executeMethod, text){
+export function showAlert(executeMethod, text) {
     Swal.fire({
-        title:text,
+        title: text,
         text: "Se redigirá a una nueva página para mostrar la información",
         icon: "question",
         showCancelButton: true,
@@ -99,9 +99,9 @@ export function showAlert(executeMethod, text){
 }
 
 // Función para mostrar la alerta de eliminación
-export function deleteAlert(executeMethod, text){
+export function deleteAlert(executeMethod, text) {
     Swal.fire({
-        title:text,
+        title: text,
         text: "No podrás revertir esto",
         icon: "warning",
         showCancelButton: true,
@@ -119,10 +119,39 @@ export function deleteAlert(executeMethod, text){
     });
 }
 
-// Función para mostrar la alerta de modificación
-export function modAlert(executeMethod, text){
+// Función para mostrar la alerta de eliminación con checkbox para mandar notificaciones
+export function deleteWithNotificationsAlert(executeMethod, text) {
     Swal.fire({
-        title:text,
+        title: text,
+        icon: "warning",
+        html: `
+            <label>
+                <input type="checkbox" id="notifyCheckbox" checked> Mandar notificaciones
+            </label>
+        `,
+        showCancelButton: true,
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Sí, eliminarlo",
+        cancelButtonText: "Cancelar",
+        confirmButtonColor: "#3A2642",
+        background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
+        color: "#3A2642",
+        iconColor: "#3A2642",
+        preConfirm: () => {
+            return document.getElementById("notifyCheckbox").checked;
+        }
+    }).then((result) => {
+        if (result.isConfirmed) {
+            executeMethod(result.value);
+        }
+    });
+}
+
+
+// Función para mostrar la alerta de modificación
+export function modAlert(executeMethod, text) {
+    Swal.fire({
+        title: text,
         text: "Se mostrará un formulario donde cambiar los datos",
         icon: "question",
         showCancelButton: true,
@@ -141,7 +170,7 @@ export function modAlert(executeMethod, text){
 }
 
 // Función para mostrar la alerta de seleccion vacía
-export function emptySelectionAlert(){
+export function emptySelectionAlert() {
     Swal.fire({
         icon: "error",
         text: "Debes seleccionar una de las opciones",
@@ -153,7 +182,7 @@ export function emptySelectionAlert(){
     });
 }
 //Funcion para copiar texto al portapapeles y mostrar una alerta
-export function copyText(event){
+export function copyText(event) {
     const texto = event.target.innerText;
     navigator.clipboard
         .writeText(texto)
@@ -179,4 +208,4 @@ export function copyText(event){
                 iconColor: "#3A2642",
             });
         });
-};
+}

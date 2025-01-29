@@ -18,7 +18,7 @@
                             id="day"
                             v-model="form.day"
                             inputFormat="dd-MM-yyyy"
-                            :lowerLimit="today"
+                            :lowerLimit="tomorrow"
                             :upperLimit="lastDay"
                             :locale="localLanguage"
                             :disabledDates="{ dates: invalidDates }"
@@ -80,11 +80,11 @@ import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
 import Datepicker from "vue3-datepicker";
 import { incorrectForm, sendForm } from "@/Utils/alerts";
 import {
-    getToday,
     getLastDate,
     disabledDates,
     validateDates,
     validateCenter,
+    getTomorrow,
 } from "@/Utils/Validators/dias_validator";
 import { es } from "date-fns/locale";
 
@@ -100,7 +100,7 @@ const props = defineProps({
 });
 
 //Obtencion de las fechas limite y deshabilitadas
-const today = getToday();
+const tomorrow = getTomorrow();
 const lastDay = getLastDate();
 const invalidDates = disabledDates(props.fechas);
 
@@ -108,14 +108,14 @@ const invalidDates = disabledDates(props.fechas);
 const localLanguage = es;
 
 const form = useForm({
-    day: today,
+    day: tomorrow,
     center: "",
 });
 
 function validateForm() {
     const errors = {};
 
-    errors.day = validateDates(form.day, today, lastDay, invalidDates);
+    errors.day = validateDates(form.day, tomorrow, lastDay, invalidDates);
 
     errors.center = validateCenter(form.center, props.centros);
 
