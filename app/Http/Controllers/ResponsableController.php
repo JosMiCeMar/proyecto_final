@@ -103,6 +103,6 @@ class ResponsableController extends Controller
         $request->user()->save();
         Responsable::where('user_id',$request->user()->id)->update(['centro_id'=>$request->center]);
 
-        return Redirect::route('resp.profileEdit');
+        return Redirect::route('respon.profileEdit');
     }
 }

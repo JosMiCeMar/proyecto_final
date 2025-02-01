@@ -47,10 +47,10 @@
                                     {{ item.zona_nombre }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ item.hora_inicio }}
+                                    {{ formatHour(item.hora_inicio) }}
                                 </td>
                                 <td class="px-6 py-4">
-                                    {{ item.hora_fin }}
+                                    {{ formatHour(item.hora_fin) }}
                                 </td>
                                 <td class="px-6 py-4">
                                     <ModButton
@@ -103,6 +103,7 @@ import PaginatedTable from "@/Components/dashboard_components/PaginatedTable.vue
 import { Head, router, useForm } from "@inertiajs/vue3";
 import { deleteAlert, modAlert } from "@/Utils/alerts";
 import InputError from "@/Components/breeze_components/InputError.vue";
+import { formatHour } from "@/Utils/utilsFunctions";
 
 //Propiedades - datos recibidos del back
 const props = defineProps({

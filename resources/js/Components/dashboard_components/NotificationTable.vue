@@ -4,7 +4,7 @@
             <div
                 class="flex gap-2 justify-center items-center bg-skyblue-dark p-1 rounded-t-md"
             >
-                <IconMdi :icon="mdiMessageAlert" class="fill-white" />
+                <IconMdi :icon="mdiBellBadge" class="fill-white" />
                 <span class="text-lg text-white">Tus notificaciones</span>
             </div>
             <div class="border border-skyblue-dark rounded-b-md">
@@ -16,7 +16,7 @@
                             <td colspan="2">
                                 <div class="flex justify-end">
                                     <button
-                                    type="button" 
+                                        type="button"
                                         :disabled="form.checkboxes.length === 0"
                                         class="flex text-sm shadow-sm rounded w-fit gap-1 py-1 px-2 m-1 bg-red-600 items-center cursor-pointer fill-white text-white hover:fill-lavender-vlight hover:text-lavender-vlight disabled:bg-neutral-400 disabled:cursor-not-allowed"
                                         @click="submit"
@@ -25,10 +25,10 @@
                                             :icon="mdiDeleteCircle"
                                             :size="20"
                                         />
-                                        <span>Borrar</span>
+                                        <span class="hidden sm:block">Borrar</span>
                                     </button>
                                     <button
-                                    type="button" 
+                                        type="button"
                                         class="flex text-sm shadow-sm rounded w-fit gap-1 py-1 px-2 m-1 bg-lavender-dark items-center cursor-pointer fill-white text-white hover:fill-skyblue-vlight hover:text-skyblue-vlight"
                                         @click="checkAll()"
                                     >
@@ -40,7 +40,7 @@
                                             "
                                             :size="20"
                                         />
-                                        <span>
+                                        <span class="hidden sm:block">
                                             {{
                                                 checkAllButtonValue
                                                     ? "Desmarcar todas"
@@ -57,7 +57,7 @@
                             v-for="item in paginatedItems"
                             :key="item.id"
                             @click="checkThis(item.id)"
-                            class="border-b border-lavender-logo hover:bg-purple-300 transition-all ease-in-out duration-500"
+                            class="border-b text-sm border-lavender-logo hover:bg-purple-300 transition-all ease-in-out duration-500"
                         >
                             <td class="w-fit md:text-nowrap px-2">
                                 {{ item.origen }}
@@ -86,7 +86,7 @@
                         @click="previousPage"
                         type="button"
                         :disabled="currentPage === 1"
-                        class="p-1 bg-lavender-dark shadow-md enabled:hover:fill-skyblue-light active:shadow-none disabled:bg-neutral-400 rounded"
+                        class="p-1 bg-lavender-dark shadow-md enabled:hover:bg-skyblue-dark active:shadow-none disabled:bg-neutral-400 rounded"
                     >
                         <IconMdi
                             :icon="mdiMenuLeft"
@@ -113,7 +113,7 @@
                         :disabled="
                             currentPage === totalPages || totalPages === 0
                         "
-                        class="p-1 bg-lavender-dark shadow-md enabled:hover:fill-skyblue-light active:shadow-none disabled:bg-neutral-400 rounded"
+                        class="p-1 bg-lavender-dark shadow-md enabled:hover:bg-skyblue-dark active:shadow-none disabled:bg-neutral-400 rounded"
                     >
                         <IconMdi
                             :icon="mdiMenuRight"
@@ -129,11 +129,11 @@
         </form>
     </template>
     <template v-else>
-        <div class="flex gap-2 justify-center items-center">
-            <IconMdi :icon="mdiMessageAlert" class="fill-lavender-dark" />
-            <span class="text-lg font-bold text-lavender-dark"
-                >No tienes notificaciones</span
-            >
+        <div
+            class="flex gap-2 justify-center items-center border bg-skyblue-dark p-1 rounded-md"
+        >
+            <IconMdi :icon="mdiBell" class="fill-white" />
+            <span class="text-lg text-white">No tienes notificaciones</span>
         </div>
     </template>
 </template>
@@ -142,12 +142,13 @@ import { ref, computed } from "vue";
 import { useForm } from "@inertiajs/vue3";
 import IconMdi from "../IconMdi.vue";
 import {
-    mdiMessageAlert,
     mdiMenuLeft,
     mdiMenuRight,
     mdiCheckboxMarked,
     mdiCheckboxBlank,
     mdiDeleteCircle,
+    mdiBell,
+    mdiBellBadge,
 } from "@mdi/js";
 import { formatDateTime } from "@/Utils/utilsFunctions";
 import { validateIdsInList } from "@/Utils/Validators/reports_validator";
@@ -161,7 +162,7 @@ const props = defineProps({
     },
     itemsPerPage: {
         type: Number,
-        default: 10,
+        default: 5,
     },
 });
 

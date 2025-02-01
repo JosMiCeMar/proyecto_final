@@ -1,11 +1,11 @@
 <template>
     <Link :href="props.route" class="w-fit">
-    <div class="hover:bg-lavender-vlight rounded-md text-lavender-dark bg-white p-4 w-fit shadow-md transition-all ease-in-out duration-500">
-        <div class="flex flex-wrap gap-1 mb-2 items-center">
-            <IconMdi class="fill-lavender-dark" :icon="props.icon" :size='30' />
+    <div class="flex flex-col justify-center rounded-md text-lavender-dark bg-white p-4 w-fit shadow-md transition-all ease-in-out duration-500 hover:bg-lavender-vlight ">
+        <div class="flex flex-wrap gap-1 items-center h-auto">
+            <IconMdi class="fill-lavender-dark" :icon="props.icon" :size='props.iconSize' />
             <span class="font-bold ">{{ props.title }}</span>
         </div>
-        <p class="text-sm ">
+        <p class="text-sm mt-2" v-if="props.description">
             {{ props.description }}
         </p>
     </div>
@@ -28,9 +28,13 @@ const props = defineProps({
         type: String,
         required: true,
     },
+    iconSize:{
+        type: Number,
+        default: 30,
+    },
     description: {
         type: String,
-        required: true,
+        required: false,
     },
 });
 </script>

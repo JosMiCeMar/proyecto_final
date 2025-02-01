@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Centro;
 use App\Models\Cliente;
 use App\Models\Dia;
+use App\Models\Notificacione;
 use App\Models\Reserva;
 use App\Models\User;
 use App\Models\Zona;
@@ -143,6 +144,23 @@ class ReservaController extends Controller
             $reserva = Reserva::find($request->id_reservation);
 
             if ($reserva) {
+
+                $datos = Reserva::where('reservas.id', $request->id_reservation)
+                ->join('zonas', 'reservas.zona_id', '=', 'zonas.id')
+                ->join('clientes', 'reservas.cliente_id', '=', 'clientes.id')
+                ->join('users', 'clientes.user_id', '=', 'users.id')
+                ->join('dias', 'reservas.dia_id', '=', 'dias.id')
+                ->join('centros', 'dias.centro_id', '=', 'centros.id')
+                ->select('reservas.id', 'users.id as usuario_id', 'zonas.nombre as zona_nombre', 'dias.fecha as dia_fecha', 'centros.nombre as centro_nombre', 'centros.localidad as centro_localidad')
+                ->first();
+
+                $fechaFormateada = Carbon::parse($datos->dia_fecha)->format('d/m/Y');
+
+                $mensaje = 'Se ha eliminado tu reserva de ' . $datos->zona_nombre . ' para el día ' . $fechaFormateada . ' en el centro ' . $datos->centro_nombre .' (' . $datos->centro_localidad . ')';
+
+                NotificacioneController::enviarNotificacion($datos->usuario_id, $mensaje, 'admin.indexReservas');
+
+                return $datos;
                 $reserva->delete();
                 return redirect()->back()->with('msg', 'Reserva eliminada correctamente');
             } else {
@@ -528,6 +546,7 @@ class ReservaController extends Controller
                     'reservas.id',
                     'users.nombre as cliente_nombre',
                     'users.apellidos as cliente_apellidos',
+                    'users.telefono as cliente_telefono',
                     'zonas.nombre as zona_nombre',
                     'hora_inicio',
                     'hora_fin'

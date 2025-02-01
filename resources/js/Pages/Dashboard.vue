@@ -19,12 +19,19 @@
                     >AQUÍ</Link
                 >
             </p>
-            <section v-show="verified">
+            <section v-show="verified" class="flex flex-col gap-5">
+                <template v-if="rol==='admin'">
+                    <AdminDashboardLinks />
+                </template>
+                <template v-else-if="rol==='responsable'">
+                    <ResponDashboardLinks />
+                </template>
+                <template v-else>
+                    <ClientDashboardLinks />
+                </template>
                 <NotificationTable :items="props.notificaciones" />
             </section>
         </ContentBox>
-
-        {{ $page.props }}
     </AuthenticatedLayout>
 </template>
 <script setup>
@@ -32,8 +39,13 @@ import AuthenticatedLayout from "@/Layouts/breeze_layouts/AuthenticatedLayout.vu
 import { Head, usePage, Link } from "@inertiajs/vue3";
 import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import NotificationTable from "@/Components/dashboard_components/NotificationTable.vue";
+import AdminDashboardLinks from "@/Components/dashboard_components/AdminDashboardLinks.vue";
+import ResponDashboardLinks from "@/Components/dashboard_components/ResponDashboardLinks.vue";
+import ClientDashboardLinks from "@/Components/dashboard_components/ClientDashboardLinks.vue";
+
 
 const user = usePage().props.auth.user;
+const rol = usePage().props.auth.tipo;
 const verified = user.email_verified_at !== null;
 
 const props = defineProps({
@@ -42,4 +54,5 @@ const props = defineProps({
         required: false,
     },
 });
+
 </script>

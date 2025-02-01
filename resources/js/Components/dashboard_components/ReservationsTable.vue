@@ -60,7 +60,14 @@
                                                 item.zona_nombre
                                             )
                                         }}</span>
-                                        <span class="flex gap-1 items-center justify-center"><IconMdi :icon="mdiPhone" :size="15"/>{{ item.cliente_telefono }}</span>
+                                        <span
+                                            class="flex gap-1 items-center justify-center"
+                                            ><IconMdi
+                                                :icon="mdiPhone"
+                                                :size="15"
+                                                class="fill-lavender-dark"
+                                            />{{ item.cliente_telefono }}</span
+                                        >
                                     </div>
                                 </td>
                                 <td v-show="props.editable">
@@ -153,7 +160,7 @@
                                     {{ formatHour(item.hora_inicio) }} -
                                     {{ formatHour(item.hora_fin) }}
                                 </td>
-                                <td class="p-2">
+                                <td class="p-2 text-sm">
                                     <div class="flex flex-col w-full">
                                         <span class="font-semibold"
                                             >{{ item.cliente_nombre }}
@@ -164,6 +171,14 @@
                                                 item.zona_nombre
                                             )
                                         }}</span>
+                                        <span
+                                            class="flex gap-1 items-center justify-center"
+                                            ><IconMdi
+                                                :icon="mdiPhone"
+                                                :size="15"
+                                                class="fill-lavender-dark"
+                                            />{{ item.cliente_telefono }}</span
+                                        >
                                     </div>
                                 </td>
                                 <td v-show="props.editable">

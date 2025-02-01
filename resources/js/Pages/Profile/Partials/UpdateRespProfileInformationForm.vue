@@ -204,7 +204,7 @@ function validateForm() {
 
 const submit = () => {
     if (validateForm()) {
-        form.patch(route("resp.profileUpdate"));
+        form.patch(route("respon.profileUpdate"));
     } else {
         incorrectForm();
     }

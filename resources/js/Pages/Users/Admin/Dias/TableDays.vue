@@ -24,10 +24,18 @@
                 <!--Tabla de datos-->
                 <div class="m-4">
                     <form @submit.prevent="submit">
-                        <PaginatedTable
-                            :items="props.dias"
-                            :headers="headers"
-                        >
+                        <!--Checkbox de notificacion-->
+                        <div class="flex items-end justify-end mb-2">
+                            <Checkbox
+                                class="mx-1"
+                                id="cbNot"
+                                v-model:checked="form.notification"
+                                name="condicion"
+                            /><label for="cbNot" class="text-lavender-dark text-xs font-bold"
+                                >Notificación al eliminar</label
+                            >
+                        </div>
+                        <PaginatedTable :items="props.dias" :headers="headers">
                             <template
                                 #default="{ item }"
                                 class="text-lavender-dark"
@@ -86,9 +94,10 @@ import AuthenticatedLayout from "@/Layouts/breeze_layouts/AuthenticatedLayout.vu
 import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import TrashButton from "@/Components/dashboard_components/TrashButton.vue";
 import ModButton from "@/Components/dashboard_components/ModButton.vue";
+import Checkbox from "@/Components/breeze_components/Checkbox.vue";
 import PaginatedTable from "@/Components/dashboard_components/PaginatedTable.vue";
 import { Head, router, useForm } from "@inertiajs/vue3";
-import { deleteWithNotificationsAlert, modAlert } from "@/Utils/alerts";
+import { deleteAlert, modAlert } from "@/Utils/alerts";
 
 //Propiedades - datos recibidos del back
 const props = defineProps({
@@ -101,19 +110,17 @@ const props = defineProps({
 //Datos formulario
 const form = useForm({
     id: "",
-    notifications: false,
+    notification: true
 });
 
 //Cabeceras de la tabla
-const headers=['Centro','Fecha','Modificar','Eliminar'];
+const headers = ["Centro", "Fecha", "Modificar", "Eliminar"];
 
 //Funcion para confirmar el borrado
 const confirmDelete = (itemId, day, name) => {
     const date = new Date(day).toLocaleDateString();
     const text = `¿Seguro que quieres eliminar la fecha ${date}, asignada a ${name}?`;
-
-    deleteWithNotificationsAlert((sendNotifications) => {
-        form.notifications = sendNotifications; // Actualiza form.notifications
+    deleteAlert((sendNotifications) => {
         deleteCenter(itemId);
     }, text);
 };
@@ -121,8 +128,10 @@ const confirmDelete = (itemId, day, name) => {
 //Funcion para confirmar la modificacion
 const confirmMod = (itemId, day, name) => {
     const date = new Date(day).toLocaleDateString();
-    const text =  `¿Vas a modificar la fecha ${date} asignada al centro ${name}?`;
-    modAlert(()=>{modCenter(itemId)},text);
+    const text = `¿Vas a modificar la fecha ${date} asignada al centro ${name}?`;
+    modAlert(() => {
+        modCenter(itemId);
+    }, text);
 };
 
 //Funcion que manda los datos al back para su borrado

@@ -12,6 +12,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
+import { router } from '@inertiajs/vue3';
 
 const props = defineProps({
     message: {
@@ -30,10 +31,21 @@ const props = defineProps({
 
 const isVisible = ref(true);
 
-onMounted(() => {
+const showMessage = () => {
+    isVisible.value = true;
     setTimeout(() => {
         isVisible.value = false;
     }, props.duration);
+};
+
+// Mostrar mensaje al montar
+onMounted(() => {
+    showMessage();
+
+    // Escuchar navegación con Inertia
+    router.on('finish', () => {
+        showMessage();
+    });
 });
 </script>
 

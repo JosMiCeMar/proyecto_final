@@ -11,7 +11,6 @@
                     @submit.prevent="submit"
                     class="m-4 bg-gradient-to-t w-full lg:w-[75%] from-lavender-dark to-skyblue-dark rounded-md p-6 shadow-md"
                 >
-                    <!-- Nombre del Centro -->
                     <div>
                         <InputLabel for="day" value="Fecha Día de Trabajo" />
                         <Datepicker
@@ -27,27 +26,16 @@
                         <InputError class="mt-2" :message="form.errors.day" />
                     </div>
 
-                    <!-- Select de centros asociados-->
-                    <div class="mt-4">
-                        <InputLabel for="center" value="Centro Asociado" />
-                        <select
-                            id="center"
-                            v-model="form.center"
-                            class="w-full border-lavender-dark bg-blue-100 text-lavender-dark focus:border-lavender-light focus:ring-lavender-light checked:bg-lavender-dark rounded-md shadow-sm"
+                    <!--Checkbox de notificacion-->
+                    <div class="flex items-end justify-end mt-2">
+                        <Checkbox
+                            class="mx-1"
+                            id="cbNot"
+                            v-model:checked="form.notification"
+                            name="condicion"
+                        /><label for="cbNot" class="text-white text-xs"
+                            >Mandar notificación</label
                         >
-                            <option
-                                class="checked:bg-lavender-dark checked:text-white"
-                                v-for="center in centros"
-                                :key="center.id"
-                                :value="center.id"
-                            >
-                                {{ center.nombre }} - {{ center.localidad }}
-                            </option>
-                        </select>
-                        <InputError
-                            class="mt-2"
-                            :message="form.errors.center"
-                        />
                     </div>
 
                     <!-- Botón de Enviar -->
@@ -61,6 +49,7 @@
                             Modificar Día
                         </PrimaryButton>
                     </div>
+                    <InputError class="mt-2" :message="form.errors.center" />
                 </form>
             </div>
         </ContentBox>
@@ -73,6 +62,7 @@ import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import { Head, useForm } from "@inertiajs/vue3";
 import InputError from "@/Components/breeze_components/InputError.vue";
 import InputLabel from "@/Components/breeze_components/InputLabel.vue";
+import Checkbox from "@/Components/breeze_components/Checkbox.vue";
 import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
 import Datepicker from "vue3-datepicker";
 import { es } from "date-fns/locale";
@@ -82,17 +72,12 @@ import {
     disabledDates,
     validateDates,
     validateCenter,
-    getTomorrow
+    getTomorrow,
 } from "@/Utils/Validators/dias_validator";
 
-
 const props = defineProps({
-    datos:{
-        type:Object,
-        required:true
-    },
-    centros: {
-        type: Array,
+    datos: {
+        type: Object,
         required: true,
     },
     fechas: {
@@ -112,15 +97,15 @@ const invalidDates = disabledDates(props.fechas);
 const form = useForm({
     id: props.datos.id,
     day: new Date(props.datos.fecha),
-    center: props.datos.centro_id,
+    notification: true
 });
 
 function validateForm() {
     const errors = {};
 
-    errors.day= validateDates(form.day, tomorrow, lastDay, invalidDates);
+    errors.day = validateDates(form.day, tomorrow, lastDay, invalidDates);
 
-    errors.center = validateCenter(form.center, props.centros);
+    errors.center = form.id === props.datos.id?null:'Id centro no válido';
 
     form.errors = errors;
     return Object.keys(errors).every((key) => errors[key] === null);
@@ -128,7 +113,9 @@ function validateForm() {
 
 const submit = () => {
     if (validateForm()) {
-        sendForm(()=>{form.post(route("admin.updateDias"))}, `¿Quieres modificar el dia ${form.day.toLocaleDateString()}?`);
+        sendForm(() => {
+            form.post(route("admin.updateDias"));
+        }, `¿Quieres modificar el dia ${form.day.toLocaleDateString()}?`);
     } else {
         incorrectForm();
     }

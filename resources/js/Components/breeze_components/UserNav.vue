@@ -58,7 +58,7 @@
                                     $page.props.auth.tipo == 'responsable'
                                 "
                             >
-                                <DropdownLink :href="route('resp.profileEdit')">
+                                <DropdownLink :href="route('respon.profileEdit')">
                                     Editar Perfil
                                 </DropdownLink>
                             </template>

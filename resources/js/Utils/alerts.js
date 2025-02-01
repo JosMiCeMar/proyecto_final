@@ -45,6 +45,7 @@ export function sendForm(executeMethod, message) {
     });
 }
 
+
 // Función para mostrar la alerta de formulario incorrecto
 export function incorrectForm() {
     Swal.fire({
@@ -119,35 +120,6 @@ export function deleteAlert(executeMethod, text) {
     });
 }
 
-// Función para mostrar la alerta de eliminación con checkbox para mandar notificaciones
-export function deleteWithNotificationsAlert(executeMethod, text) {
-    Swal.fire({
-        title: text,
-        icon: "warning",
-        html: `
-            <label>
-                <input type="checkbox" id="notifyCheckbox" checked> Mandar notificaciones
-            </label>
-        `,
-        showCancelButton: true,
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Sí, eliminarlo",
-        cancelButtonText: "Cancelar",
-        confirmButtonColor: "#3A2642",
-        background: "linear-gradient(320deg, #e3b8f5, #bdd6ff, #fff)",
-        color: "#3A2642",
-        iconColor: "#3A2642",
-        preConfirm: () => {
-            return document.getElementById("notifyCheckbox").checked;
-        }
-    }).then((result) => {
-        if (result.isConfirmed) {
-            executeMethod(result.value);
-        }
-    });
-}
-
-
 // Función para mostrar la alerta de modificación
 export function modAlert(executeMethod, text) {
     Swal.fire({
@@ -168,6 +140,7 @@ export function modAlert(executeMethod, text) {
         }
     });
 }
+
 
 // Función para mostrar la alerta de seleccion vacía
 export function emptySelectionAlert() {

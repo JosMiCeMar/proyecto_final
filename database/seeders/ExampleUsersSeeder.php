@@ -32,10 +32,10 @@ class ExampleUsersSeeder extends Seeder
 
         ]);
 
-        //RESPONSABLE
+        //RESPONSABLES
         User::create([
-            'nombre' => 'Responsable',
-            'apellidos' => 'Ejemplo',
+            'nombre' => 'Depilaser MC',
+            'apellidos' => 'Resp',
             'telefono' => '666666666',
             'email' => 'responsable@responsable.com',
             'password' => Hash::make('responsable1234'),
@@ -43,8 +43,36 @@ class ExampleUsersSeeder extends Seeder
         ]);
 
         Responsable::create([
-            'user_id' => User::where('nombre', 'Responsable')->first()->id,
+            'user_id' => User::where('nombre', 'Depilaser MC')->first()->id,
             'centro_id' => 1
+        ]);
+
+        User::create([
+            'nombre' => 'Ana',
+            'apellidos' => 'Resp',
+            'telefono' => '666666666',
+            'email' => 'responsable@ana.com',
+            'password' => Hash::make('responsable1234'),
+            'email_verified_at'=>Carbon::today()
+        ]);
+
+        Responsable::create([
+            'user_id' => User::where('nombre', 'Ana')->first()->id,
+            'centro_id' => 2
+        ]);
+
+        User::create([
+            'nombre' => 'Lais',
+            'apellidos' => 'Resp',
+            'telefono' => '666666666',
+            'email' => 'responsable3@responsable.com',
+            'password' => Hash::make('responsable1234'),
+            'email_verified_at'=>Carbon::today()
+        ]);
+
+        Responsable::create([
+            'user_id' => User::where('nombre', 'Lais')->first()->id,
+            'centro_id' => 3
         ]);
 
 

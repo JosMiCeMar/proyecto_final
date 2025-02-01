@@ -11,7 +11,6 @@
                     @submit.prevent="submit"
                     class="m-4 bg-gradient-to-t w-full lg:w-[75%] from-lavender-dark to-skyblue-dark rounded-md p-6 shadow-md"
                 >
-                    <!-- Nombre del Centro -->
                     <div>
                         <InputLabel for="day" value="Fecha Día de Trabajo" />
                         <Datepicker
@@ -52,6 +51,15 @@
                             :message="form.errors.center"
                         />
                     </div>
+                    <!--Checkbox de notificacion-->
+                    <div class="flex items-end justify-end mt-2">
+                        <Checkbox
+                            class="mx-1"
+                            id="cbNot"
+                            v-model:checked="form.notification"
+                            name="condicion"
+                        /><label for="cbNot" class="text-white text-xs">Mandar notificación</label>
+                    </div>
 
                     <!-- Botón de Enviar -->
                     <div class="flex items-center justify-center mt-4">
@@ -76,6 +84,7 @@ import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import { Head, useForm } from "@inertiajs/vue3";
 import InputError from "@/Components/breeze_components/InputError.vue";
 import InputLabel from "@/Components/breeze_components/InputLabel.vue";
+import Checkbox from "@/Components/breeze_components/Checkbox.vue";
 import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
 import Datepicker from "vue3-datepicker";
 import { incorrectForm, sendForm } from "@/Utils/alerts";
@@ -110,6 +119,7 @@ const localLanguage = es;
 const form = useForm({
     day: tomorrow,
     center: "",
+    notification: true,
 });
 
 function validateForm() {

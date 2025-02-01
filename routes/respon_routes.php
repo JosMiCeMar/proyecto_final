@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Route;
 Route::middleware([CheckResp::class, 'auth', 'verified','throttle:user-actions'])->group(function () {
 
       //Rutas editar perfil
-      Route::get('/perfil_responsable', [ResponsableController::class, 'edit'])->name('resp.profileEdit');
-      Route::patch('/perfil_responsable', [ResponsableController::class, 'update'])->name('resp.profileUpdate');
+      Route::get('/perfil_responsable', [ResponsableController::class, 'edit'])->name('respon.profileEdit');
+      Route::patch('/perfil_responsable', [ResponsableController::class, 'update'])->name('respon.profileUpdate');
 
       //Rutas de codigos de registro
       Route::get('/respon_codigo_registro', [CodRegistroController::class, 'indexCodeRespon'])->name('respon.indexCode');

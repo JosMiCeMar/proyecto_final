@@ -25,7 +25,11 @@ class NotificacioneController extends Controller
                 $notificacion->delete();
             }
 
-            return redirect(route('dashboard'))->with('msg', 'Notificaciones eliminadas correctamente');
+            $mensajeCorrecto = count($request->checkboxes) > 1 
+            ? 'Notificaciones eliminadas correctamente' 
+            : 'Notificación eliminada correctamente';
+
+            return redirect(route('dashboard'))->with('msg', $mensajeCorrecto);
         } catch (Exception $er) {
             return redirect(route('dashboard'))->withErrors($er->getMessage(), 'msg');
         }
