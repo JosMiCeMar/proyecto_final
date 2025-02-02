@@ -1,6 +1,17 @@
 <template>
     <form @submit.prevent="submit">
-        <div class="flex flex-col md:flex-row justify-center gap-8 py-8">
+        <!--Checkbox de notificacion-->
+        <div class="flex items-center justify-start mt-4">
+            <Checkbox
+                class="mx-1"
+                id="cbNot"
+                v-model:checked="form.notification"
+                name="condicion"
+            /><label for="cbNot" class="text-lavender-dark text-sm font-bold h-full"
+                >Mandar notificación al eliminar</label
+            >
+        </div>
+        <div class="flex flex-col md:flex-row justify-center gap-8 py-2">
             <!-- Tabla de la mañana -->
             <div class="flex w-full">
                 <table class="w-full text-center h-fit">
@@ -238,6 +249,7 @@ import IconMdi from "@/Components/IconMdi.vue";
 import { mdiPhone, mdiWeatherSunny, mdiWeatherSunset } from "@mdi/js";
 import { formatHour, capitalizeFirstChart } from "@/Utils/utilsFunctions";
 import ModButton from "@/Components/dashboard_components/ModButton.vue";
+import Checkbox from "@/Components/breeze_components/Checkbox.vue";
 import TrashButton from "@/Components/dashboard_components/TrashButton.vue";
 import { router, useForm } from "@inertiajs/vue3";
 import { deleteAlert, modAlert } from "@/Utils/alerts";
@@ -273,6 +285,7 @@ const props = defineProps({
 const form = useForm({
     id_reservation: "",
     id_day: props.idDay,
+    notification:true
 });
 
 //Funcion para confirmar el borrado

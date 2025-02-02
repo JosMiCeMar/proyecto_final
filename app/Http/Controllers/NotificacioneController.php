@@ -12,7 +12,8 @@ class NotificacioneController extends Controller
 {
 
     //Funcion para eliminar las notificaciones
-    public function eliminarNotificaciones(Request $request){
+    public function eliminarNotificaciones(Request $request)
+    {
         try {
 
             $request->validate([
@@ -25,9 +26,9 @@ class NotificacioneController extends Controller
                 $notificacion->delete();
             }
 
-            $mensajeCorrecto = count($request->checkboxes) > 1 
-            ? 'Notificaciones eliminadas correctamente' 
-            : 'Notificación eliminada correctamente';
+            $mensajeCorrecto = count($request->checkboxes) > 1
+                ? 'Notificaciones eliminadas correctamente'
+                : 'Notificación eliminada correctamente';
 
             return redirect(route('dashboard'))->with('msg', $mensajeCorrecto);
         } catch (Exception $er) {
@@ -36,21 +37,16 @@ class NotificacioneController extends Controller
     }
 
     // Funcion para enviar notificaciones con texto personalizado
-    public static function enviarNotificacion($userId, $mensaje, $rutaInicio)
+    public static function enviarNotificacion($userId, $mensaje)
     {
-        try {
+        $destinatario = User::find($userId);
 
-            $destinatario = User::find($userId);
-
-            if ($destinatario) {
-                $notificacion = new Notificacione();
-                $notificacion->user_id_orig = Auth::id();
-                $notificacion->user_id_dest = $userId;
-                $notificacion->mensaje = $mensaje;
-                $notificacion->save();
-            }
-        } catch (Exception $er) {
-            return redirect(route($rutaInicio))->withErrors($er->getMessage(), 'msg');
+        if ($destinatario) {
+            $notificacion = new Notificacione();
+            $notificacion->user_id_orig = Auth::id();
+            $notificacion->user_id_dest = $userId;
+            $notificacion->mensaje = $mensaje;
+            $notificacion->save();
         }
     }
 }

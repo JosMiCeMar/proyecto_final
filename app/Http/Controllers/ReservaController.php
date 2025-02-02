@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Administradore;
 use App\Models\Centro;
 use App\Models\Cliente;
 use App\Models\Dia;
-use App\Models\Notificacione;
 use App\Models\Reserva;
 use App\Models\User;
 use App\Models\Zona;
@@ -139,28 +139,30 @@ class ReservaController extends Controller
     public function delAdmin(Request $request)
     {
         try {
-            $request->validate(['id_reservation' => 'required|integer|exists:reservas,id']);
+            $request->validate([
+                'id_reservation' => 'required|integer|exists:reservas,id',
+                'notification' => 'required|boolean'
+            ]);
 
             $reserva = Reserva::find($request->id_reservation);
 
             if ($reserva) {
+                if ($request->notification) {
+                    $datos = Reserva::where('reservas.id', $request->id_reservation)
+                        ->join('zonas', 'reservas.zona_id', '=', 'zonas.id')
+                        ->join('clientes', 'reservas.cliente_id', '=', 'clientes.id')
+                        ->join('users', 'clientes.user_id', '=', 'users.id')
+                        ->join('dias', 'reservas.dia_id', '=', 'dias.id')
+                        ->join('centros', 'dias.centro_id', '=', 'centros.id')
+                        ->select('reservas.id', 'users.id as usuario_id', 'zonas.nombre as zona_nombre', 'dias.fecha as dia_fecha', 'centros.nombre as centro_nombre', 'centros.localidad as centro_localidad')
+                        ->first();
 
-                $datos = Reserva::where('reservas.id', $request->id_reservation)
-                ->join('zonas', 'reservas.zona_id', '=', 'zonas.id')
-                ->join('clientes', 'reservas.cliente_id', '=', 'clientes.id')
-                ->join('users', 'clientes.user_id', '=', 'users.id')
-                ->join('dias', 'reservas.dia_id', '=', 'dias.id')
-                ->join('centros', 'dias.centro_id', '=', 'centros.id')
-                ->select('reservas.id', 'users.id as usuario_id', 'zonas.nombre as zona_nombre', 'dias.fecha as dia_fecha', 'centros.nombre as centro_nombre', 'centros.localidad as centro_localidad')
-                ->first();
+                    $fechaFormateada = Carbon::parse($datos->dia_fecha)->format('d/m/Y');
 
-                $fechaFormateada = Carbon::parse($datos->dia_fecha)->format('d/m/Y');
+                    $mensaje = 'Se ha eliminado tu reserva de ' . $datos->zona_nombre . ' para el día ' . $fechaFormateada . ' en el centro ' . $datos->centro_nombre . ' (' . $datos->centro_localidad . ')';
 
-                $mensaje = 'Se ha eliminado tu reserva de ' . $datos->zona_nombre . ' para el día ' . $fechaFormateada . ' en el centro ' . $datos->centro_nombre .' (' . $datos->centro_localidad . ')';
-
-                NotificacioneController::enviarNotificacion($datos->usuario_id, $mensaje, 'admin.indexReservas');
-
-                return $datos;
+                    NotificacioneController::enviarNotificacion($datos->usuario_id, $mensaje);
+                }
                 $reserva->delete();
                 return redirect()->back()->with('msg', 'Reserva eliminada correctamente');
             } else {
@@ -210,6 +212,7 @@ class ReservaController extends Controller
                 'id' => 'required|integer|exists:reservas,id',
                 'dia' => 'required|integer|exists:dias,id',
                 'startHour' => 'required|date_format:H:i',
+                'notification' => 'required|boolean'
             ]);
 
             $reserva = Reserva::where('id', $request->id)->where('dia_id', $request->dia)->first();
@@ -225,15 +228,34 @@ class ReservaController extends Controller
             }
 
             $reserva->update(['hora_inicio' => $request->startHour, 'hora_fin' => $horaFin]);
-            return redirect(route('admin.formReservas', [$request->dia]))->with('msg', 'Cita modificada correctamente');
 
+            if ($request->notification) {
+                $datos = Reserva::where('reservas.id', $request->id)
+                    ->join('zonas', 'reservas.zona_id', '=', 'zonas.id')
+                    ->join('clientes', 'reservas.cliente_id', '=', 'clientes.id')
+                    ->join('users', 'clientes.user_id', '=', 'users.id')
+                    ->join('dias', 'reservas.dia_id', '=', 'dias.id')
+                    ->join('centros', 'dias.centro_id', '=', 'centros.id')
+                    ->select('reservas.id', 'users.id as usuario_id', 'zonas.nombre as zona_nombre', 'dias.fecha as dia_fecha', 'centros.nombre as centro_nombre', 'centros.localidad as centro_localidad')
+                    ->first();
+
+                $fechaFormateada = Carbon::parse($datos->dia_fecha)->format('d/m/Y');
+
+                $mensaje = 'Su reserva de ' . $datos->zona_nombre . ' para el día ' . $fechaFormateada . ' en ' . $datos->centro_nombre . ' (' . $datos->centro_localidad . ') ha sido modificada para las ' . $request->startHour;
+
+                NotificacioneController::enviarNotificacion($datos->usuario_id, $mensaje);
+            }
+
+
+            return redirect(route('admin.formReservas', [$request->dia]))->with('msg', 'Cita modificada correctamente');
         } catch (Exception $er) {
             return redirect(route('admin.indexReservas'))->withErrors('Error inesperado: ' . $er->getMessage());
         }
     }
 
     //Funcion para mostrar la tabla de reservas pasadas
-    public function listPastAdmin(){
+    public function listPastAdmin()
+    {
         try {
             $dias = Dia::select('dias.id', 'dias.fecha', 'centros.nombre as centro_nombre', 'centros.localidad as centro_localidad')
                 ->join('centros', 'dias.centro_id', '=', 'centros.id')
@@ -421,11 +443,37 @@ class ReservaController extends Controller
     public function delRespon(Request $request)
     {
         try {
-            $request->validate(['id_reservation' => 'required|integer|exists:reservas,id']);
+            $request->validate([
+                'id_reservation' => 'required|integer|exists:reservas,id',
+                'notification' => 'required|boolean'
+            ]);
 
             $reserva = Reserva::find($request->id_reservation);
 
             if ($reserva) {
+                if ($request->notification) {
+
+                    $datos = Reserva::where('reservas.id', $request->id_reservation)
+                        ->join('zonas', 'reservas.zona_id', '=', 'zonas.id')
+                        ->join('clientes', 'reservas.cliente_id', '=', 'clientes.id')
+                        ->join('users', 'clientes.user_id', '=', 'users.id')
+                        ->join('dias', 'reservas.dia_id', '=', 'dias.id')
+                        ->join('centros', 'dias.centro_id', '=', 'centros.id')
+                        ->select('reservas.id', 'users.id as usuario_id', 'zonas.nombre as zona_nombre', 'dias.fecha as dia_fecha', 'centros.nombre as centro_nombre', 'centros.localidad as centro_localidad')
+                        ->first();
+
+                    $fechaFormateada = Carbon::parse($datos->dia_fecha)->format('d/m/Y');
+
+                    $mensaje = 'Se ha eliminado tu reserva de ' . $datos->zona_nombre . ' para el día ' . $fechaFormateada . ' en el centro ' . $datos->centro_nombre . ' (' . $datos->centro_localidad . ')';
+
+                    NotificacioneController::enviarNotificacion($datos->usuario_id, $mensaje);
+
+                    $admin = Administradore::first()->select('user_id')->first();
+
+                    $mensajeAdmin = 'El responsable ha eliminado una reserva para el día ' . $fechaFormateada . ' en el centro ' . $datos->centro_nombre . ' (' . $datos->centro_localidad . ')';
+
+                    NotificacioneController::enviarNotificacion($admin->user_id, $mensajeAdmin);
+                }
                 $reserva->delete();
                 return redirect()->back()->with('msg', 'Reserva eliminada correctamente');
             } else {
@@ -444,8 +492,7 @@ class ReservaController extends Controller
             $centro_id = Auth::user()->responsable->centro_id;
 
             //Busca el dia seleccionado y si no lo encuentra redirije al index indicando el error
-            $dia = Dia::where()
-                ->where('dias.id', $id_dia)
+            $dia = Dia::where('dias.id', $id_dia)
                 ->where('centro_id', $centro_id)
                 ->first();
 
@@ -482,6 +529,7 @@ class ReservaController extends Controller
                 'id' => 'required|integer|exists:reservas,id',
                 'dia' => 'required|integer|exists:dias,id',
                 'startHour' => 'required|date_format:H:i',
+                'notification' => 'required|boolean'
             ]);
 
             $reserva = Reserva::where('id', $request->id)->where('dia_id', $request->dia)->first();
@@ -497,15 +545,39 @@ class ReservaController extends Controller
             }
 
             $reserva->update(['hora_inicio' => $request->startHour, 'hora_fin' => $horaFin]);
-            return redirect(route('respon.formReservas', [$request->dia]))->with('msg', 'Cita modificada correctamente');
 
+            if ($request->notification) {
+                $datos = Reserva::where('reservas.id', $request->id)
+                    ->join('zonas', 'reservas.zona_id', '=', 'zonas.id')
+                    ->join('clientes', 'reservas.cliente_id', '=', 'clientes.id')
+                    ->join('users', 'clientes.user_id', '=', 'users.id')
+                    ->join('dias', 'reservas.dia_id', '=', 'dias.id')
+                    ->join('centros', 'dias.centro_id', '=', 'centros.id')
+                    ->select('reservas.id', 'users.id as usuario_id', 'zonas.nombre as zona_nombre', 'dias.fecha as dia_fecha', 'centros.nombre as centro_nombre', 'centros.localidad as centro_localidad')
+                    ->first();
+
+                $fechaFormateada = Carbon::parse($datos->dia_fecha)->format('d/m/Y');
+
+                $mensaje = 'Su reserva de ' . $datos->zona_nombre . ' para el día ' . $fechaFormateada . ' en ' . $datos->centro_nombre . ' (' . $datos->centro_localidad . ') ha sido modificada para las ' . $request->startHour;
+
+                NotificacioneController::enviarNotificacion($datos->usuario_id, $mensaje);
+
+                $admin = Administradore::first()->select('user_id')->first();
+
+                $mensajeAdmin = 'El responsable ha modificado una reserva para el día ' . $fechaFormateada . ' en el centro ' . $datos->centro_nombre . ' (' . $datos->centro_localidad . ')';
+
+                NotificacioneController::enviarNotificacion($admin->user_id, $mensajeAdmin);
+            }
+
+            return redirect(route('respon.formReservas', [$request->dia]))->with('msg', 'Cita modificada correctamente');
         } catch (Exception $er) {
             return redirect(route('respon.indexReservas'))->withErrors('Error inesperado: ' . $er->getMessage());
         }
     }
 
     //Funcion para mostrar la tabla de reservas pasadas
-    public function listPastRespon(){
+    public function listPastRespon()
+    {
         try {
 
             $centro_id = Auth::user()->responsable->centro_id;

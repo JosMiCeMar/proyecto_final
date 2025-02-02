@@ -28,9 +28,9 @@ const linksList = [
         title: "Gestión reservas",
     },
     {
-        route: route("admin.ultimoMesInforme"),
+        route: route("admin.indexDias"),
         icon: mdiCalendarText,
-        title: "Inf. último mes",
+        title: "Días asignados",
     },
     {
         route: route("admin.indexCode"),

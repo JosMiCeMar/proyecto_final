@@ -77,6 +77,17 @@
                             class="mt-2"
                             :message="form.errors.startHour"
                         />
+                        <!--Checkbox de notificacion-->
+                        <div class="flex items-end justify-end mt-2">
+                            <Checkbox
+                                class="mx-1"
+                                id="cbNot"
+                                v-model:checked="form.notification"
+                                name="condicion"
+                            /><label for="cbNot" class="text-white text-xs"
+                                >Mandar notificación</label
+                            >
+                        </div>
                         <!-- Botón de Enviar -->
                         <div class="flex items-center justify-center mt-4">
                             <PrimaryButton
@@ -107,6 +118,7 @@ import ContentBox from "@/Components/dashboard_components/ContentBox.vue";
 import { Head, useForm } from "@inertiajs/vue3";
 import InputError from "@/Components/breeze_components/InputError.vue";
 import PrimaryButton from "@/Components/breeze_components/PrimaryButton.vue";
+import Checkbox from "@/Components/breeze_components/Checkbox.vue";
 import { incorrectForm, sendForm } from "@/Utils/alerts";
 import { formatHour } from "@/Utils/utilsFunctions";
 import { validateTimeInList } from "@/Utils/Validators/citas_validator";
@@ -144,6 +156,7 @@ const form = useForm({
     id: props.reserva.id,
     dia: props.dia.id,
     startHour: "",
+    notification:true
 });
 
 function validateForm() {

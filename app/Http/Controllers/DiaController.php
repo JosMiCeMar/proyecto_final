@@ -45,6 +45,12 @@ class DiaController extends Controller
             $fechaMinima = Carbon::now()->startOfDay()->format('Y-m-d');
             $fechaMaxima = Carbon::now()->addYear()->startOfDay()->format('Y-m-d');
 
+            // Validar que la fecha no sea sábado (6) ni domingo (0)
+            $diaSemana = Carbon::parse($fechaRecibida)->dayOfWeek;
+            if ($diaSemana === 6 || $diaSemana === 0) {
+                return redirect()->back()->withErrors('No se pueden asignar días de trabajo en sábados o domingos.');
+            }
+
             //Sobrescribe el valor de 'day' en el request
             $request->merge(['day' => $fechaRecibida]);
 
@@ -66,8 +72,8 @@ class DiaController extends Controller
 
                 if ($responsable) {
                     $fechaFormateada = Carbon::parse($dia->fecha)->format('d/m/Y');
-                    $mensaje = 'Se ha asigando el dia ' . $fechaFormateada . ' para trabajar en su centro';
-                    NotificacioneController::enviarNotificacion($responsable->user_id, $mensaje, 'index.adminDias');
+                    $mensaje = 'Se ha asignado el dia ' . $fechaFormateada . ' para trabajar en su centro';
+                    NotificacioneController::enviarNotificacion($responsable->user_id, $mensaje);
                 }
             }
 
@@ -120,7 +126,7 @@ class DiaController extends Controller
 
                     if ($responsableCentro) {
                         $msjRespon = 'El día asignado a fecha ' . $fechaFormateada . ' ha sido eliminado';
-                        NotificacioneController::enviarNotificacion($responsableCentro->user_id, $msjRespon, 'admin.listDias');
+                        NotificacioneController::enviarNotificacion($responsableCentro->user_id, $msjRespon);
                     }
 
                     $nombreCentro = Centro::select('nombre', 'localidad')->where('id', $dia->centro_id)->first();
@@ -136,7 +142,7 @@ class DiaController extends Controller
                     if ($clientesAfectados->count() > 0) {
                         $msjClientes = 'El día ' . $fechaFormateada . ' donde tenía una reserva en ' . $nombreCentro->nombre . ' (' . $nombreCentro->localidad . '), ha sido eliminado.';
                         foreach ($clientesAfectados as $cliente) {
-                            NotificacioneController::enviarNotificacion($cliente->id, $msjClientes, 'admin.listDias');
+                            NotificacioneController::enviarNotificacion($cliente->id, $msjClientes);
                         }
                     }
                 }
@@ -187,6 +193,12 @@ class DiaController extends Controller
             $fechaMinima = Carbon::now()->addDay()->startOfDay()->format('Y/m/d');
             $fechaMaxima = Carbon::now()->addYear()->startOfDay()->format('Y/m/d');
 
+            // Validar que la fecha no sea sábado (6) ni domingo (0)
+            $diaSemana = Carbon::parse($fechaRecibida)->dayOfWeek;
+            if ($diaSemana === 6 || $diaSemana === 0) {
+                return redirect()->back()->withErrors('No se pueden asignar días de trabajo en sábados o domingos.');
+            }
+
             //Se sobrescribe el valor de 'day' en el request
             $request->merge(['day' => $fechaRecibida]);
 
@@ -216,7 +228,7 @@ class DiaController extends Controller
 
                     if ($responsableCentro) {
                         $msjRespon = 'El día asignado para el ' . $fechaAntiguaFormateada . ' ha sido modificado para la fecha ' . $fechaFormateada;
-                        NotificacioneController::enviarNotificacion($responsableCentro->user_id, $msjRespon, 'admin.listDias');
+                        NotificacioneController::enviarNotificacion($responsableCentro->user_id, $msjRespon);
                     }
 
                     $nombreCentro = Centro::select('nombre', 'localidad')->where('id', $dia->centro_id)->first();
@@ -230,12 +242,11 @@ class DiaController extends Controller
                         ->get();
 
                     if ($clientesAfectados->count() > 0) {
-                        $msjClientes = 'El día ' . $fechaAntiguaFormateada . ' donde tenía una reserva en ' . $nombreCentro->nombre . ' (' . $nombreCentro->localidad . '), ha sido modificado para la fecha '.$fechaFormateada;
+                        $msjClientes = 'El día ' . $fechaAntiguaFormateada . ' donde tenía una reserva en ' . $nombreCentro->nombre . ' (' . $nombreCentro->localidad . '), ha sido modificado para la fecha ' . $fechaFormateada;
                         foreach ($clientesAfectados as $cliente) {
-                            NotificacioneController::enviarNotificacion($cliente->id, $msjClientes, 'admin.listDias');
+                            NotificacioneController::enviarNotificacion($cliente->id, $msjClientes);
                         }
                     }
-
                 }
 
                 return redirect(route('admin.listDias'))->with('msg', 'Día modificado correctamente');
