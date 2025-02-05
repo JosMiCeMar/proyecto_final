@@ -1,5 +1,5 @@
 <template>
-    <h1 class="font-monserrat text-center texto-degradado uppercase font-bold text-3xl sm:mt-2 mt-4">
+    <h1 class="font-monserrat text-center texto-degradado uppercase font-bold text-3xl sm:mt-2 mt-4 pt-8">
        {{ value }}
     </h1>
     <p v-if="subText" class="font-monserrat text-lg font-bold text-skyblue-dark text-center">

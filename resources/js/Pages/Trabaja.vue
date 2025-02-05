@@ -2,6 +2,7 @@
     <Base :titulo="titulo">
       <img class="w-full h-auto hidden md:block" src="img/recursos/impulsa.jpg" alt="impulsa tu negocio" />
       <MainBox>
+        <SectionDivisor />
         <Title
           value="la explotación compartida"
           subText="Toda la información sobre la explotación compartida de Mímate"
@@ -11,7 +12,8 @@
           <section
             :ref="el => (sectionRefs[index] = el)"
             :class="[
-            'my-8 ml-8 text-lavender-dark transition-all duration-700 ease-out transform',
+            'p-4 text-white my-4 transition-all duration-700 ease-out transform rounded-md shadow-md',
+            index % 2 === 0 ? 'bg-gradient-to-b from-skyblue-dark from-80% to-skyblue-logo mr-20 ml-4' : 'bg-gradient-to-b from-lavender-dark from-75% to-lavender-logo ml-20 mr-4',
             {
               'opacity-100 scale-100 blur-0 translate-y-0': visibleSections[index],
               'opacity-0 scale-90 blur-md translate-y-10': !visibleSections[index]
@@ -21,7 +23,6 @@
             <h2 class="text-xl uppercase font-bold mb-4">{{ section.title }}</h2>
             <div v-html="section.content"></div>
           </section>
-          <SectionDivisor />
         </div>
       </MainBox>
     </Base>
@@ -82,9 +83,6 @@
       content: `<p class="leading-relaxed text-lg">
                   Si estás interesado en saber más sobre nuestro servicio de depilación láser en explotación compartida, no dudes en
                   contactarnos. Nuestro equipo está listo para responder a todas tus preguntas y ayudarte a comenzar.
-                </p>
-                <p class="mt-4 leading-relaxed font-bold">
-                  Datos de contacto: Teléfono, Email, Dirección, Redes Sociales
                 </p>`
     }
   ];
