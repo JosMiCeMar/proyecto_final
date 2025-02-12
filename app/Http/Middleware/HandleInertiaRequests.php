@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
-use App\Traits\TipoUsuario;
+use App\Helpers\TipoUsuario;
 
 class HandleInertiaRequests extends Middleware
 {

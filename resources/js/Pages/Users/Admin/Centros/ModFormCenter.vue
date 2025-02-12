@@ -118,16 +118,30 @@
                     </div>
 
                     <!-- Localización -->
-                    <div class="mt-4">
+                    <div class="mt-2">
                         <InputLabel for="location">
                             <div class="flex justify-between items-end">
                                 <span>Localización</span>
-                                <button
-                                    @click.prevent="cleanLocationFormat"
-                                    class="bg-lime-700 rounded-md shadow-md hover:bg-lime-500 fill-white p-1"
-                                >
-                                    <IconMdi :icon="mdiAutoFix" :size="28" />
-                                </button>
+                                <div class="relative inline-block">
+                                    <button
+                                        @click.prevent="cleanLocationFormat"
+                                        @mouseenter="showTooltip = true"
+                                        @mouseleave="showTooltip = false"
+                                        class="bg-lime-700 rounded-md shadow-md hover:bg-lime-500 fill-white p-1"
+                                    >
+                                        <IconMdi
+                                            :icon="mdiAutoFix"
+                                            :size="28"
+                                        />
+                                    </button>
+                                    <!--Mensaje de ayuda-->
+                                    <div
+                                        v-if="showTooltip"
+                                        class="absolute right-0 bottom-full mb-2 w-max px-3 py-1 bg-lavender-dark text-white text-sm rounded-lg shadow-md border border-skyblue-logo"
+                                    >
+                                        Pulsar para limpiar formato de Google maps
+                                    </div>
+                                </div>
                             </div>
                         </InputLabel>
                         <TextInput
@@ -181,9 +195,11 @@ import {
     validatePropInList,
 } from "@/Utils/Validators/center_validator";
 import SelectInput from "@/Components/breeze_components/SelectInput.vue";
-import { onMounted, computed } from "vue";
+import { onMounted, computed, ref } from "vue";
 import IconMdi from "@/Components/IconMdi.vue";
 import { mdiAutoFix } from "@mdi/js";
+
+const showTooltip = ref(false);
 
 const props = defineProps({
     datos: {

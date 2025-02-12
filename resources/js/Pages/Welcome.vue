@@ -20,7 +20,7 @@
                 :is-text-left="false"
                 :title="'Piensa en tí, mímate'"
                 :image-alt="'imagen laser'"
-                :route="'img/recursos/ej.jpg'"
+                :route="'img/recursos/ini1.jpg'"
             >
                 <ul class="my-4 flex flex-col gap-2">
                     <li>
@@ -55,7 +55,7 @@
             <TextAndImageBox
                 :title="'Olvídate del dolor'"
                 :image-alt="'imagen laser'"
-                :route="'img/recursos/ej.jpg'"
+                :route="'img/recursos/ini2.jpg'"
             >
                 <ul class="my-4">
                     <li class="flex items-start gap-2 mb-2">

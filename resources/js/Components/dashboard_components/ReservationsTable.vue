@@ -1,7 +1,7 @@
 <template>
     <form @submit.prevent="submit">
         <!--Checkbox de notificacion-->
-        <div class="flex items-center justify-start mt-4">
+        <div v-if="props.editable" class="flex items-center justify-start mt-4">
             <Checkbox
                 class="mx-1"
                 id="cbNot"

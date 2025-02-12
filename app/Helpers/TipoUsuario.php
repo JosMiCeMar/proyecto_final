@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits;
+namespace App\Helpers;
 
 use App\Models\Administradore;
 use App\Models\Cliente;

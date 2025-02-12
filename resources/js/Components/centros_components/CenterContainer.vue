@@ -1,16 +1,16 @@
 <template>
-    <section class="mt-5">
-    <section
+    <section class="mt-5 flex flex-col justify-center w-full items-center gap-10 pt-4 pb-10 px-5">
+    <article
         v-for="(group, province) in groupedCentros"
         :key="province"
+        class="flex flex-col w-full bg-gradient-to-tr from-lavender-dark to-skyblue-dark p-5 rounded-md shadow-md"
     >
         <h2
-            class="text-center text-2xl uppercase font-bold mt-3 texto-degradado"
+            class="text-center text-3xl uppercase mb-3 text-white border-b-2 border-white"
         >
             {{ province }}
         </h2>
-        <SectionDivisor/>
-        <div class="flex flex-wrap gap-10 m-7 justify-around">
+        <div class="flex flex-wrap gap-10 justify-around">
             <CenterCard
                 v-for="centro in group"
                 :key="centro.nombre"
@@ -24,14 +24,14 @@
                 :web="centro.web"
             />
         </div>
-    </section>
+    </article>
 </section>
 </template>
 
 <script setup>
 import CenterCard from "@/Components/centros_components/CenterCard.vue";
 import { computed } from "vue";
-import SectionDivisor from "../public_components/SectionDivisor.vue";
+
 
 const props = defineProps({
     centros: {

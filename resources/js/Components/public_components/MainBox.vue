@@ -7,7 +7,7 @@ import SectionDivisor from './SectionDivisor.vue';
     <div
         class="shadow-sm bg-gradient-to-t from-skyblue-vlight to-lightyellow"
     >
-        <div class="w-full h-full textura_fondo rounded-lg">
+        <div class="w-full h-full textura_fondo">
             <div>
                 <slot />
             </div>
