@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\CodRegistro;
 use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+ * Controlador de los códigos de registro
+ */
 class CodRegistroController extends Controller
 {
     //Constante para definir el tamaño del código
@@ -18,7 +22,12 @@ class CodRegistroController extends Controller
     private const MAX_CODIGOS_RESPONSABLE = 10;
 
     //-----------------FUNCIONES PARA EL REGISTRO DE USUARIOS----------------------
-    public function insertCode()
+    
+    /**
+     * Vista para insertar el código de registro
+     * @return Response|RedirectResponse Vista para insertar el código de registro
+     */
+    public function insertCode(): Response|RedirectResponse
     {
         if (session()->has('cod') && session()->has('client')) {
             if (session()->get('client')) {
@@ -30,7 +39,12 @@ class CodRegistroController extends Controller
         return Inertia::render('Auth/InsertCode');
     }
 
-    public function checkCode(Request $request)
+    /**
+     * Comprueba si el código introducido es válido
+     * @param Request $request Datos del formulario
+     * @return RedirectResponse Redirección a la vista de registro de cliente o responsable
+     */
+    public function checkCode(Request $request): RedirectResponse
     {
         try {
             $codigoRecibido = $request->validate([
@@ -56,14 +70,20 @@ class CodRegistroController extends Controller
     }
 
     //-------------------FUNCIONES PARA ADMNISTRADOR-------------------------
-    //Menu de gestion del administrador
-    public function indexCodeAdmin()
+    /**
+     * Vista del index de códigos de registro para el administrador
+     * @return Response Vista del index de códigos de registro
+     */
+    public function indexCodeAdmin(): Response
     {
         return Inertia::render('Users/Admin/RegCode/Index');
     }
 
-    //Lista de codigos para el administrador
-    public function listCodeAdmin()
+    /**
+     * Listado de códigos de registro para el administrador
+     * @return Response|RedirectResponse Vista del listado de códigos de registro
+     */
+    public function listCodeAdmin(): Response|RedirectResponse
     {
         try {
             $usados = CodRegistro::where('usado', true)->exists();
@@ -80,8 +100,12 @@ class CodRegistroController extends Controller
         }
     }
 
-    //Funcion para eliminar codigos del administrador
-    public function deleteCodeAdmin(Request $request)
+    /**
+     * Elimina un código de registro
+     * @param Request $request Datos del formulario
+     * @return RedirectResponse Redirección a la vista de códigos de registro
+     */
+    public function deleteCodeAdmin(Request $request): RedirectResponse
     {
         try {
             $request->validate(['id' => 'required|integer']);
@@ -101,14 +125,21 @@ class CodRegistroController extends Controller
         }
     }
 
-    //Vista del generador de codigos para el administrador
-    public function genCodeAdmin()
+    /**
+     * Vista para generar un código de registro
+     * @return Response Vista para generar un código de registro
+     */
+    public function genCodeAdmin(): Response
     {
         return Inertia::render('Users/Admin/RegCode/GenCode');
     }
 
-    //Vista del codigo generado por el administrador
-    public function showCodeAdmin(Request $request)
+    /**
+     * Genera un código de registro
+     * @param Request $request Datos del formulario
+     * @return Response|RedirectResponse Vista del código de registro
+     */
+    public function showCodeAdmin(Request $request): Response|RedirectResponse
     {
         try {
             // Validación de la entrada
@@ -138,17 +169,30 @@ class CodRegistroController extends Controller
     }
 
     //-------------------FUNCIONES PARA RESPONSABLES-------------------------
-    public function indexCodeRespon()
+    
+    /**
+     * Vista del index de códigos de registro para el responsable
+     * @return Response Vista del index de códigos de registro
+     */
+    public function indexCodeRespon(): Response
     {
         return Inertia::render('Users/Responsable/RegCode/Index');
     }
 
-    public function createCodeRespon()
+    /**
+     * Vista para generar un código de registro para el responsable
+     * @return Response Vista para generar un código de registro
+     */
+    public function createCodeRespon(): Response
     {
         return Inertia::render('Users/Responsable/RegCode/GenCode');
     }
 
-    public function storeCodeRespon()
+    /**
+     * Genera un código de registro para el responsable
+     * @return Response|RedirectResponse Vista del código de registro
+     */
+    public function storeCodeRespon(): Response|RedirectResponse
     {
         try {
             //Comprueba si el responsable autenticado ha generado la cantidad maxima de codigos
@@ -179,7 +223,11 @@ class CodRegistroController extends Controller
         }
     }
 
-    public function listCodeRespon()
+    /**
+     * Listado de códigos de registro para el responsable
+     * @return Response Vista del listado de códigos de registro
+     */
+    public function listCodeRespon(): Response
     {
         try {
             $codigos=CodRegistro::where('id_creador', Auth::id())->get();
@@ -192,7 +240,10 @@ class CodRegistroController extends Controller
 
 
     //-------------------FUNCIONES PRIVADAS-------------------------
-    //Funcion estatica para generar el codigo aleatorio
+    /**
+     * Crea un código de registro
+     * @return string Código de registro
+     */
     private static function crearCodigo()
     {
         $caracteres = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';

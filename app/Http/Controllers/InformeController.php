@@ -13,20 +13,34 @@ use App\Models\Reserva;
 use App\Models\Responsable;
 use App\Models\Zona;
 use Exception;
-use Illuminate\Support\Facades\DB;
+use Illuminate\Http\RedirectResponse;
+use Inertia\Response;
 
+/**
+ * Controlador de los informes
+ */
 class InformeController extends Controller
 {
-
+    // Fecha mínima para la generación de informes
     private const FECHA_MINIMA_INFORME = "2015-1-1";
 
+
     //---------CONTROLADORES ADMINISTRADOR------------
-    public function adminIndexInforme()
+   
+    /**
+     * Vista del index de informes para el administrador
+     * @return Response
+     */
+    public function adminIndexInforme(): Response
     {
         return Inertia::render('Users/Admin/Informes/Index');
     }
 
-    public function adminInformeUltimoMes()
+    /**
+     * Vista del informe del último mes para el administrador
+     * @return Response|RedirectResponse
+     */
+    public function adminInformeUltimoMes(): Response|RedirectResponse
     {
         try {
             // Obtener la fecha actual, primer y último día del mes, nombre del mes y año del mes anterior
@@ -51,16 +65,17 @@ class InformeController extends Controller
                 ->where('dias.fecha', '<=', $ultimoDiaMesAnterior)
                 ->get();
 
-
-
-
             return Inertia::render('Users/Admin/Informes/LastMonthReport', ['mes' => $mes, 'anio' => $anio, 'tratamientos' => $tratamientos]);
         } catch (Exception $er) {
             return redirect()->route('admin.indexInforme')->withErrors('Error inesperado: ' . $er->getMessage());
         }
     }
 
-    public function adminInformeGeneral()
+    /**
+     * Vista del informe general para el administrador
+     * @return Response|RedirectResponse
+     */
+    public function adminInformeGeneral(): Response|RedirectResponse
     {
         try {
             // Obtener la fecha actual
@@ -80,16 +95,17 @@ class InformeController extends Controller
                 ->where('dias.fecha', '<', $hoy)
                 ->get();
 
-
-
-
             return Inertia::render('Users/Admin/Informes/GeneralReport', ['tratamientos' => $tratamientos]);
         } catch (Exception $er) {
             return redirect()->route('admin.indexInforme')->withErrors('Error inesperado: ' . $er->getMessage());
         }
     }
 
-    public function adminFormularioPersonalizado()
+    /**
+     * Vista del formulario de informe personalizado para el administrador
+     * @return Response|RedirectResponse
+     */
+    public function adminFormularioPersonalizado(): Response|RedirectResponse
     {
         try {
 
@@ -109,7 +125,12 @@ class InformeController extends Controller
         }
     }
 
-    public function adminInformePersonalizado(Request $request)
+    /**
+     * Vista del informe personalizado para el administrador
+     * @param Request $request Datos del formulario
+     * @return Response|RedirectResponse
+     */
+    public function adminInformePersonalizado(Request $request): Response|RedirectResponse
     {
         try {
             $fechaMinima = Carbon::create(self::FECHA_MINIMA_INFORME)->startOfDay()->format('Y-m-d');;
@@ -149,13 +170,22 @@ class InformeController extends Controller
         }
     }
 
+
     //---------CONTROLADORES RESPONSABLE------------
-    public function responIndexInforme()
+    /**
+     * Vista del index de informes para el responsable
+     * @return Response
+     */
+    public function responIndexInforme(): Response
     {
         return Inertia::render('Users/Responsable/Informes/Index');
     }
 
-    public function responInformeUltimoMes()
+    /**
+     * Vista del informe del último mes para el responsable
+     * @return Response|RedirectResponse
+     */
+    public function responInformeUltimoMes(): Response|RedirectResponse
     {
         try {
             //Obtener el id del centro asociado del responsable
@@ -164,7 +194,6 @@ class InformeController extends Controller
             if (!$id_centro) {
                 return redirect()->route('respon.indexInforme')->withErrors('No se encontró el identificador del centro');
             }
-
 
             // Obtener la fecha actual, primer y último día del mes, nombre del mes y año del mes anterior
             $hoy = Carbon::now();
@@ -193,7 +222,11 @@ class InformeController extends Controller
         }
     }
 
-    public function responInformeGeneral()
+    /**
+     * Vista del informe general para el responsable
+     * @return Response|RedirectResponse
+     */
+    public function responInformeGeneral(): Response|RedirectResponse
     {
         try {
             //Obtener el id del centro asociado del responsable
@@ -227,7 +260,11 @@ class InformeController extends Controller
         }
     }
 
-    public function responFormularioPersonalizado()
+    /**
+     * Vista del formulario de informe personalizado para el responsable
+     * @return Response|RedirectResponse
+     */
+    public function responFormularioPersonalizado(): Response|RedirectResponse
     {
         try {
             $zonas = Zona::select("id", "nombre")->where('active', '1')->orderBy("nombre")->get();
@@ -241,7 +278,12 @@ class InformeController extends Controller
         }
     }
 
-    public function responInformePersonalizado(Request $request)
+    /**
+     * Vista del informe personalizado para el responsable
+     * @param Request $request Datos del formulario
+     * @return Response|RedirectResponse
+     */
+    public function responInformePersonalizado(Request $request): Response|RedirectResponse
     {
         try {
              //Obtener el id del centro asociado del responsable
@@ -288,12 +330,21 @@ class InformeController extends Controller
 
 
     //---------CONTROLADORES CLIENTE------------
-    public function clienteIndexTratamientos()
+
+    /**
+     * Vista del index de informes para el cliente
+     * @return Response
+     */
+    public function clienteIndexTratamientos(): Response
     {
         return Inertia::render('Users/Client/Tratamientos/Index');
     }
 
-    public function clienteUltimosTratamientos()
+    /**
+     * Vista de los últimos 5 tratamientos para el cliente
+     * @return Response|RedirectResponse
+     */
+    public function clienteUltimosTratamientos(): Response|RedirectResponse
     {
         try {
             $hoy = Carbon::today();
@@ -332,7 +383,11 @@ class InformeController extends Controller
         }
     }
 
-    public function clienteInformeTratamientos()
+    /**
+     * Vista de todos los tratamientos para el cliente
+     * @return Response|RedirectResponse
+     */
+    public function clienteInformeTratamientos(): Response|RedirectResponse
     {
         try {
             $hoy = Carbon::today();
@@ -363,14 +418,17 @@ class InformeController extends Controller
                 return redirect()->route('client.indexTratamientos')->withErrors('No se encontró ningún tratamiento');
             }
 
-
             return Inertia::render('Users/Client/Tratamientos/ReportsTreatment', ['tratamientos' => $tratamientos]);
         } catch (Exception $er) {
             return redirect()->route('client.indexTratamientos')->withErrors('Error inesperado: ' . $er->getMessage());
         }
     }
 
-    public function clienteFormularioPersonalizado()
+    /**
+     * Vista del formulario de informe personalizado para el cliente
+     * @return Response|RedirectResponse
+     */
+    public function clienteFormularioPersonalizado(): Response|RedirectResponse
     {
         try {
 
@@ -384,15 +442,18 @@ class InformeController extends Controller
                 return redirect(route('client.indexTratamientos'))->withErrors('Error: No se encontraron centros asociados en la bbdd.');
             }
 
-
-
             return Inertia::render('Users/Client/Tratamientos/FormCustomReport', ['zonas' => $zonas, 'centros' => $centros]);
         } catch (Exception $er) {
             return redirect(route('client.indexTratamientos'))->withErrors('Error inesperado: ' . $er->getMessage());
         }
     }
 
-    public function clienteInformePersonalizado(Request $request)
+    /**
+     * Vista del informe personalizado para el cliente
+     * @param Request $request Datos del formulario
+     * @return Response|RedirectResponse
+     */
+    public function clienteInformePersonalizado(Request $request): Response|RedirectResponse
     {
         try {
             $fechaMinima = Carbon::create(self::FECHA_MINIMA_INFORME)->startOfDay()->format('Y-m-d');;

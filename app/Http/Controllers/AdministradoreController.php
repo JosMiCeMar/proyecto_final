@@ -10,11 +10,16 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 
-
+/**
+ * Controlador de administradores
+ */
 class AdministradoreController extends Controller
 {
-    //
-
+    /**
+     * Vista del editor de perfil de un administrador
+     * @param Request $request Datos de la petición
+     * @return Response Vista del perfil de un administrador
+     */
     public function edit(Request $request): Response
     {
         return Inertia::render('Profile/EditAdmin', [
@@ -23,6 +28,11 @@ class AdministradoreController extends Controller
         ]);
     }
 
+    /**
+     * Actualización de los datos de un administrador
+     * @param ProfileUpdateRequest $request Datos del formulario
+     * @return RedirectResponse Redirección a la vista de edición de perfil
+     */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $request->validate([

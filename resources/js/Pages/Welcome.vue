@@ -6,8 +6,8 @@
             :wrap-around="true"
         >
             <Slide v-for="slide in carouselImages" :key="slide">
-                <div class="carousel__item">
-                    <img :src="slide" alt="carousel_image" />
+                <div class="flex justify-center items-center w-full h-full">
+                    <img :src="slide" alt="carousel_image" class="w-full h-auto object-cover" />
                 </div>
             </Slide>
             <template #addons>

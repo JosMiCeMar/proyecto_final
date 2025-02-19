@@ -14,10 +14,18 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+ * Controlador de perfil
+ */
 class ProfileController extends Controller
 {
 
-    public function dashboard(){
+    /**
+     * Vista del dashboard
+     * @return Response Vista del dashboard
+     */
+    public function dashboard(): Response
+    {
         try{
              
             $notificaciones = Notificacione::where('user_id_dest', Auth::id())
@@ -36,7 +44,9 @@ class ProfileController extends Controller
     }
 
     /**
-     * Display the user's profile form.
+     * Vista de edición de perfil
+     * @param Request $request Datos de la petición
+     * @return Response Vista de edición de perfil
      */
     public function edit(Request $request): Response
     {
@@ -48,7 +58,9 @@ class ProfileController extends Controller
     }
 
     /**
-     * Update the user's profile information.
+     * Actualización de los datos de un perfil
+     * @param ProfileUpdateRequest $request Datos del formulario
+     * @return RedirectResponse Redirección a la vista de edición de perfil
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
@@ -64,7 +76,9 @@ class ProfileController extends Controller
     }
 
     /**
-     * Delete the user's account.
+     * Eliminación de un perfil
+     * @param Request $request Datos de la petición
+     * @return RedirectResponse Redirección a la página principal
      */
     public function destroy(Request $request): RedirectResponse
     {

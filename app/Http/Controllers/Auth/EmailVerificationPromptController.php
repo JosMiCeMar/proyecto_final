@@ -11,7 +11,14 @@ use Inertia\Response;
 class EmailVerificationPromptController extends Controller
 {
     /**
-     * Display the email verification prompt.
+     * Muestra el mensaje de verificación de correo electrónico o redirige al usuario a su destino original.
+     *
+     * Este método verifica si el usuario ha verificado su correo electrónico. Si es así, se le redirige a la página
+     * de destino que había solicitado previamente. Si no ha verificado su correo, se le muestra una vista de
+     * verificación de correo electrónico.
+     *
+     * @param Request $request La solicitud HTTP que contiene al usuario autenticado.
+     * @return RedirectResponse|Response
      */
     public function __invoke(Request $request): RedirectResponse|Response
     {

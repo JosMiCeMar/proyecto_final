@@ -5,14 +5,21 @@ namespace App\Http\Controllers;
 use App\Models\Notificacione;
 use App\Models\User;
 use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
+/**
+ * Controlador de las notificaciones
+ */
 class NotificacioneController extends Controller
 {
 
-    //Funcion para eliminar las notificaciones
-    public function eliminarNotificaciones(Request $request)
+    /**
+     * Vista de las notificaciones
+     * @return RedirectResponse
+     */
+    public function eliminarNotificaciones(Request $request): RedirectResponse
     {
         try {
 
@@ -36,7 +43,11 @@ class NotificacioneController extends Controller
         }
     }
 
-    // Funcion para enviar notificaciones con texto personalizado
+    /**
+     * Enviar notificación a un usuario
+     * @param int $userId Id del usuario
+     * @param string $mensaje Mensaje de la notificación
+     */
     public static function enviarNotificacion($userId, $mensaje)
     {
         $destinatario = User::find($userId);

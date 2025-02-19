@@ -18,18 +18,30 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ProfileUpdateRequest;
 
+/**
+ * Controlador de los clientes
+ */
 class ClienteController extends Controller
 {
+    //Constantes para la edades mínima y máxima
     private const EDAD_MINIMA = 13;
     private const EDAD_MAXIMA = 120;
 
-
-    public function create()
+    /**
+     * Vista de creación de un nuevo cliente
+     * @return Response Vista de creación de un nuevo cliente
+     */
+    public function create(): Response
     {
         return Inertia::render('Auth/ClientRegister', ['cod', session()->get('cod')]);
     }
 
-    public function store(Request $request)
+    /**
+     * Almacenamiento de un nuevo cliente
+     * @param Request $request Datos del formulario
+     * @return RedirectResponse Redirección a la vista de inicio de sesión
+     */
+    public function store(Request $request): RedirectResponse
     {
 
         $edadMinima = Carbon::now()->subYear(self::EDAD_MINIMA)->startOfDay()->format('Y-m-d');
@@ -78,6 +90,11 @@ class ClienteController extends Controller
         return redirect(route('dashboard'));
     }
 
+    /**
+     * Vista de edición de perfil de un cliente
+     * @param Request $request Datos de la petición
+     * @return Response Vista de edición de perfil de un cliente
+     */
     public function edit(Request $request): Response
     {
         return Inertia::render('Profile/EditClient', [
@@ -86,6 +103,11 @@ class ClienteController extends Controller
         ]);
     }
 
+    /**
+     * Actualización de los datos de un cliente
+     * @param ProfileUpdateRequest $request Datos del formulario
+     * @return RedirectResponse Redirección a la vista de edición de perfil
+     */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $edadMinima = Carbon::today()->subYear(self::EDAD_MINIMA)->startOfDay()->format('Y-m-d');

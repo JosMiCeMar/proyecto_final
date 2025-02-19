@@ -16,19 +16,34 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Redirect;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Centro;
+use Inertia\Response;
+
+/**
+ * Controlador de los responsables de los centros
+ */
 
 class ResponsableController extends Controller
 {
-    public function create()
+    /**
+     * Muestra el formulario de registro de un responsable
+     *
+     * @return Response
+     */
+    public function create(): Response
     {
         $centros = CentroController::centrosSinResponsable();
 
         return Inertia::render('Auth/RespRegister', ['centers' => $centros]);
     }
 
-    public function store(Request $request)
+    /**
+     * Almacena un responsable en la base de datos
+     *
+     * @param Request $request
+     * @return RedirectResponse
+     */
+    public function store(Request $request): RedirectResponse
     {
-
         $request->validate([
             'name' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
@@ -65,7 +80,13 @@ class ResponsableController extends Controller
         return redirect(route('dashboard'));
     }
 
-    public function edit(Request $request)//: Response
+    /**
+     * Muestra el editor de perfil del responsable
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function edit(Request $request): Response
     {
         $centros = CentroController::centrosSinResponsable();
 
@@ -82,6 +103,12 @@ class ResponsableController extends Controller
         ]);
     }
 
+    /**
+     * Actualiza los datos del responsable
+     *
+     * @param ProfileUpdateRequest $request
+     * @return RedirectResponse
+     */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $request->validate([

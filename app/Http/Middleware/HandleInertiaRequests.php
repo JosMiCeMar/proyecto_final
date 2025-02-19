@@ -12,14 +12,14 @@ class HandleInertiaRequests extends Middleware
     use TipoUsuario;
 
     /**
-     * The root template that is loaded on the first page visit.
+     * La plantilla raíz que se carga en la primera visita a la página.
      *
      * @var string
      */
     protected $rootView = 'app';
 
     /**
-     * Determine the current asset version.
+     * Determina la versión actual de los archivos de activos.
      */
     public function version(Request $request): string|null
     {
@@ -27,7 +27,7 @@ class HandleInertiaRequests extends Middleware
     }
 
     /**
-     * Define the props that are shared by default.
+     * Define las propiedades que se comparten por defecto.
      *
      * @return array<string, mixed>
      */

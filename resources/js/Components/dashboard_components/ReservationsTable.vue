@@ -11,12 +11,12 @@
                 >Mandar notificación al eliminar</label
             >
         </div>
-        <div class="flex flex-col md:flex-row justify-center gap-8 py-2">
+        <div class="flex flex-col md:flex-row justify-center gap-8 py-2 text-sm sm:text-md">
             <!-- Tabla de la mañana -->
             <div class="flex w-full">
                 <table class="w-full text-center h-fit">
                     <thead
-                        class="bg-gradient-to-t from-lavender-dark to-skyblue-dark text-white"
+                        class="bg-gradient-to-t from-lavender-dark to-skyblue-dark text-white text-xs sm:text-md"
                     >
                         <tr>
                             <td
@@ -124,7 +124,7 @@
                 </table>
             </div>
             <!-- Tabla de la tarde -->
-            <div class="flex w-full h-fit">
+            <div class="flex w-full h-fit text-sm sm:text-md">
                 <table class="w-full text-center">
                     <thead
                         class="bg-gradient-to-t from-lavender-dark to-skyblue-dark text-white"

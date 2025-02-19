@@ -7,20 +7,31 @@ use App\Models\Dia;
 use App\Models\Reserva;
 use App\Models\Responsable;
 use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Inertia\Inertia;
+use Inertia\Response;
 
+/**
+ * Controlador de los días asignados
+ */
 class DiaController extends Controller
 {
-    //Vista para el menu de gestion
-    public function index()
+    /**
+     * Vista del index de los días asignados
+     * @return Response
+     */
+    public function index(): Response
     {
         return Inertia::render('Users/Admin/Dias/Index');
     }
 
-    //Vista del formulario de asignacion de dia
-    public function create()
+    /**
+     * Vista del formulario de creación de un nuevo día asignado
+     * @return Response|RedirectResponse
+     */
+    public function create(): Response|RedirectResponse
     {
         try {
             //Centros disponibles
@@ -34,8 +45,12 @@ class DiaController extends Controller
         }
     }
 
-    //Validacion y asignacion del dia
-    public function store(Request $request)
+    /**
+     * Almacenamiento de un nuevo día asignado
+     * @param Request $request Datos del formulario
+     * @return RedirectResponse Redirección a la vista de días asignados
+     */
+    public function store(Request $request): RedirectResponse
     {
         try {
             //Fecha recibida al formato yyyy/MM/dd en la zona horaria del servidor
@@ -45,9 +60,9 @@ class DiaController extends Controller
             $fechaMinima = Carbon::now()->startOfDay()->format('Y-m-d');
             $fechaMaxima = Carbon::now()->addYear()->startOfDay()->format('Y-m-d');
 
-            // Validar que la fecha no sea sábado (6) ni domingo (0)
+            // Validar que la fecha no sea sábado ni domingo (Constantes de Carbon)
             $diaSemana = Carbon::parse($fechaRecibida)->dayOfWeek;
-            if ($diaSemana === 6 || $diaSemana === 0) {
+            if ($diaSemana === Carbon::SATURDAY || $diaSemana === Carbon::SUNDAY) {
                 return redirect()->back()->withErrors('No se pueden asignar días de trabajo en sábados o domingos.');
             }
 
@@ -65,6 +80,7 @@ class DiaController extends Controller
             $dia->fecha = $request->day;
             $dia->save();
 
+            //Lógica para el envío de notificaciones
             if ($request->notification) {
                 $responsable = Responsable::where('centro_id', $dia->centro_id)
                     ->select('user_id')
@@ -84,8 +100,11 @@ class DiaController extends Controller
         }
     }
 
-    //Vista de los dias asignados
-    public function list()
+    /**
+     * Vista de la tabla de días asignados
+     * @return Response|RedirectResponse Vista de la tabla de días asignados o redirección a la vista de días asignados con error
+     */
+    public function list(): Response|RedirectResponse
     {
         try {
             $hoy = Carbon::today();
@@ -102,7 +121,11 @@ class DiaController extends Controller
         }
     }
 
-    //Vista de formulario de modificación de dias
+    /**
+     * Eliminación de un día asignado
+     * @param Request $request Datos del formulario
+     * @return RedirectResponse Redirección a la vista de días asignados
+     */
     public function delete(Request $request)
     {
         try {
@@ -160,8 +183,12 @@ class DiaController extends Controller
         }
     }
 
-    //Obtencion y mostrado de formulario del dia a modificar
-    public function mod($id)
+    /**
+     * Vista del formulario de modificación de un día asignado
+     * @param int $id Identificador del día asignado
+     * @return Response|RedirectResponse Vista del formulario de modificación de un día asignado o redirección a la vista de días asignados
+     */
+    public function mod($id): Response|RedirectResponse
     {
         try {
             $hoy = Carbon::today();
@@ -182,8 +209,12 @@ class DiaController extends Controller
         }
     }
 
-    //Actualizacion del dia asignaddo
-    public function update(Request $request)
+    /**
+     * Actualización de un día asignado
+     * @param Request $request Datos del formulario
+     * @return RedirectResponse Redirección a la vista de días asignados
+     */
+    public function update(Request $request): RedirectResponse
     {
         try {
             //Fecha recibida al formato yyyy/MM/dd en la zona horaria del servidor

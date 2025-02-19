@@ -11,14 +11,19 @@ use App\Models\User;
 use App\Models\Zona;
 use Carbon\CarbonInterval;
 use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
+use Inertia\Response;
 
-
+/**
+ * Controlador de las reservas
+ */
 class ReservaController extends Controller
 {
+    //Constantes de la clase
     private const COMIENZO_JORNADA = "9:00";
     private const INICIO_DESCANSO = "14:00";
     private const FIN_DESCANSO = "16:00";
@@ -27,14 +32,20 @@ class ReservaController extends Controller
 
     //-------------------FUNCIONES PARA ADMINISTRADOR-------------------------
 
-    //Funcion para mostrar el índice de edición de reservas
-    public function indexAdmin()
+    /**
+     * Vista de las reservas para el administrador
+     * @return Response 
+    */
+    public function indexAdmin(): Response
     {
         return Inertia::render('Users/Admin/Reservas/Index');
     }
 
-    //Funcion para mostrar la tabla de selección de días
-    public function listAdmin()
+    /**
+     * Vista de la tabla de días de trabajo del administrador
+     * @return Response|RedirectResponse 
+     */
+    public function listAdmin(): Response|RedirectResponse
     {
         try {
 
@@ -49,8 +60,12 @@ class ReservaController extends Controller
         }
     }
 
-    //Funcion para mostrar la tabla de reservas del día seleccionado
-    public function showAdmin($id)
+    /**
+     * Función para mostrar la tabla de reservas del día seleccionado del administrador
+     * @param int $id Identificador del día
+     * @return Response|RedirectResponse
+     */
+    public function showAdmin($id): Response|RedirectResponse
     {
         try {
             //Busca el dia seleccionado y si no lo encuentra redirije al index indicando el error
@@ -93,8 +108,12 @@ class ReservaController extends Controller
         }
     }
 
-    //Función para mostrar la tabla de reservas para su edición    
-    public function formAdmin($id)
+    /**
+     * Función para mostrar el formulario de edición de reservas del administrador
+     * @param int $id Identificador del día
+     * @return Response|RedirectResponse
+     */   
+    public function formAdmin($id): Response|RedirectResponse
     {
         try {
             $dia = Dia::where('dias.id', $id)
@@ -135,8 +154,12 @@ class ReservaController extends Controller
         }
     }
 
-    //Funcion para eliminar la reserva
-    public function delAdmin(Request $request)
+    /**
+     * Función para eliminar la reserva del administrador
+     * @param Request $request Datos del formulario
+     * @return RedirectResponse
+     */
+    public function delAdmin(Request $request): RedirectResponse
     {
         try {
             $request->validate([
@@ -173,8 +196,13 @@ class ReservaController extends Controller
         }
     }
 
-    //Funcion para mostrar los horas disponibles para modificar la reserva seleccionada
-    public function modAdmin($id_dia, $id_reserva)
+    /**
+     * Función para mostrar los horas disponibles para modificar la reserva seleccionada del administrador
+     * @param int $id_dia Identificador del día
+     * @param int $id_reserva Identificador de la reserva
+     * @return Response|RedirectResponse
+     */
+    public function modAdmin($id_dia, $id_reserva): Response|RedirectResponse
     {
         try {
             //Busca el dia seleccionado y si no lo encuentra redirije al index indicando el error
@@ -204,7 +232,11 @@ class ReservaController extends Controller
         }
     }
 
-    //Funcion para modificar la reserva
+    /** 
+     * Función para modificar la hora de una reserva seleccionada del administrador
+     * @param Request $request Datos del formulario
+     * @return RedirectResponse 
+     */
     public function modHourAdmin(Request $request)
     {
         try {
@@ -253,8 +285,11 @@ class ReservaController extends Controller
         }
     }
 
-    //Funcion para mostrar la tabla de reservas pasadas
-    public function listPastAdmin()
+    /**
+     * Función para mostrar la tabla de días pasados del administrador
+     * @return Response|RedirectResponse 
+     */
+    public function listPastAdmin(): Response|RedirectResponse
     {
         try {
             $dias = Dia::select('dias.id', 'dias.fecha', 'centros.nombre as centro_nombre', 'centros.localidad as centro_localidad')
@@ -268,8 +303,12 @@ class ReservaController extends Controller
         }
     }
 
-    //Funcion para mostrar la tabla de reservas del día pasado seleccionado
-    public function showPastAdmin($id)
+    /**
+     * Función para mostrar la tabla de reservas del día seleccionado del administrador
+     * @param int $id Identificador del día
+     * @return Response|RedirectResponse
+     */
+    public function showPastAdmin($id): Response|RedirectResponse
     {
         try {
             //Busca el dia seleccionado y si no lo encuentra redirije al index indicando el error
@@ -315,14 +354,20 @@ class ReservaController extends Controller
     //-------------------FUNCIONES PARA RESPONSABLES-------------------------
 
 
-    //Funcion para mostrar el índice de edición de reservas
-    public function indexRespon()
+    /**
+     * Vista del index de reservas para el responsable
+     * @return Response
+     */
+    public function indexRespon(): Response
     {
         return Inertia::render('Users/Responsable/Reservas/Index');
     }
 
-    //Funcion para mostrar la tabla de selección de días
-    public function listRespon()
+    /**
+     * Función para mostrar la tabla de días de trabajo del responsable
+     * @return Response|RedirectResponse
+     */
+    public function listRespon(): Response|RedirectResponse
     {
         try {
             $centro_id = Auth::user()->responsable->centro_id;
@@ -342,8 +387,12 @@ class ReservaController extends Controller
         }
     }
 
-    //Funcion para mostrar la tabla de reservas del día seleccionado
-    public function showRespon($id)
+    /**
+     *  Función para mostrar la tabla de reservas del día seleccionado del responsable
+     * @param int $id Identificador del día
+     * @return Response|RedirectResponse
+     */
+    public function showRespon($id): Response|RedirectResponse
     {
         try {
 
@@ -393,8 +442,12 @@ class ReservaController extends Controller
         }
     }
 
-    //Función para mostrar la tabla de reservas para su edición    
-    public function formRespon($id)
+    /**
+     * Función para mostrar el formulario de edición de reservas del responsable
+     * @param int $id Identificador del día
+     * @return Response|RedirectResponse
+     */   
+    public function formRespon($id): Response|RedirectResponse
     {
         try {
 
@@ -439,8 +492,12 @@ class ReservaController extends Controller
         }
     }
 
-    //Funcion para eliminar la reserva
-    public function delRespon(Request $request)
+    /**
+     * Función para eliminar la reserva del responsable
+     * @param Request $request Datos del formulario
+     * @return RedirectResponse
+     */
+    public function delRespon(Request $request): RedirectResponse
     {
         try {
             $request->validate([
@@ -484,8 +541,13 @@ class ReservaController extends Controller
         }
     }
 
-    //Funcion para mostrar los horas disponibles para modificar la reserva seleccionada
-    public function modRespon($id_dia, $id_reserva)
+    /**
+     * Función para mostrar los horas disponibles para modificar la reserva seleccionada del responsable
+     * @param int $id_dia Identificador del día
+     * @param int $id_reserva Identificador de la reserva
+     * @return Response|RedirectResponse
+     */
+    public function modRespon($id_dia, $id_reserva): Response|RedirectResponse
     {
         try {
 
@@ -521,8 +583,12 @@ class ReservaController extends Controller
         }
     }
 
-    //Funcion para modificar la reserva
-    public function modHourRespon(Request $request)
+    /**
+     * Función para modificar la hora de una reserva seleccionada del responsable
+     * @param Request $request Datos del formulario
+     * @return RedirectResponse
+     */
+    public function modHourRespon(Request $request): RedirectResponse
     {
         try {
             $request->validate([
@@ -575,8 +641,11 @@ class ReservaController extends Controller
         }
     }
 
-    //Funcion para mostrar la tabla de reservas pasadas
-    public function listPastRespon()
+    /**
+     * Función para mostrar la tabla de días pasados del responsable
+     * @return Response|RedirectResponse
+     */
+    public function listPastRespon(): Response|RedirectResponse
     {
         try {
 
@@ -594,8 +663,12 @@ class ReservaController extends Controller
         }
     }
 
-    //Funcion para mostrar la tabla de reservas del día pasado seleccionado
-    public function showPastRespon($id)
+    /**
+     * Función para mostrar la tabla de reservas del día seleccionado del responsable
+     * @param int $id Identificador del día
+     * @return Response|RedirectResponse
+     */
+    public function showPastRespon($id): Response|RedirectResponse
     {
         try {
             //Busca el dia seleccionado y si no lo encuentra redirije al index indicando el error
@@ -641,14 +714,20 @@ class ReservaController extends Controller
 
     //-------------------FUNCIONES PARA CLIENTES---------------------
 
-    //Funcion para mostrar la vista de reservas
-    public function indexCliente()
+    /**
+     * Vista del index de reservas para el cliente
+     * @return Response
+     */
+    public function indexCliente(): Response
     {
         return Inertia::render('Users/Client/Reservas/Index');
     }
 
-    //Funcion para mostrar el formulario de creacion de reserva
-    public function createCliente()
+    /**
+     * Función para mostrar el formulario de creación de reserva para el cliente
+     * @return Response|RedirectResponse
+     */
+    public function createCliente(): Response|RedirectResponse
     {
         try {
 
@@ -670,8 +749,12 @@ class ReservaController extends Controller
         }
     }
 
-    //Funcion para mostrar el formulario de creacion de reserva con la hora seleccionada
-    public function createHoraCliente(Request $request)
+    /**
+     * Función para mostrar el formulario de seleccion de hora de reserva para el cliente
+     * @param Request $request Datos del formulario
+     * @return Response|RedirectResponse
+     */
+    public function createHoraCliente(Request $request): Response|RedirectResponse
     {
         try {
             $request->validate([
@@ -712,8 +795,12 @@ class ReservaController extends Controller
         }
     }
 
-    //Funcion para almacenar la reserva
-    public function storeCliente(Request $request)
+    /**
+     * Función para almacenar la reserva del cliente
+     * @param Request $request Datos del formulario
+     * @return RedirectResponse
+     */
+    public function storeCliente(Request $request): RedirectResponse
     {
         try {
             $request->validate([
@@ -749,8 +836,11 @@ class ReservaController extends Controller
         }
     }
 
-    //Funcion para mostrar la tabla de reservas del cliente
-    public function listCliente()
+    /**
+     * Función para mostrar la tabla de reservas del cliente
+     * @return Response|RedirectResponse
+     */
+    public function listCliente(): Response|RedirectResponse
     {
         try {
             $cliente_id = Cliente::select('id')->where('user_id', Auth::id())->first();
@@ -785,8 +875,12 @@ class ReservaController extends Controller
         }
     }
 
-    //Funcion para mostrar el formulario de modificacion de la reserva
-    public function modCliente($id)
+    /**
+     * Función para mostrar el formulario de modificación de la reserva del cliente
+     * @param int $id Identificador de la reserva
+     * @return Response|RedirectResponse
+     */
+    public function modCliente($id): Response|RedirectResponse
     {
         try {
             $cliente = Cliente::select('id')->where('user_id', Auth::id())->first();
@@ -847,8 +941,12 @@ class ReservaController extends Controller
         }
     }
 
-    //Funcion para modificar la reserva
-    public function modHoraCliente(Request $request)
+    /**
+     * Función para modificar la hora de la reserva del cliente
+     * @param Request $request Datos del formulario
+     * @return RedirectResponse
+     */
+    public function modHoraCliente(Request $request): RedirectResponse
     {
         try {
             $request->validate([
@@ -876,8 +974,12 @@ class ReservaController extends Controller
         }
     }
 
-    //Funcion para eliminar la reserva
-    public function deleteCliente(Request $request)
+    /**
+     * Función para eliminar la reserva del cliente
+     * @param Request $request Datos del formulario
+     * @return RedirectResponse
+     */
+    public function deleteCliente(Request $request): RedirectResponse
     {
         try {
             $request->validate(['id' => 'required|integer|exists:reservas,id']);
@@ -903,8 +1005,12 @@ class ReservaController extends Controller
 
     //----------------FUNCIONES PRIVADAS-------------------
 
-    //Funcion privada para la obtención del rango de horas de trabajo, se tiene el cuenta el tiempo estimado para los descansos
-    private function rangoHorasTrabajo($tiempo_estimado)
+    /**
+     * Funcion privada para la obtención del rango de horas de trabajo, se tiene el cuenta el tiempo estimado para los descansos
+     * @param string $tiempo_estimado Tiempo estimado para el tratamiento
+     * @return array 
+     */
+    private function rangoHorasTrabajo($tiempo_estimado): array
     {
         $intervaloTratamiento = CarbonInterval::createFromFormat('H:i:s', $tiempo_estimado);
         $horaInicio = Carbon::createFromTimeString(self::COMIENZO_JORNADA);
@@ -931,8 +1037,13 @@ class ReservaController extends Controller
         return $rangoHorasTrabajo;
     }
 
-    //Funcion privada para la obtencion de las horas disponibles
-    private function horasDisponibles($zona, $reservas)
+    /**
+     * Función privada para obtener las horas disponibles para la reserva
+     * @param Zona $zona Zona de tratamiento
+     * @param Collection $reservas Reservas del día
+     * @return array
+     */
+    private function horasDisponibles($zona, $reservas): array
     {
         $horasDisponibles = [];
 
@@ -963,8 +1074,12 @@ class ReservaController extends Controller
         return $horasDisponibles;
     }
 
-    //Función privada para obtener la información de todas las reservas, divididas en 2 arrays, mañana y tarde
-    private function getReservasDia($reservas)
+    /**
+     * Función privada para obtener la información de todas las reservas, divididas en 2 arrays, mañana y tarde
+     * @param Collection $reservas Reservas del día
+     * @return array
+     */
+    private function getReservasDia($reservas): array
     {
         $horaDescansoInicio = Carbon::createFromTimeString(self::INICIO_DESCANSO);
         $horaDescansoFin = Carbon::createFromTimeString(self::FIN_DESCANSO);
@@ -1003,8 +1118,13 @@ class ReservaController extends Controller
         return ['manana' => $arrayManana, 'tarde' => $arrayTarde];
     }
 
-    //Funcion privada para asignar la hora final del tratamiento
-    private function setHoraFin($horaInicio, $idZona)
+    /**
+     * Función privada para obtener la hora de fin de la reserva
+     * @param string $horaInicio Hora de inicio de la reserva
+     * @param int $idZona Identificador de la zona
+     * @return string|bool
+     */
+    private function setHoraFin($horaInicio, $idZona): string|bool
     {
 
         $horaInicioObj = Carbon::createFromTimeString($horaInicio);
@@ -1019,8 +1139,13 @@ class ReservaController extends Controller
         }
     }
 
-    //Funcion para comprobar si el usuario autenticado ha superado la cantidad de reservas permitidas
-    private function maximoCitas($clienteId, $reservas)
+    /**
+     * Función privada para comprobar si el cliente ha superado el máximo de citas permitidas
+     * @param int $clienteId Identificador del cliente
+     * @param Collection $reservas Reservas del día
+     * @return bool
+     */
+    private function maximoCitas($clienteId, $reservas): bool
     {
         $cantReservas = 0;
 
