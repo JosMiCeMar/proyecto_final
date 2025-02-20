@@ -101,7 +101,7 @@
                 <p class="text-lavender-dark text-sm">
                     *Consulta la
                     <span
-                        class="text-skyblue-dark underline hover:text-skyblue-vlight"
+                        class="text-skyblue-dark underline hover:text-lavender-logo cursor-pointer"
                         @click="medicalConditionAlert"
                         >lista</span
                     >

@@ -5,29 +5,33 @@ namespace Database\Seeders;
 use App\Models\CodRegistro;
 use Illuminate\Database\Seeder;
 
+/**
+ * Seeder class para poblar la tabla cod_registros.
+ */
 class CodRegistroSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Ejecutar el seeder.
+     * @return void
      */
     public function run(): void
     {
         CodRegistro::create([
-            'codigo' => 'ABC123',
+            'codigo' => 'ABCD1234',
             'id_creador' => 1,
             'usado' => false,
             'para_cliente' => true,
         ]);
 
         CodRegistro::create([
-            'codigo' => 'DEF456',
+            'codigo' => 'DEFG4567',
             'id_creador' => 1,
             'usado' => true,
             'para_cliente' => false,
         ]);
 
         CodRegistro::create([
-            'codigo' => 'GHI789',
+            'codigo' => 'GHIJ7890',
             'id_creador' => 2,
             'usado' => false,
             'para_cliente' => true,

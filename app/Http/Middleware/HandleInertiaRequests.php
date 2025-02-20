@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use Inertia\Middleware;
 use App\Helpers\TipoUsuario;
 
+/**
+ * Middleware para manejar las solicitudes de Inertia.
+ */
 class HandleInertiaRequests extends Middleware
 {
 

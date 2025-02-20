@@ -3,17 +3,20 @@
 namespace Database\Seeders;
 
 use App\Models\Zona;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
+/**
+ * Seeder class para poblar la tabla zonas.
+ */
 class ZonasSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Ejecutar el seeder.
+     * @return void
      */
     public function run(): void
     {
-        //
+        //Datos de ejemplo para poblar la tabla zonas
         $datos=[
             ['nombre'=>'facial','precio'=>15,'tiempo_estimado'=>'00:15'],
             ['nombre'=>'linea alba','precio'=>15,'tiempo_estimado'=>'00:15'],

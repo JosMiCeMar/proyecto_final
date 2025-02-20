@@ -40,6 +40,7 @@ const props = defineProps({
     },
 });
 
+// Agrupar los centros por provincia
 const groupedCentros = computed(() => {
     const grouped = {};
     props.centros.forEach((centro) => {

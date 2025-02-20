@@ -104,6 +104,7 @@ const props = defineProps({
 
 const isLoading = ref(true);
 
+//Watch para mostrar el spinner de carga mientras se carga el iframe
 watch(
     () => props.mapLink,
     (newVal) => {
@@ -113,8 +114,4 @@ watch(
     },
     { immediate: true }
 );
-
-const onLoad = () => {
-    isLoading.value = false;
-};
 </script>

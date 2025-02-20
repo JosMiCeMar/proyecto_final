@@ -6,10 +6,14 @@ use App\Models\Reserva;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
 
+/**
+ * Seeder class para poblar la tabla reservas.
+ */
 class ReservaSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Ejecutar el seeder.
+     * @return void
      */
     public function run(): void
     {

@@ -8,14 +8,18 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
+/**
+ * Modelo User
+ */
+
 class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
     /**
-     * The attributes that are mass assignable.
+     * Atributos asignables en masa.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $fillable = [
         'nombre',
@@ -26,9 +30,9 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
-     * The attributes that should be hidden for serialization.
+     * Atributos que deben estar ocultos para las matrices.
      *
-     * @var array<int, string>
+     * @var array
      */
     protected $hidden = [
         'password',
@@ -36,9 +40,9 @@ class User extends Authenticatable implements MustVerifyEmail
     ];
 
     /**
-     * Get the attributes that should be cast.
+     * Atributos que deben ser convertidos a tipos nativos.
      *
-     * @return array<string, string>
+     * @return array
      */
     protected function casts(): array
     {
@@ -48,37 +52,55 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
     
-    // Relacion con clientes 1-1
+    /**
+     * Relación uno a uno con la tabla de clientes
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function cliente()
     {
         return $this->hasOne(Cliente::class);
     }
 
-    // Relacion con responsables 1-1
+    /**
+     * Relación uno a uno con la tabla de responsables
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function responsable()
     {
         return $this->hasOne(Responsable::class);
     }
 
-    // Relacion con administradores 1-1
+    /**
+     * Relación uno a uno con la tabla de administradores
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function administradore()
     {
         return $this->hasOne(Administradore::class);
     }
 
-    // Relaciones con codigos de registro 1 - N
+    /**
+     * Relación uno a muchos con la tabla de codigos
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function cod_registro()
     {
         return $this->hasMany(CodRegistro::class);
     }
 
-    // Relaciones con las notificaciones enviadas 1 - N
+    /**
+     * Relación uno a muchos con la tabla de notificaciones (enviadas)
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function notificacionesEnviadas()
     {
         return $this->hasMany(Notificacione::class, 'user_id_origen');
     }
 
-    // Relaciones con las notificaciones recibidas 1 - N
+    /**
+     * Relación uno a muchos con la tabla de notificaciones (recibidas)
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function notificacionesRecibidas()
     {
         return $this->hasMany(Notificacione::class, 'user_id_destino');

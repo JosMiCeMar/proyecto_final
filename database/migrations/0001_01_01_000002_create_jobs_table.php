@@ -4,10 +4,14 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
+/**
+ * Migration class para crear las tablas jobs, job_batches and failed_jobs 
+ */
 return new class extends Migration
 {
     /**
-     * Run the migrations.
+     * Ejecutar la migración.
+     * @return void
      */
     public function up(): void
     {
@@ -46,7 +50,8 @@ return new class extends Migration
     }
 
     /**
-     * Reverse the migrations.
+     * Revertir la migración.
+     * @return void
      */
     public function down(): void
     {

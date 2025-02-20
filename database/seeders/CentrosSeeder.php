@@ -5,10 +5,14 @@ namespace Database\Seeders;
 use App\Models\Centro;
 use Illuminate\Database\Seeder;
 
+/**
+ * Seeder para la tabla centros.
+ */
 class CentrosSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Ejecutar el seeder.
+     * @return void
      */
     public function run(): void
     {

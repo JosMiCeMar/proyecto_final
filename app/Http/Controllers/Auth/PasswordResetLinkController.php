@@ -10,10 +10,14 @@ use Illuminate\Validation\ValidationException;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+ * Controlador para el enlace de restablecimiento de contraseña.
+ */
 class PasswordResetLinkController extends Controller
 {
     /**
-     * Display the password reset link request view.
+     * Muestra el formulario para solicitar un enlace de restablecimiento de contraseña.
+     * @return Response 
      */
     public function create(): Response
     {
@@ -23,8 +27,9 @@ class PasswordResetLinkController extends Controller
     }
 
     /**
-     * Handle an incoming password reset link request.
-     *
+     * Envía un enlace de restablecimiento de contraseña.
+     * @param Request $request La solicitud HTTP.
+     * @return RedirectResponse
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request): RedirectResponse

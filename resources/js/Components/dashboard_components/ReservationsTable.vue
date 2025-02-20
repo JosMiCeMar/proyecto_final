@@ -2,34 +2,18 @@
     <form @submit.prevent="submit">
         <!--Checkbox de notificacion-->
         <div v-if="props.editable" class="flex items-center justify-start mt-4">
-            <Checkbox
-                class="mx-1"
-                id="cbNot"
-                v-model:checked="form.notification"
-                name="condicion"
-            /><label for="cbNot" class="text-lavender-dark text-sm font-bold h-full"
-                >Mandar notificación al eliminar</label
-            >
+            <Checkbox class="mx-1" id="cbNot" v-model:checked="form.notification" name="condicion" /><label for="cbNot"
+                class="text-lavender-dark text-sm font-bold h-full">Mandar notificación al eliminar</label>
         </div>
         <div class="flex flex-col md:flex-row justify-center gap-8 py-2 text-sm sm:text-md">
             <!-- Tabla de la mañana -->
             <div class="flex w-full">
                 <table class="w-full text-center h-fit">
-                    <thead
-                        class="bg-gradient-to-t from-lavender-dark to-skyblue-dark text-white text-xs sm:text-md"
-                    >
+                    <thead class="bg-gradient-to-t from-lavender-dark to-skyblue-dark text-white text-xs sm:text-md">
                         <tr>
-                            <td
-                                :colspan="props.editable ? '4' : '2'"
-                                class="p-2"
-                            >
-                                <span
-                                    class="flex gap-2 items-center justify-center h-full text-lg"
-                                >
-                                    <IconMdi
-                                        :icon="mdiWeatherSunny"
-                                        class="fill-yellow-400"
-                                    />
+                            <td :colspan="props.editable ? '4' : '2'" class="p-2">
+                                <span class="flex gap-2 items-center justify-center h-full text-lg">
+                                    <IconMdi :icon="mdiWeatherSunny" class="fill-yellow-400" />
                                     <span>Mañana</span>
                                 </span>
                             </td>
@@ -46,15 +30,10 @@
                         </tr>
                     </thead>
                     <tbody class="text-lavender-dark bg-white">
-                        <tr
-                            v-for="(item, index) in props.morningData"
-                            :key="index"
-                            :class="`border-b border-lavender-logo ${
-                                typeof item === 'object'
-                                    ? 'bg-fuchsia-200'
-                                    : 'bg-white'
-                            } hover:bg-blue-100 transition-all ease-in-out duration-500`"
-                        >
+                        <tr v-for="(item, index) in props.morningData" :key="index" :class="`border-b border-lavender-logo ${typeof item === 'object'
+                                ? 'bg-fuchsia-200'
+                                : 'bg-white'
+                            } hover:bg-blue-100 transition-all ease-in-out duration-500`">
                             <template v-if="typeof item === 'object'">
                                 <td class="p-2">
                                     {{ formatHour(item.hora_inicio) }} -
@@ -62,61 +41,51 @@
                                 </td>
                                 <td class="p-2 text-sm">
                                     <div class="flex flex-col w-full">
-                                        <span class="font-semibold"
-                                            >{{ item.cliente_nombre }}
-                                            {{ item.cliente_apellidos }}</span
-                                        >
+                                        <span class="font-semibold">{{ item.cliente_nombre }}
+                                            {{ item.cliente_apellidos }}</span>
                                         <span>{{
                                             capitalizeFirstChart(
                                                 item.zona_nombre
                                             )
                                         }}</span>
-                                        <span
-                                            class="flex gap-1 items-center justify-center"
-                                            ><IconMdi
-                                                :icon="mdiPhone"
-                                                :size="15"
-                                                class="fill-lavender-dark"
-                                            />{{ item.cliente_telefono }}</span
-                                        >
+                                        <span class="flex gap-1 items-center justify-center">
+                                            <IconMdi :icon="mdiPhone" :size="15" class="fill-lavender-dark" />{{
+                                            item.cliente_telefono }}
+                                        </span>
+                                        <span v-if="item.condicion_especial"
+                                            class="bg-red-600 text-white text-xs p-1 rounded-md">
+                                            Condición especial
+                                        </span>
                                     </div>
                                 </td>
                                 <td v-show="props.editable">
-                                    <div
-                                        class="flex justify-center items-center"
-                                    >
-                                        <ModButton
-                                            @click.prevent="
-                                                confirmMod(
-                                                    item.id,
-                                                    item.cliente_nombre,
-                                                    item.zona_nombre
-                                                )
-                                            "
-                                        />
+                                    <div class="flex justify-center items-center">
+                                        <ModButton @click.prevent="
+                                            confirmMod(
+                                                item.id,
+                                                item.cliente_nombre,
+                                                item.zona_nombre
+                                            )
+                                            " />
                                     </div>
                                 </td>
                                 <td v-show="props.editable">
-                                    <div
-                                        class="flex justify-center items-center"
-                                    >
-                                        <TrashButton
-                                            @click.prevent="
-                                                confirmDelete(
-                                                    item.id,
-                                                    item.cliente_nombre,
-                                                    item.zona_nombre
-                                                )
-                                            "
-                                        />
+                                    <div class="flex justify-center items-center">
+                                        <TrashButton @click.prevent="
+                                            confirmDelete(
+                                                item.id,
+                                                item.cliente_nombre,
+                                                item.zona_nombre
+                                            )
+                                            " />
                                     </div>
                                 </td>
                             </template>
                             <template v-else>
-                                <td class="p-4">
+                                <td class="p-4 text-xs sm:text-md">
                                     {{ item }}
                                 </td>
-                                <td class="p-4">Sin reserva</td>
+                                <td class="p-4 text-xs sm:text-md">Sin reserva</td>
                                 <td v-show="props.editable" colspan="2"></td>
                             </template>
                         </tr>
@@ -126,21 +95,12 @@
             <!-- Tabla de la tarde -->
             <div class="flex w-full h-fit text-sm sm:text-md">
                 <table class="w-full text-center">
-                    <thead
-                        class="bg-gradient-to-t from-lavender-dark to-skyblue-dark text-white"
-                    >
+                    <thead class="bg-gradient-to-t from-lavender-dark to-skyblue-dark text-white text-xs sm:text-md">
                         <tr>
-                            <td
-                                :colspan="props.editable ? '4' : '2'"
-                                class="p-2"
-                            >
-                                <span
-                                    class="flex gap-2 items-center justify-center h-full text-lg"
-                                >
-                                    <IconMdi
-                                        :icon="mdiWeatherSunset"
-                                        class="fill-orange-400 inline justify-center items-center"
-                                    />
+                            <td :colspan="props.editable ? '4' : '2'" class="p-2">
+                                <span class="flex gap-2 items-center justify-center h-full text-lg">
+                                    <IconMdi :icon="mdiWeatherSunset"
+                                        class="fill-orange-400 inline justify-center items-center" />
                                     <span>Tarde</span>
                                 </span>
                             </td>
@@ -157,15 +117,10 @@
                         </tr>
                     </thead>
                     <tbody class="text-lavender-dark bg-white">
-                        <tr
-                            v-for="(item, index) in props.afternoonData"
-                            :key="index"
-                            :class="`border-b border-lavender-logo ${
-                                typeof item === 'object'
-                                    ? 'bg-fuchsia-200'
-                                    : 'bg-white'
-                            } hover:bg-blue-100 transition-all ease-in-out duration-500`"
-                        >
+                        <tr v-for="(item, index) in props.afternoonData" :key="index" :class="`border-b border-lavender-logo ${typeof item === 'object'
+                                ? 'bg-fuchsia-200'
+                                : 'bg-white'
+                            } hover:bg-blue-100 transition-all ease-in-out duration-500`">
                             <template v-if="typeof item === 'object'">
                                 <td class="p-2">
                                     {{ formatHour(item.hora_inicio) }} -
@@ -173,61 +128,51 @@
                                 </td>
                                 <td class="p-2 text-sm">
                                     <div class="flex flex-col w-full">
-                                        <span class="font-semibold"
-                                            >{{ item.cliente_nombre }}
-                                            {{ item.cliente_apellidos }}</span
-                                        >
+                                        <span class="font-semibold">{{ item.cliente_nombre }}
+                                            {{ item.cliente_apellidos }}</span>
                                         <span>{{
                                             capitalizeFirstChart(
                                                 item.zona_nombre
                                             )
                                         }}</span>
-                                        <span
-                                            class="flex gap-1 items-center justify-center"
-                                            ><IconMdi
-                                                :icon="mdiPhone"
-                                                :size="15"
-                                                class="fill-lavender-dark"
-                                            />{{ item.cliente_telefono }}</span
-                                        >
+                                        <span class="flex gap-1 items-center justify-center">
+                                            <IconMdi :icon="mdiPhone" :size="15" class="fill-lavender-dark" />{{
+                                            item.cliente_telefono }}
+                                        </span>
+                                        <span v-if="item.condicion_especial"
+                                            class="bg-red-600 text-white text-xs p-1 rounded-md">
+                                            Condición especial
+                                        </span>
                                     </div>
                                 </td>
                                 <td v-show="props.editable">
-                                    <div
-                                        class="flex justify-center items-center"
-                                    >
-                                        <ModButton
-                                            @click.prevent="
-                                                confirmMod(
-                                                    item.id,
-                                                    item.cliente_nombre,
-                                                    item.zona_nombre
-                                                )
-                                            "
-                                        />
+                                    <div class="flex justify-center items-center">
+                                        <ModButton @click.prevent="
+                                            confirmMod(
+                                                item.id,
+                                                item.cliente_nombre,
+                                                item.zona_nombre
+                                            )
+                                            " />
                                     </div>
                                 </td>
                                 <td v-show="props.editable">
-                                    <div
-                                        class="flex justify-center items-center"
-                                    >
-                                        <TrashButton
-                                            @click.prevent="
-                                                confirmDelete(
-                                                    item.id,
-                                                    item.cliente_nombre,
-                                                    item.zona_nombre
-                                                )
-                                            "
-                                        />
+                                    <div class="flex justify-center items-center">
+                                        <TrashButton @click.prevent="
+                                            confirmDelete(
+                                                item.id,
+                                                item.cliente_nombre,
+                                                item.zona_nombre
+                                            )
+                                            " />
                                     </div>
                                 </td>
                             </template>
                             <template v-else>
-                                <td class="p-4">
+                                <td class="p-4 text-xs sm:text-md">
                                     {{ item }}
                                 </td>
-                                <td class="p-4">Sin reserva</td>
+                                <td class="p-4 text-xs sm:text-md">Sin reserva</td>
                                 <td v-show="props.editable" colspan="2"></td>
                             </template>
                         </tr>
@@ -235,10 +180,7 @@
                 </table>
             </div>
         </div>
-        <div
-            v-show="form.errors.id"
-            class="bg-red-500 rounded-md text-center text-white font-bold text-lg"
-        >
+        <div v-show="form.errors.id" class="bg-red-500 rounded-md text-center text-white font-bold text-lg">
             <p>{{ form.errors.id }}</p>
         </div>
     </form>
@@ -285,7 +227,7 @@ const props = defineProps({
 const form = useForm({
     id_reservation: "",
     id_day: props.idDay,
-    notification:true
+    notification: true,
 });
 
 //Funcion para confirmar el borrado

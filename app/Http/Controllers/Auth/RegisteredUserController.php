@@ -13,10 +13,14 @@ use Illuminate\Validation\Rules;
 use Inertia\Inertia;
 use Inertia\Response;
 
+/**
+ * Controlador para el usuario registrado.
+ */
 class RegisteredUserController extends Controller
 {
     /**
-     * Display the registration view.
+     * Muestra el formulario de registro.
+     * @return Response
      */
     public function create(): Response
     {
@@ -24,7 +28,7 @@ class RegisteredUserController extends Controller
     }
 
     /**
-     * Handle an incoming registration request.
+     * Almacena un usuario recién registrado.
      *
      * @throws \Illuminate\Validation\ValidationException
      */

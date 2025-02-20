@@ -10,10 +10,14 @@ use App\Models\Responsable;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 
+/**
+ * Seeder class para poblar la tabla users, responsables, administradores y clientes.
+ */
 class ExampleUsersSeeder extends Seeder
 {
     /**
-     * Run the database seeds.
+     * Ejecutar el seeder.
+     * @return void
      */
     public function run(): void
     {

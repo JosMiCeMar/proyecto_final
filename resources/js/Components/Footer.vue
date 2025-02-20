@@ -40,7 +40,7 @@ import { getToday } from "@/Utils/Validators/dias_validator";
             <span class="hover:text-skyblue-dark hover:underline fill-lavender-dark hover:fill-skyblue-dark">
                 <a href="tel:+34609970116" class="flex gap-1 justify-center items-center">
                     <IconMdi :icon="mdiWhatsapp" /><IconMdi :icon="mdiPhone" />
-                    609970116
+                    654654654
                 </a>
             </span>
             <span class="hover:text-skyblue-dark hover:underline fill-lavender-dark hover:fill-skyblue-dark">
