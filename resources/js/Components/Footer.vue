@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import { mdiCellphone, mdiEmail, mdiFacebook, mdiInstagram, mdiPhone, mdiWhatsapp } from "@mdi/js";
+import { mdiEmail, mdiFacebook, mdiInstagram, mdiPhone, mdiWhatsapp } from "@mdi/js";
 import IconMdi from "./IconMdi.vue";
 import { getToday } from "@/Utils/Validators/dias_validator";
+import { CONTACT_EMAIL, CONTACT_PHONE } from "@/Utils/utilsFunctions";
 </script>
 
 <template>
@@ -16,7 +17,7 @@ import { getToday } from "@/Utils/Validators/dias_validator";
         </div>
         <div class="flex flex-col gap-2 my-auto">
             <span>
-                <a href="#"
+                <a href="https://www.instagram.com/depilasermc/"
                     class="flex gap-1 justify-center items-center hover:text-skyblue-dark hover:underline fill-lavender-dark hover:fill-skyblue-dark"
                     target="_blank">
                     <IconMdi :icon="mdiInstagram" />
@@ -38,15 +39,15 @@ import { getToday } from "@/Utils/Validators/dias_validator";
         </div>
         <div class="flex flex-col gap-2 my-auto">
             <span class="hover:text-skyblue-dark hover:underline fill-lavender-dark hover:fill-skyblue-dark">
-                <a href="tel:+34609970116" class="flex gap-1 justify-center items-center">
+                <a :href="`tel:${CONTACT_PHONE}`" class="flex gap-1 justify-center items-center">
                     <IconMdi :icon="mdiWhatsapp" /><IconMdi :icon="mdiPhone" />
-                    654654654
+                    {{ CONTACT_PHONE }}
                 </a>
             </span>
             <span class="hover:text-skyblue-dark hover:underline fill-lavender-dark hover:fill-skyblue-dark">
-                <a href="mailto:info@mimate.com" class="flex gap-1 justify-center items-center">
+                <a :href="`mailto:${CONTACT_EMAIL}`" class="flex gap-1 justify-center items-center">
                     <IconMdi :icon="mdiEmail" />
-                    mimate@gmail.com
+                    {{ CONTACT_EMAIL }}
                 </a>
             </span>
         </div>

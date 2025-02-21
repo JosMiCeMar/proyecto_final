@@ -81,33 +81,74 @@ class ExampleUsersSeeder extends Seeder
 
 
         //CLIENTES
-        User::create([
-            'nombre' => 'Cliente',
-            'apellidos' => 'Ejemplo',
-            'telefono' => '666666666',
-            'email' => 'cliente@cliente.com',
-            'password' => Hash::make('cliente1234'),
-            'email_verified_at'=>Carbon::today()
-        ]);
+        $clientes = [
+            [
+                'nombre' => 'Carlos',
+                'apellidos' => 'Martínez',
+                'telefono' => '666111111',
+                'email' => 'carlos.martinez@cliente.com',
+                'password' => 'cliente1234',
+                'verificado' => true,
+                'condicion_especial' => false,
+                'fecha_nacimiento' => '1988-12-12',
+            ],
+            [
+                'nombre' => 'Laura',
+                'apellidos' => 'Fernández',
+                'telefono' => '666222222',
+                'email' => 'laura.fernandez@cliente.com',
+                'password' => 'cliente1234',
+                'verificado' => false,
+                'condicion_especial' => true,
+                'fecha_nacimiento' => '1990-05-22',
+            ],
+            [
+                'nombre' => 'Javier',
+                'apellidos' => 'Pérez',
+                'telefono' => '666333333',
+                'email' => 'javier.perez@cliente.com',
+                'password' => 'cliente1234',
+                'verificado' => true,
+                'condicion_especial' => false,
+                'fecha_nacimiento' => '1995-08-10',
+            ],
+            [
+                'nombre' => 'Ana',
+                'apellidos' => 'Gómez',
+                'telefono' => '666444444',
+                'email' => 'ana.gomez@cliente.com',
+                'password' => 'cliente1234',
+                'verificado' => false,
+                'condicion_especial' => true,
+                'fecha_nacimiento' => '1985-03-15',
+            ],
+            [
+                'nombre' => 'David',
+                'apellidos' => 'López',
+                'telefono' => '666555555',
+                'email' => 'david.lopez@cliente.com',
+                'password' => 'cliente1234',
+                'verificado' => true,
+                'condicion_especial' => false,
+                'fecha_nacimiento' => '2000-07-18',
+            ]
+        ];
 
-        Cliente::create([
-            'user_id' => User::where('nombre', 'Cliente')->first()->id,
-            'condicion_especial' => false,
-            'fecha_nacimiento' => '1988-12-12'
-        ]);
+        foreach ($clientes as $cliente) {
+            $user = User::create([
+                'nombre' => $cliente['nombre'],
+                'apellidos' => $cliente['apellidos'],
+                'telefono' => $cliente['telefono'],
+                'email' => $cliente['email'],
+                'password' => Hash::make($cliente['password']),
+                'email_verified_at' => $cliente['verificado'] ? Carbon::now() : null,
+            ]);
 
-        User::create([
-            'nombre' => 'Cliente_dos',
-            'apellidos' => 'Ejemplo',
-            'telefono' => '666666666',
-            'email' => 'cliente2@cliente.com',
-            'password' => Hash::make('cliente1234')
-        ]);
-
-        Cliente::create([
-            'user_id' => User::where('nombre', 'Cliente_dos')->first()->id,
-            'condicion_especial' => true,
-            'fecha_nacimiento' => '1988-12-12'
-        ]);
+            Cliente::create([
+                'user_id' => $user->id,
+                'condicion_especial' => $cliente['condicion_especial'],
+                'fecha_nacimiento' => $cliente['fecha_nacimiento'],
+            ]);
+        }
     }
 }

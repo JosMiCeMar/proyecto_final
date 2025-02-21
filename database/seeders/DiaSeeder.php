@@ -17,46 +17,25 @@ class DiaSeeder extends Seeder
      */
     public function run(): void
     {
-        $hoy = Carbon::now();
-        
-        Dia::create([
-            'centro_id' => 1,
-            'fecha' => $hoy->copy()->addDays(12), 
-        ]);
+        $hoy = Carbon::today();
+        $centros = range(1, 7); // Centros del 1 al 7
 
-        Dia::create([
-            'centro_id' => 1,
-            'fecha' => $hoy->copy()->addDays(20), 
-        ]);
+        foreach ($centros as $centro) {
+            $fechasUsadas = [];
 
-        Dia::create([
-            'centro_id' => 2,
-            'fecha' => $hoy->copy()->addDays(22), 
-        ]);
+            for ($i = 0; $i < 3; $i++) {
+                do {
+                    // Generar una fecha aleatoria antes o después del día actual
+                    $fecha = $hoy->copy()->addDays(rand(-10, 10));
+                } while (in_array($fecha->toDateString(), $fechasUsadas)); // Evitar fechas duplicadas
+                
+                $fechasUsadas[] = $fecha->toDateString();
 
-        Dia::create([
-            'centro_id' => 3,
-            'fecha' => $hoy->copy()->subDays(24), 
-        ]);
-        Dia::create([
-            'centro_id' => 3,
-            'fecha' => $hoy->copy()->subYear(1), 
-        ]);
-        Dia::create([
-            'centro_id' => 1,
-            'fecha' => $hoy->copy()->subDays(50), 
-        ]);
-        Dia::create([
-            'centro_id' => 2,
-            'fecha' => $hoy->copy()->subDays(75), 
-        ]);
-        Dia::create([
-            'centro_id' => 3,
-            'fecha' => $hoy->copy()->subDays(22), 
-        ]);
-        Dia::create([
-            'centro_id' => 1,
-            'fecha' => $hoy->copy()->subDays(84), 
-        ]);
+                Dia::create([
+                    'centro_id' => $centro,
+                    'fecha' => $fecha,
+                ]);
+            }
+        }
     }
 }

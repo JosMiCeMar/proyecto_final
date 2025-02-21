@@ -1,3 +1,10 @@
+//Telefono de contanto de la empresa
+export const CONTACT_PHONE = "666555444";
+
+//Email de contacto de la empresa
+export const CONTACT_EMAIL = "mimate.estetica.avanzada@gmail.com";
+
+
 //Porcentaje de beneficios para el centro asociado * 20%
 const percentOfBenefits = 20;
 

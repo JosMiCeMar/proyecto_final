@@ -10,7 +10,6 @@ Route::fallback(function () {
    return redirect('/');
 });
 
-// Agrupar todas las rutas con el middleware de Rate Limiting
 Route::middleware(['throttle:web'])->group(function () {
     // Páginas públicas
     Route::get('/', function () {

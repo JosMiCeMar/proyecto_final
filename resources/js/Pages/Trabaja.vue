@@ -22,6 +22,7 @@ import Title from "@/Components/Title.vue";
 import MainBox from "@/Components/public_components/MainBox.vue";
 import SectionDivisor from "@/Components/public_components/SectionDivisor.vue";
 import AnimSections from "@/Components/public_components/AnimSections.vue";
+import { CONTACT_EMAIL, CONTACT_PHONE } from "@/Utils/utilsFunctions";
 
 const sections = [
     {
@@ -60,8 +61,8 @@ const sections = [
                     Si estás interesado en saber más sobre nuestro servicio de depilación láser en explotación compartida, no dudes en contactarnos. Nuestro equipo está listo para responder a todas tus preguntas y ayudarte a comenzar.
                 </p>
                 <ul class="mt-4 text-lg">
-                    <li><span class="font-bold">Teléfono:</span> <a href="tel:+34609970116" class="hover:text-skyblue-dark">609 970 116</a></li>
-                    <li><span class="font-bold">Email:</span> <a href="mailto:info@mimate.com" class="hover:text-skyblue-dark">info@mimate.com</a></li>
+                    <li><span class="font-bold">Teléfono:</span> <a href="tel:${CONTACT_PHONE}" class="hover:text-skyblue-dark hover:underline">${CONTACT_PHONE}</a></li>
+                    <li><span class="font-bold">Email:</span> <a href="mailto:${CONTACT_EMAIL}" class="hover:text-skyblue-dark hover:underline">${CONTACT_EMAIL}</a></li>
                     <li><span class="font-bold">Dirección:</span> Calle Aguadulce, 7, Écija (Sevilla)</li>
                     <li><span class="font-bold">Horario:</span> Lunes a Viernes, 9:00 - 19:00</li>
               </ul>`,

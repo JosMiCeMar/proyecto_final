@@ -426,6 +426,7 @@ class ReservaController extends Controller
                     'users.apellidos as cliente_apellidos',
                     'users.telefono as cliente_telefono',
                     'zonas.nombre as zona_nombre',
+                    'clientes.condicion_especial',
                     'hora_inicio',
                     'hora_fin'
                 )
@@ -476,6 +477,7 @@ class ReservaController extends Controller
                     'users.apellidos as cliente_apellidos',
                     'users.telefono as cliente_telefono',
                     'zonas.nombre as zona_nombre',
+                    'clientes.condicion_especial',
                     'hora_inicio',
                     'hora_fin'
                 )

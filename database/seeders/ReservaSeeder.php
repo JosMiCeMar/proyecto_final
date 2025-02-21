@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Cliente;
+use App\Models\Dia;
 use App\Models\Reserva;
 use Carbon\Carbon;
 use Illuminate\Database\Seeder;
@@ -17,78 +19,36 @@ class ReservaSeeder extends Seeder
      */
     public function run(): void
     {
-        $horaInicio = Carbon::createFromTime(10, 0, 0); 
-        $horaFin = Carbon::createFromTime(11, 0, 0);
-        Reserva::create([
-            'cliente_id' => 1,
-            'zona_id' => 7,
-            'dia_id' => 4,
-            'hora_inicio' => $horaInicio->toTimeString(),
-            'hora_fin' => $horaFin->toTimeString(),
-        ]);
+        $clientes = Cliente::pluck('id')->toArray(); // Obtiene IDs de clientes
+        $dias = Dia::pluck('id')->toArray(); // Obtiene IDs de los días disponibles
 
-        Reserva::create([
-            'cliente_id' => 2,
-            'zona_id' => 7,
-            'dia_id' => 5,
-            'hora_inicio' => $horaInicio->toTimeString(),
-            'hora_fin' => $horaFin->toTimeString(),
-        ]);
+        foreach ($dias as $dia) {
+            if (count($clientes) < 2) {
+                continue; // Asegurar que haya al menos 2 clientes para elegir
+            }
 
-        Reserva::create([
-            'cliente_id' => 1,
-            'zona_id' => 7,
-            'dia_id' => 6,
-            'hora_inicio' => $horaInicio->addHour()->toTimeString(),
-            'hora_fin' => $horaFin->addHour()->toTimeString(),
-        ]);
+            // Seleccionar dos clientes aleatorios diferentes
+            $clientesSeleccionados = array_rand($clientes, 2);
+            $clienteManana = $clientes[$clientesSeleccionados[0]];
+            $clienteTarde = $clientes[$clientesSeleccionados[1]];
 
-        Reserva::create([
-            'cliente_id' => 1,
-            'zona_id' => 8,
-            'dia_id' => 7,
-            'hora_inicio' => $horaInicio->addHour()->toTimeString(),
-            'hora_fin' => $horaFin->addHour()->toTimeString(),
-        ]);
+            // Reserva en la mañana (10:00 - 10:30)
+            Reserva::create([
+                'cliente_id' => $clienteManana,
+                'zona_id' => rand(1, 18), // Zona aleatoria
+                'dia_id' => $dia,
+                'hora_inicio' => Carbon::createFromTime(10, 0, 0)->toTimeString(),
+                'hora_fin' => Carbon::createFromTime(10, 30, 0)->toTimeString(),
+            ]);
 
-        Reserva::create([
-            'cliente_id' => 1,
-            'zona_id' => 7,
-            'dia_id' => 8,
-            'hora_inicio' => $horaInicio->addHour()->toTimeString(),
-            'hora_fin' => $horaFin->addHour()->toTimeString(),
-        ]);
-
-        Reserva::create([
-            'cliente_id' => 1,
-            'zona_id' => 7,
-            'dia_id' => 5,
-            'hora_inicio' => $horaInicio->addHour()->toTimeString(),
-            'hora_fin' => $horaFin->addHour()->toTimeString(),
-        ]);
-
-        Reserva::create([
-            'cliente_id' => 1,
-            'zona_id' => 1,
-            'dia_id' => 4,
-            'hora_inicio' => $horaInicio->addHour()->toTimeString(),
-            'hora_fin' => $horaFin->addHour()->toTimeString(),
-        ]);
-
-        Reserva::create([
-            'cliente_id' => 1,
-            'zona_id' => 8,
-            'dia_id' => 5,
-            'hora_inicio' => $horaInicio->addHour()->toTimeString(),
-            'hora_fin' => $horaFin->addHour()->toTimeString(),
-        ]);
-
-        Reserva::create([
-            'cliente_id' => 1,
-            'zona_id' => 11,
-            'dia_id' => 6,
-            'hora_inicio' => $horaInicio->addHour()->toTimeString(),
-            'hora_fin' => $horaFin->addHour()->toTimeString(),
-        ]);
+            // Reserva en la tarde (17:00 - 17:45)
+            Reserva::create([
+                'cliente_id' => $clienteTarde,
+                'zona_id' => rand(1, 18), // Zona aleatoria
+                'dia_id' => $dia,
+                'hora_inicio' => Carbon::createFromTime(17, 0, 0)->toTimeString(),
+                'hora_fin' => Carbon::createFromTime(17, 45, 0)->toTimeString(),
+            ]);
+        }
     }
 }
