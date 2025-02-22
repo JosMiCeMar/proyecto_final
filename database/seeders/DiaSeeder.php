@@ -23,10 +23,10 @@ class DiaSeeder extends Seeder
         foreach ($centros as $centro) {
             $fechasUsadas = [];
 
-            for ($i = 0; $i < 3; $i++) {
+            for ($i = 0; $i < 4; $i++) {
                 do {
                     // Generar una fecha aleatoria antes o después del día actual
-                    $fecha = $hoy->copy()->addDays(rand(-10, 10));
+                    $fecha = $hoy->copy()->addMonth(rand(-15, 15));
                 } while (in_array($fecha->toDateString(), $fechasUsadas)); // Evitar fechas duplicadas
                 
                 $fechasUsadas[] = $fecha->toDateString();

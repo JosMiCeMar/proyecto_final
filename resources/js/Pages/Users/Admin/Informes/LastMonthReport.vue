@@ -98,7 +98,7 @@
                     class="my-4 lg:grid lg:grid-cols-2 flex flex-col gap-10"
                 >
                     <ChartContainer
-                        title="Igresos Totales por Centro Asociado"
+                        title="Ingresos Totales por Centro Asociado"
                         :labels="totalTreatmentByCenters[0]"
                         :values="totalTreatmentByCenters[1]"
                         subfix="€"
@@ -111,7 +111,7 @@
                         />
                     </ChartContainer>
                     <ChartContainer
-                        title="Igresos Totales por Zona de Tratamiento"
+                        title="Ingresos Totales por Zona de Tratamiento"
                         :labels="totalTreatmentByZone[0]"
                         :values="totalTreatmentByZone[1]"
                         subfix="€"

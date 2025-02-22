@@ -28,9 +28,10 @@ class ReservaSeeder extends Seeder
             }
 
             // Seleccionar dos clientes aleatorios diferentes
-            $clientesSeleccionados = array_rand($clientes, 2);
+            $clientesSeleccionados = array_rand($clientes, 3);
             $clienteManana = $clientes[$clientesSeleccionados[0]];
-            $clienteTarde = $clientes[$clientesSeleccionados[1]];
+            $clienteManana2 = $clientes[$clientesSeleccionados[1]];
+            $clienteTarde = $clientes[$clientesSeleccionados[2]];
 
             // Reserva en la mañana (10:00 - 10:30)
             Reserva::create([
@@ -39,6 +40,15 @@ class ReservaSeeder extends Seeder
                 'dia_id' => $dia,
                 'hora_inicio' => Carbon::createFromTime(10, 0, 0)->toTimeString(),
                 'hora_fin' => Carbon::createFromTime(10, 30, 0)->toTimeString(),
+            ]);
+
+            // Reserva en la mañana (10:30 - 11:00)
+            Reserva::create([
+                'cliente_id' => $clienteManana2,
+                'zona_id' => rand(1, 18), // Zona aleatoria
+                'dia_id' => $dia,
+                'hora_inicio' => Carbon::createFromTime(10, 30, 0)->toTimeString(),
+                'hora_fin' => Carbon::createFromTime(11, 0, 0)->toTimeString(),
             ]);
 
             // Reserva en la tarde (17:00 - 17:45)
