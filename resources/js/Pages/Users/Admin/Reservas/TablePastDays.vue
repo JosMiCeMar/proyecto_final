@@ -49,7 +49,7 @@
                     <p class="text-center">
                         <span
                             class="text-lavender-dark font-bold sm:text-xl p-2 bg-red-300 rounded-lg"
-                            >No hay días de trabajo</span
+                            >No hay días asignados</span
                         >
                     </p>
                 </div>

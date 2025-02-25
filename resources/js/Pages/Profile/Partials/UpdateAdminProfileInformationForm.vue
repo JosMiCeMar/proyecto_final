@@ -2,7 +2,7 @@
     <section>
         <header>
             <h2 class="text-lg font-bold text-lavender-dark">
-                Actualizar Tus Datos
+                Actualizar tus datos
             </h2>
 
             <p class="mt-1 text-skyblue-dark">

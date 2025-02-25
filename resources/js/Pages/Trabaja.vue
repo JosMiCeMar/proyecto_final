@@ -60,9 +60,9 @@ const sections = [
         content: `<p class="leading-relaxed text-lg">
                     Si estás interesado en saber más sobre nuestro servicio de depilación láser en explotación compartida, no dudes en contactarnos. Nuestro equipo está listo para responder a todas tus preguntas y ayudarte a comenzar.
                 </p>
-                <ul class="mt-4 text-lg">
+                <ul class="mt-4 text-sm lg:text-lg">
                     <li><span class="font-bold">Teléfono:</span> <a href="tel:${CONTACT_PHONE}" class="hover:text-skyblue-dark hover:underline">${CONTACT_PHONE}</a></li>
-                    <li><span class="font-bold">Email:</span> <a href="mailto:${CONTACT_EMAIL}" class="hover:text-skyblue-dark hover:underline">${CONTACT_EMAIL}</a></li>
+                    <li><span class="font-bold">Email:</span> <a href="mailto:${CONTACT_EMAIL}" class="hover:text-skyblue-dark hover:underline">Enviar correo</a></li>
                     <li><span class="font-bold">Dirección:</span> Calle Aguadulce, 7, Écija (Sevilla)</li>
                     <li><span class="font-bold">Horario:</span> Lunes a Viernes, 9:00 - 19:00</li>
               </ul>`,

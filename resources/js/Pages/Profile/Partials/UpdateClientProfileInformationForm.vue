@@ -2,7 +2,7 @@
     <section>
         <header>
             <h2 class="text-lg font-bold text-lavender-dark">
-                Actualizar Tus Datos
+                Actualizar tus datos
             </h2>
 
             <p class="mt-1 text-skyblue-dark">
@@ -113,7 +113,7 @@
                 <InputLabel
                     class="text-lavender-dark font-semibold"
                     for="date"
-                    value="Fecha Nacimiento"
+                    value="Fecha nacimiento"
                 />
                 <Datepicker
                     id="date"

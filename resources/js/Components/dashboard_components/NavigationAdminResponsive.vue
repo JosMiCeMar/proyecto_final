@@ -13,7 +13,7 @@
             :href="route('dashboard')"
             :active="route().current('dashboard')"
         >
-            Panel de Usuario
+            Panel de usuario
         </ResponsiveNavLink>
         <ResponsiveNavLink
             :href="route('admin.indexInforme')"
@@ -42,7 +42,7 @@
     <div class="pt-2 pb-3 space-y-1 border-t border-skyblue-vlight">
         <div class="px-4">
             <div class="font-sm text-base text-center text-skyblue-vlight">
-                Gestión de Datos
+                Gestión de datos
             </div>
         </div>
         <ResponsiveNavLink
@@ -53,7 +53,7 @@
                 route().current('admin.delCode')
             "
         >
-            Códigos de Registro
+            Códigos de registro
         </ResponsiveNavLink>
         <ResponsiveNavLink
             :href="route('admin.indexCenter')"
@@ -64,7 +64,7 @@
                 route().current('admin.modCenter')
             "
         >
-            Centros Asociados
+            Centros asociados
         </ResponsiveNavLink>
         <ResponsiveNavLink
             :href="route('admin.indexZona')"
@@ -75,7 +75,7 @@
                 route().current('admin.modZona')
             "
         >
-            Zonas Tratamiento
+            Zonas tratamiento
         </ResponsiveNavLink>
         <ResponsiveNavLink
             :href="route('admin.indexDias')"
@@ -86,19 +86,19 @@
                 route().current('admin.modDias')
             "
         >
-            Dias Asignados
+            Días asignados
         </ResponsiveNavLink>
     </div>
     <div class="pt-4 pb-1 border-t border-skyblue-vlight">
         <div class="space-y-1">
             <ResponsiveNavLink :href="route('home')">
-                Volver al Inicio
+                Volver al inicio
             </ResponsiveNavLink>
             <ResponsiveNavLink
                 :href="route('admin.profileEdit')"
                 :active="route().current('admin.profileEdit')"
             >
-                Editar Perfil
+                Editar perfil
             </ResponsiveNavLink>
             <ResponsiveNavLink @click.prevent="closeSession()">
                 Desconectar

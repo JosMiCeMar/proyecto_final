@@ -4,7 +4,7 @@
             :href="route('dashboard')"
             :active="route().current('dashboard')"
         >
-            Panel de Usuario
+            Panel de usuario
         </NavLink>
         <NavLink
             :href="route('client.indexCitas')"
@@ -18,7 +18,7 @@
                 route().current('client.modHoraReser')
             "
         >
-            Mis Citas
+            Mis citas
         </NavLink>
         <NavLink
             :href="route('client.indexTratamientos')"
@@ -28,7 +28,7 @@
             route().current('client.personalizarInforme')||
             ruta==='/informe_personalizado'"
         >
-            Mis Tratamientos
+            Mis tratamientos
         </NavLink>
     </div>
 </template>

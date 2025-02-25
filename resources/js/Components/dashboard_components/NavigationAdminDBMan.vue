@@ -8,7 +8,7 @@
                 route().current('admin.delCode')
             "
         >
-            Códigos de Registro
+            Códigos de registro
         </DropNavLink>
         <DropNavLink class="mx-2 py-2"
             :href="route('admin.indexCenter')"
@@ -19,7 +19,7 @@
                 route().current('admin.modCenter')
             "
         >
-            Centros Asociados
+            Centros asociados
         </DropNavLink>
         <DropNavLink class="mx-2 py-2"
         :href="route('admin.indexZona')"
@@ -27,7 +27,7 @@
                 route().current('admin.createZona') ||
                 route().current('admin.listZona') ||
                 route().current('admin.modZona')">
-            Zonas Tratamiento
+            Zonas tratamiento
         </DropNavLink>
         <DropNavLink class="mx-2 py-2"
         :href="route('admin.indexDias')"
@@ -35,7 +35,7 @@
                 route().current('admin.createDias') ||
                 route().current('admin.listDias') ||
                 route().current('admin.modDiass')">
-            Dias Asignados
+            Días asignados
         </DropNavLink>
     </div>
 </template>

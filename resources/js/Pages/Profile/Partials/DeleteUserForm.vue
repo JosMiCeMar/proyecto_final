@@ -41,7 +41,7 @@ const closeModal = () => {
     <section class="space-y-6">
         <header>
             <h2 class="text-lg font-bold text-lavender-dark">
-                Eliminar Cuenta
+                Eliminar cuenta
             </h2>
 
             <p class="mt-1 text-skyblue-dark">
@@ -52,7 +52,7 @@ const closeModal = () => {
         </header>
 
         <DangerButton @click="confirmUserDeletion"
-            >Eliminar Cuenta</DangerButton
+            >Eliminar cuenta</DangerButton
         >
 
         <Modal :show="confirmingUserDeletion" @close="closeModal">
@@ -99,7 +99,7 @@ const closeModal = () => {
                         :disabled="form.processing"
                         @click="deleteUser"
                     >
-                        Eliminar Cuenta
+                        Eliminar cuenta
                     </DangerButton>
                 </div>
             </div>

@@ -45,12 +45,7 @@ defineProps({
                 >
                     <UpdatePasswordForm class="max-w-xl" />
                 </div>
-                <!-- Formulario para eliminar usuario -->
-                <div
-                    class="p-4 sm:p-8 textura_fondo shadow-md sm:rounded-lg"
-                >
-                    <DeleteUserForm class="max-w-xl" />
-                </div>
+                <!-- El usuario admin no se puede eliminar, por eso no posee dicha sección -->
             </div>
         </div>
     </AuthenticatedLayout>

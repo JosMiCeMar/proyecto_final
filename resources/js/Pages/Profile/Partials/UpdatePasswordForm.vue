@@ -2,7 +2,7 @@
     <section>
         <header>
             <h2 class="text-lg font-bold text-lavender-dark">
-                Actualizar Contraseña
+                Actualizar contraseña
             </h2>
 
             <p class="mt-1 text-skyblue-dark">
@@ -15,7 +15,7 @@
                 <InputLabel
                     class="text-lavender-dark font-semibold"
                     for="current_password"
-                    value="Contraseña Actual"
+                    value="Contraseña actual"
                 />
 
                 <PasswordInput
@@ -35,7 +35,7 @@
                 <InputLabel
                     class="text-lavender-dark font-semibold"
                     for="password"
-                    value="Nueva Contraseña"
+                    value="Nueva contraseña"
                 />
 
                 <PasswordInput
@@ -55,7 +55,7 @@
                 <InputLabel
                     class="text-lavender-dark font-semibold"
                     for="password_confirmation"
-                    value="Confirmar Contraseña"
+                    value="Confirmar contraseña"
                 />
 
                 <PasswordInput
@@ -73,7 +73,7 @@
 
             <div class="flex items-center gap-4">
                 <PrimaryButton :disabled="form.processing" :dark="true"
-                    >Guardar Cambios</PrimaryButton
+                    >Guardar cambios</PrimaryButton
                 >
 
                 <Transition

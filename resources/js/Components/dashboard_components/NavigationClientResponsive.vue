@@ -16,7 +16,7 @@
             :href="route('dashboard')"
             :active="route().current('dashboard')"
         >
-            Panel de Usuario
+            Panel de usuario
         </ResponsiveNavLink>
         <ResponsiveNavLink
             :href="route('client.indexCitas')"
@@ -30,7 +30,7 @@
                 route().current('client.modHoraReser')
             "
         >
-            Mis Citas
+            Mis citas
         </ResponsiveNavLink>
         <ResponsiveNavLink
             :href="route('client.indexTratamientos')"
@@ -42,7 +42,7 @@
                 route().current('client.mostrarInforme')
             "
         >
-            Mis Tratamientos
+            Mis tratamientos
         </ResponsiveNavLink>
     </div>
 
@@ -53,7 +53,7 @@
                 :href="route('client.profileEdit')"
                 :active="route().current('client.profileEdit')"
             >
-                Editar Perfil
+                Editar perfil
             </ResponsiveNavLink>
             <ResponsiveNavLink @click.prevent="closeSession()">
                 Desconectar

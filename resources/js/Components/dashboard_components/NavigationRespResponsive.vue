@@ -13,7 +13,7 @@
             :href="route('dashboard')"
             :active="route().current('dashboard')"
         >
-            Panel de Usuario
+            Panel de usuario
         </ResponsiveNavLink>
         <ResponsiveNavLink
             :href="route('respon.indexCode')"
@@ -54,13 +54,13 @@
     <div class="pt-2 pb-3 space-y-1 border-t border-skyblue-vlight">
         <div class="mt-3 space-y-1">
             <ResponsiveNavLink :href="route('home')">
-                Volver al Inicio
+                Volver al inicio
             </ResponsiveNavLink>
             <ResponsiveNavLink
                 :href="route('respon.profileEdit')"
                 :active="route().current('respon.profileEdit')"
             >
-                Editar Perfil
+                Editar perfil
             </ResponsiveNavLink>
             <ResponsiveNavLink @click.prevent="closeSession()">
                 Desconectar

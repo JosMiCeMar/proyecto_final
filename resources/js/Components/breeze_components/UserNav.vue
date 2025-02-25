@@ -44,13 +44,13 @@
 
                         <template #content>
                             <DropdownLink :href="route('home')">
-                                Volver al Inicio
+                                Volver al inicio
                             </DropdownLink>
                             <template v-if="$page.props.auth.tipo == 'admin'">
                                 <DropdownLink
                                     :href="route('admin.profileEdit')"
                                 >
-                                    Editar Perfil
+                                    Editar perfil
                                 </DropdownLink>
                             </template>
                             <template
@@ -59,14 +59,14 @@
                                 "
                             >
                                 <DropdownLink :href="route('respon.profileEdit')">
-                                    Editar Perfil
+                                    Editar perfil
                                 </DropdownLink>
                             </template>
                             <template v-else>
                                 <DropdownLink
                                     :href="route('client.profileEdit')"
                                 >
-                                    Editar Perfil
+                                    Editar perfil
                                 </DropdownLink>
                             </template>
                             <DropdownLink

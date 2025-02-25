@@ -7,13 +7,33 @@
             :returnLink="route('admin.indexReservas')"
             :messageDown="false"
         >
-            <!--Si el array recibido del back esta vacio, muestra el mensaje-->
-            <template v-if="props.dias.length === 0">
+            <!-- Filtros -->
+            <div class="m-4 text-sm flex flex-col justify-end gap-2 md:gap-6 md:flex-row">
+                <div class="w-full md:w-fit flex justify-end gap-2 items-center">
+                    <label
+                        for="centerFilter"
+                        class="text-lavender-dark font-bold"
+                    >
+                        Filtrar por centro
+                    </label>
+                    <SelectInput
+                        id="centerFilter"
+                        v-model="selectedCenter"
+                        class="text-sm w-fit py-1"
+                        :optionsArray="availableCenters"
+                        placeholder="Todos"
+                        :disabledPlaceholder="false"
+                    />
+                </div>
+            </div>
+
+            <!-- Si el array recibido del back está vacío, muestra el mensaje -->
+            <template v-if="filteredDias.length === 0">
                 <div class="m-4 my-20">
                     <p class="text-center">
                         <span
                             class="text-lavender-dark font-bold sm:text-xl p-2 bg-red-300 rounded-lg"
-                            >No hay días de trabajo</span
+                            >No hay días asignados</span
                         >
                     </p>
                 </div>
@@ -24,7 +44,7 @@
                 <!--Tabla de datos-->
                 <div>
                     <form @submit.prevent="submit">
-                        <PaginatedTable :items="props.dias" :headers="headers">
+                        <PaginatedTable :items="filteredDias" :headers="headers">
                             <template
                                 #default="{ item }"
                                 class="text-lavender-dark"
@@ -86,8 +106,10 @@ import ModButton from "@/Components/dashboard_components/ModButton.vue";
 import PaginatedTable from "@/Components/dashboard_components/PaginatedTable.vue";
 import { Head, router, useForm } from "@inertiajs/vue3";
 import { modAlert, showAlert } from "@/Utils/alerts";
+import { ref, computed } from "vue";	
 import InputError from "@/Components/breeze_components/InputError.vue";
 import EyeButton from "@/Components/dashboard_components/EyeButton.vue";
+import SelectInput from "@/Components/breeze_components/SelectInput.vue";
 
 //Propiedades - datos recibidos del back
 const props = defineProps({
@@ -108,7 +130,28 @@ const headers = [
     "Fecha",
     "Modificar",
     "Mostrar",
-]; 
+];
+
+// Estado para los filtros
+const selectedCenter = ref("");
+
+// Función para obtener los centros disponibles
+const availableCenters = computed(() => {
+    const centers = props.dias.map((dia) => dia.centro_nombre);
+    return [...new Set(centers)].sort();
+});
+
+// Filtrar los días según el año y el centro seleccionados
+const filteredDias = computed(() => {
+    return props.dias.filter((dia) => {
+        // Filtrar por centro si se seleccionó uno
+        const matchesCenter =
+            !selectedCenter.value || dia.centro_nombre === selectedCenter.value;
+
+        return matchesCenter;
+    });
+});
+
 
 //Función para confirmar la selección del día
 const confirmShow = (itemId, day, center) => {

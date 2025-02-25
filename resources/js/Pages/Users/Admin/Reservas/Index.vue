@@ -28,8 +28,8 @@ const linksList = [
     {
         route: route('admin.listPastReservas'),
         icon: mdiArchiveEye,
-        title: "Mostrar reservas pasadas",
-        description: "Visualiza las reservas pasadas"
+        title: "Mostrar historial",
+        description: "Visualiza el historial de reservas anteriores"
     }
 ]
 </script>

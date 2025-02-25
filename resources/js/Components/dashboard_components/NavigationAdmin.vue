@@ -4,7 +4,7 @@
             :href="route('dashboard')"
             :active="route().current('dashboard')"
         >
-            Panel de Usuario
+            Panel de usuario
         </NavLink>
         <NavLink
             :href="route('admin.indexInforme')"
