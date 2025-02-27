@@ -52,7 +52,7 @@ const submit = () => {
         <div class=" text-xs">
             <p class="text-center mt-4 text-lavender-vlight">
                 *El código te ha debido ser proporcionado por el responsable del centro o empleado de Mímate.<br>
-                Consta de 8 carácteres alfanuméricos<br>
+                Consta de 8 caracteres alfanuméricos<br>
                 Ejemplo: AbCd1234
             </p>
             <p class="mt-4 text-end text-skyblue-vlight hover:text-skyblue-light hover:underline">

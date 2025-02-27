@@ -12,7 +12,7 @@ export function validateName(name) {
     }
 
     if (name.length > 255) {
-        return "El nombre no puede superar los 255 carácteres";
+        return "El nombre no puede superar los 255 caracteres";
     }
 
     return null;

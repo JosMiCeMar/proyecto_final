@@ -23,14 +23,14 @@
                     <form @submit.prevent="submit">
                         <div
                             v-if="usados"
-                            class="flex text-lg items-center justify-end"
+                            class="flex text-sm items-center justify-end"
                         >
                             <div
-                                class="flex items-center gap-4 mx-6 p-2 rounded-md"
+                                class="flex items-center gap-2 mx-6 p-2 rounded-md"
                             >
                                 <span
-                                    class="font-bold text-lavender-dark uppercase"
-                                    >Eliminar todos los códigos usados</span
+                                    class="font-bold text-lavender-dark"
+                                    >Eliminar códigos usados</span
                                 >
                                 <TrashButton
                                     @click.prevent="confirmDelete(0, true)"

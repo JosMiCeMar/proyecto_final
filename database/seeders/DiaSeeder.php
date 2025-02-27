@@ -26,7 +26,7 @@ class DiaSeeder extends Seeder
             for ($i = 0; $i < 4; $i++) {
                 do {
                     // Generar una fecha aleatoria antes o después del día actual
-                    $fecha = $hoy->copy()->addMonth(rand(-15, 15));
+                    $fecha = $hoy->copy()->addMonth(rand(-10, 10));
                 } while (in_array($fecha->toDateString(), $fechasUsadas)); // Evitar fechas duplicadas
                 
                 $fechasUsadas[] = $fecha->toDateString();

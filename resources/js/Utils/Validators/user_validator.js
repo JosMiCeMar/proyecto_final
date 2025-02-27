@@ -1,6 +1,6 @@
 //Expresion regular para nombre y apellidos (solo acepta letras y espacios)
 const nameRegex =
-/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+(?:[-'a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]*)$/;
+/^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ]+(?:[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ\s]*)$/;
 
 // Funciones fechas minima y maxima de nacimiento
 export function getMinDate() {
@@ -29,7 +29,7 @@ export function validateName(name) {
     }
 
     if (name.length > 255) {
-        return "El nombre no puede superar los 255 carácteres";
+        return "El nombre no puede superar los 255 caracteres";
     }
 
     return null;
@@ -46,7 +46,7 @@ export function validateLastname(lastname) {
     }
 
     if (lastname.length > 255) {
-        return "Los apellidos no pueden superar los 255 carácteres";
+        return "Los apellidos no pueden superar los 255 caracteres";
     }
 
     return null;

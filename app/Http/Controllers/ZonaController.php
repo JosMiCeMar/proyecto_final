@@ -59,7 +59,7 @@ class ZonaController extends Controller
 
             return redirect(route('admin.indexZona'))->with('msg', 'Zona creada correctamente');
         } catch (Exception $er) {
-            return redirect(route('admin.indexZonas'))->withErrors('Error inesperado: ' . $er->getMessage());
+            return redirect(route('admin.indexZona'))->withErrors('Error inesperado: ' . $er->getMessage());
         }
     }
 
@@ -74,7 +74,7 @@ class ZonaController extends Controller
             $zonas = Zona::select('id', 'nombre', 'precio', 'tiempo_estimado')->where('active', 1)->orderBy('nombre')->get();
             return Inertia::render('Users/Admin/Zonas/TableZones', ['zonas' => $zonas]);
         } catch (Exception $er) {
-            return redirect(route('admin.indexZonas'))->withErrors('Error inesperado: ' . $er->getMessage());
+            return redirect(route('admin.indexZona'))->withErrors('Error inesperado: ' . $er->getMessage());
         }
     }
 
@@ -95,7 +95,7 @@ class ZonaController extends Controller
 
             return redirect()->back();
         } catch (Exception $er) {
-            return redirect(route('admin.indexZonas'))->withErrors('Error inesperado: ' . $er->getMessage());
+            return redirect(route('admin.indexZona'))->withErrors('Error inesperado: ' . $er->getMessage());
         }
     }
 
@@ -123,12 +123,12 @@ class ZonaController extends Controller
                 $zona->tiempo_estimado = $request->time;
 
                 $zona->save();
-                return redirect(route('admin.indexZonas'))->with('msg', 'Zona modificada correctamente');
+                return redirect(route('admin.indexZona'))->with('msg', 'Zona modificada correctamente');
             }
             // Si no existe la zona
             return redirect()->back();
         } catch (Exception $er) {
-            return redirect(route('admin.indexZonas'))->withErrors('Error inesperado: ' . $er->getMessage());
+            return redirect(route('admin.indexZona'))->withErrors('Error inesperado: ' . $er->getMessage());
         }
     }
 
@@ -157,7 +157,7 @@ class ZonaController extends Controller
     
             return redirect()->back();
         }catch(Exception $er){
-            return redirect(route('admin.indexZonas'))->withErrors('Error inesperado: ' . $er->getMessage());
+            return redirect(route('admin.indexZona'))->withErrors('Error inesperado: ' . $er->getMessage());
         }
     }
 }

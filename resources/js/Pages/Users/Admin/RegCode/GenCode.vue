@@ -3,7 +3,7 @@
 
     <AuthenticatedLayout>
         <ContentBox
-            title="Generar código de usuario"
+            title="Generar código de registro"
             description="Formulario para la creación de códigos de registro para nuevos usuarios"
             class="text-center"
             :returnLink="route('admin.indexCode')"
