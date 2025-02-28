@@ -20,7 +20,6 @@ class Cliente extends Model
      */
     protected $fillable = [
         'user_id',
-        'consentimiento',
         'condicion_especial',
         'fecha_nacimiento'
     ];
