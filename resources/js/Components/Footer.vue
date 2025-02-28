@@ -44,10 +44,16 @@ import { CONTACT_EMAIL, CONTACT_PHONE } from "@/Utils/utilsFunctions";
                     {{ CONTACT_PHONE }}
                 </a>
             </span>
-            <span class="hover:text-skyblue-dark hover:underline fill-lavender-dark hover:fill-skyblue-dark">
+            <span class="hover:text-skyblue-dark hover:underline fill-lavender-dark hover:fill-skyblue-dark hidden sm:block">
                 <a :href="`mailto:${CONTACT_EMAIL}`" class="flex gap-1 justify-center items-center">
                     <IconMdi :icon="mdiEmail" />
                     {{ CONTACT_EMAIL }}
+                </a>
+            </span>
+            <span class="hover:text-skyblue-dark hover:underline fill-lavender-dark hover:fill-skyblue-dark block sm:hidden">
+                <a :href="`mailto:${CONTACT_EMAIL}`" class="flex gap-1 justify-center items-center">
+                    <IconMdi :icon="mdiEmail" />
+                    Email contacto
                 </a>
             </span>
         </div>
