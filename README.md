@@ -8,4 +8,4 @@
 <p>Jose Miguel Cejas Martín</p>
 
 ## Link despliegue
-<a href='https://mediumvioletred-coyote-466988.hostingersite.com/'>Enlace</a>
+<a href='https://mediumvioletred-coyote-466988.hostingersite.com/' target='_blank'>Enlace</a>
